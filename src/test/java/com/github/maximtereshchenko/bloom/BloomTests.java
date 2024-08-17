@@ -1,5 +1,6 @@
 package com.github.maximtereshchenko.bloom;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -15,5 +16,17 @@ final class BloomTests {
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation(String.valueOf(character));
+    }
+
+    @Test
+    void givenDisplaySamePixelsTwice_thenEmptyDisplay() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new Display(0, 0, 5),
+                new Display(0, 0, 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
     }
 }

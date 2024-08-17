@@ -65,6 +65,10 @@ final class Dsl {
             this.display = display;
         }
 
+        void thenOutputMatchesExpectation() {
+            thenOutputMatchesExpectation("");
+        }
+
         void thenOutputMatchesExpectation(String parameter) {
             verify(display, options.forFile().withAdditionalInformation(parameter));
         }
