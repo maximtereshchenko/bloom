@@ -66,11 +66,15 @@ final class Dsl {
         }
 
         void thenOutputMatchesExpectation() {
-            thenOutputMatchesExpectation("");
+            thenOutputMatchesExpectation(options);
         }
 
         void thenOutputMatchesExpectation(String parameter) {
-            verify(display, options.forFile().withAdditionalInformation(parameter));
+            thenOutputMatchesExpectation(options.forFile().withAdditionalInformation(parameter));
+        }
+
+        private void thenOutputMatchesExpectation(Options options) {
+            verify(display, options);
         }
     }
 }

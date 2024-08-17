@@ -19,8 +19,8 @@ final class DisplayOperationFactory implements OperationFactory {
     public Operation operation(OperationCode operationCode) {
         return new DisplayOperation(
             display,
-            operationCode.nibble(1).numericValue(),
-            operationCode.nibble(2).numericValue(),
+            operationCode.nibble(1),
+            operationCode.nibble(2),
             operationCode.nibble(3).numericValue()
         );
     }

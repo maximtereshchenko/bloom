@@ -11,7 +11,8 @@ final class BloomTests {
     void givenDisplayFontCharacter_thenCharacterDisplayed(char character) {
         new Dsl()
             .givenProgram(
-                new SetFontCharacter(character),
+                new SetRegisterValue('1', "0" + character),
+                new SetFontCharacter('1'),
                 new Display(0, 0, 5)
             )
             .whenExecuteAllInstructions()
@@ -22,7 +23,8 @@ final class BloomTests {
     void givenDisplaySamePixelsTwice_thenEmptyDisplay() {
         new Dsl()
             .givenProgram(
-                new SetFontCharacter('0'),
+                new SetRegisterValue('1', "00"),
+                new SetFontCharacter('1'),
                 new Display(0, 0, 5),
                 new Display(0, 0, 5)
             )

@@ -11,11 +11,12 @@ public final class BloomFacade implements BloomModule {
     private final Set<OperationFactory> operationFactories;
 
     public BloomFacade(byte[] program, Display display) {
-        this.registers = new Registers(new ProgramCounter(), new Index());
+        this.registers = new Registers();
         this.randomAccessMemory = RandomAccessMemory.withProgram(program);
         this.operationFactories = Set.of(
             new SetFontCharacterOperationFactory(),
-            new DisplayOperationFactory(display)
+            new DisplayOperationFactory(display),
+            new SetRegisterValueOperationFactory()
         );
     }
 

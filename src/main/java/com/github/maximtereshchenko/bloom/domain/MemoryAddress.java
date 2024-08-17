@@ -4,7 +4,7 @@ final class MemoryAddress {
 
     private final short value;
 
-    MemoryAddress(short value) {
+    private MemoryAddress(short value) {
         this.value = value;
     }
 
