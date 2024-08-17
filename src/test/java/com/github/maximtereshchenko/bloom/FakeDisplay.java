@@ -4,7 +4,17 @@ import com.github.maximtereshchenko.bloom.api.Display;
 
 final class FakeDisplay implements Display {
 
-    private final byte[][] pixels = new byte[32][64];
+    private final byte[][] pixels = new byte[height()][width()];
+
+    @Override
+    public int width() {
+        return 64;
+    }
+
+    @Override
+    public int height() {
+        return 32;
+    }
 
     @Override
     public boolean isPixelEnabled(int row, int column) {

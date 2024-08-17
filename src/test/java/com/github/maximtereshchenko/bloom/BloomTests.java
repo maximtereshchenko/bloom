@@ -1,10 +1,16 @@
 package com.github.maximtereshchenko.bloom;
 
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 final class BloomTests {
+
+    static IntStream widthIndexes() {
+        return IntStream.rangeClosed(0, 32);
+    }
 
     @ParameterizedTest
     @ValueSource(chars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'})
@@ -16,7 +22,7 @@ final class BloomTests {
                 new Display('0', '0', 5)
             )
             .whenExecuteAllInstructions()
-            .thenOutputMatchesExpectation(String.valueOf(character));
+            .thenOutputMatchesExpectation(character);
     }
 
     @Test
@@ -30,6 +36,20 @@ final class BloomTests {
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
+    }
+
+    @ParameterizedTest
+    @MethodSource("widthIndexes")
+    void givenDisplayWithRowRegister_thenCharacterDisplayedStartingAtRow(int row) {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "%02X".formatted(row)),
+                new SetRegisterValue('2', "00"),
+                new SetFontCharacter('2'),
+                new Display('0', '1', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation(row);
     }
 
     @Test

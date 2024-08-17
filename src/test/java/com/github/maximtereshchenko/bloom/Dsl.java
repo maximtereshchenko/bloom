@@ -69,7 +69,15 @@ final class Dsl {
             thenOutputMatchesExpectation(options);
         }
 
-        void thenOutputMatchesExpectation(String parameter) {
+        void thenOutputMatchesExpectation(char parameter) {
+            thenOutputMatchesExpectation(String.valueOf(parameter));
+        }
+
+        void thenOutputMatchesExpectation(int parameter) {
+            thenOutputMatchesExpectation(String.valueOf(parameter));
+        }
+
+        private void thenOutputMatchesExpectation(String parameter) {
             thenOutputMatchesExpectation(options.forFile().withAdditionalInformation(parameter));
         }
 
