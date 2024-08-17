@@ -9,7 +9,11 @@ import org.junit.jupiter.params.provider.ValueSource;
 final class BloomTests {
 
     static IntStream widthIndexes() {
-        return IntStream.rangeClosed(0, 32);
+        return IntStream.rangeClosed(0, FakeDisplay.WIDTH);
+    }
+
+    static IntStream heightIndexes() {
+        return IntStream.rangeClosed(0, FakeDisplay.HEIGHT);
     }
 
     @ParameterizedTest
@@ -39,7 +43,7 @@ final class BloomTests {
     }
 
     @ParameterizedTest
-    @MethodSource("widthIndexes")
+    @MethodSource("heightIndexes")
     void givenDisplayWithRowRegister_thenCharacterDisplayedStartingAtRow(int row) {
         new Dsl()
             .givenProgram(
@@ -50,6 +54,20 @@ final class BloomTests {
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation(row);
+    }
+
+    @ParameterizedTest
+    @MethodSource("widthIndexes")
+    void givenDisplayWithColumnRegister_thenCharacterDisplayedStartingAtColumn(int column) {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "%02X".formatted(column)),
+                new SetRegisterValue('2', "00"),
+                new SetFontCharacter('2'),
+                new Display('1', '0', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation(column);
     }
 
     @Test

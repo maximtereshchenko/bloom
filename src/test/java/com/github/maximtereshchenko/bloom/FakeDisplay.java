@@ -4,16 +4,19 @@ import com.github.maximtereshchenko.bloom.api.Display;
 
 final class FakeDisplay implements Display {
 
-    private final byte[][] pixels = new byte[height()][width()];
+    static final int WIDTH = 64;
+    static final int HEIGHT = 32;
+
+    private final byte[][] pixels = new byte[HEIGHT][WIDTH];
 
     @Override
     public int width() {
-        return 64;
+        return WIDTH;
     }
 
     @Override
     public int height() {
-        return 32;
+        return HEIGHT;
     }
 
     @Override
