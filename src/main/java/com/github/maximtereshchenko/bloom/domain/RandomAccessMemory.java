@@ -14,7 +14,7 @@ final class RandomAccessMemory {
         var fontBits = new Font().bytes();
         System.arraycopy(fontBits, 0, array, FONT_MEMORY_ADDRESS.value(), fontBits.length);
         for (int i = 0; i < program.length; i++) {
-            array[ProgramCounter.INITIAL.value() + i] = new Byte(program[i]);
+            array[ProgramCounter.INITIAL.value() + i] = Byte.from(program[i]);
         }
         return new RandomAccessMemory(array);
     }

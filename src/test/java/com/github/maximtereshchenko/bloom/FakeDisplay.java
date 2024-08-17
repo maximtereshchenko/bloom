@@ -7,6 +7,11 @@ final class FakeDisplay implements Display {
     private final byte[][] pixels = new byte[32][64];
 
     @Override
+    public boolean isPixelEnabled(int row, int column) {
+        return pixels[row][column] == 1;
+    }
+
+    @Override
     public void flipPixel(int row, int column) {
         var current = pixels[row][column];
         pixels[row][column] = (byte) (current == 0 ? 1 : 0);

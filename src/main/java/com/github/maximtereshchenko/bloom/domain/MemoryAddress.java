@@ -9,11 +9,7 @@ final class MemoryAddress {
     }
 
     static MemoryAddress from(int value) {
-        var casted = (short) value;
-        if (casted != value) {
-            throw new IllegalArgumentException(String.valueOf(value));
-        }
-        return new MemoryAddress(casted);
+        return new MemoryAddress((short) value);
     }
 
     short value() {

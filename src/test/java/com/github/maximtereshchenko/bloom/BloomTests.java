@@ -13,7 +13,7 @@ final class BloomTests {
             .givenProgram(
                 new SetRegisterValue('1', "0" + character),
                 new SetFontCharacter('1'),
-                new Display(0, 0, 5)
+                new Display('0', '0', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation(String.valueOf(character));
@@ -25,8 +25,22 @@ final class BloomTests {
             .givenProgram(
                 new SetRegisterValue('1', "00"),
                 new SetFontCharacter('1'),
-                new Display(0, 0, 5),
-                new Display(0, 0, 5)
+                new Display('0', '0', 5),
+                new Display('0', '0', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenPixelDisabledDuringDisplay_thenFlagRegisterSetToOne() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('1', "00"),
+                new SetFontCharacter('1'),
+                new Display('0', '0', 5),
+                new Display('0', '0', 5),
+                new Display('F', 'F', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();

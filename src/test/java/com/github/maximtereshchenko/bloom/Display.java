@@ -1,9 +1,9 @@
 package com.github.maximtereshchenko.bloom;
 
-record Display(int startRow, int startColumn, int rows) implements Instruction {
+record Display(char startRowRegister, char startColumnRegister, int rows) implements Instruction {
 
     @Override
     public String hexadecimal() {
-        return "D" + startRow + startColumn + rows;
+        return "D" + startRowRegister + startColumnRegister + rows;
     }
 }

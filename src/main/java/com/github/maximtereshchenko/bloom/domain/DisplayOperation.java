@@ -33,20 +33,22 @@ final class DisplayOperation implements Operation {
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory) {
         var memoryAddress = registers.index().value();
+        var flagRegister = registers.flagRegister();
         var startRow = registers.generalPurpose(startRowRegister).value().value();
+        var startColumn = registers.generalPurpose(startColumnRegister).value().value();
+        flagRegister.disable();
         for (var row = startRow; row < startRow + rows; row++, memoryAddress = memoryAddress.next()) {
-            displayRow(
-                randomAccessMemory.value(memoryAddress),
-                row,
-                registers.generalPurpose(startColumnRegister).value().value()
-            );
+            displayRow(randomAccessMemory.value(memoryAddress), row, startColumn, flagRegister);
         }
     }
 
-    private void displayRow(Byte bits, byte row, byte startColumn) {
+    private void displayRow(Byte bits, byte row, byte startColumn, FlagRegister flagRegister) {
         for (int column = startColumn, bitIndex = 0; bitIndex < Byte.LENGTH; column++, bitIndex++) {
             if (bits.has(bitIndex)) {
                 display.flipPixel(row, column);
+                if (!display.isPixelEnabled(row, column)) {
+                    flagRegister.enable();
+                }
             }
         }
     }

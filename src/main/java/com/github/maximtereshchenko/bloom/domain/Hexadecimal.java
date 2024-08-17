@@ -27,7 +27,7 @@ final class Hexadecimal {
         if (symbols.size() != 2) {
             throw new IllegalStateException();
         }
-        return new Byte((byte) Integer.parseInt(toString(), 16));
+        return Byte.from(Integer.parseInt(toString(), 16));
     }
 
     HexadecimalSymbol first() {

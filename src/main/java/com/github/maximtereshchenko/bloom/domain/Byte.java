@@ -6,12 +6,16 @@ final class Byte {
 
     private final byte value;
 
-    Byte(byte value) {
+    private Byte(byte value) {
         this.value = value;
     }
 
     Byte() {
         this((byte) 0);
+    }
+
+    static Byte from(int value) {
+        return new Byte((byte) value);
     }
 
     static Byte from(String bits) {

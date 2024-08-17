@@ -1,6 +1,6 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class GeneralPurpose implements Register<Byte> {
+final class GeneralPurposeRegister implements Register<Byte> {
 
     private Byte value = new Byte();
 
