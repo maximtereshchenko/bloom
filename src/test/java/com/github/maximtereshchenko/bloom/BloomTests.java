@@ -33,8 +33,7 @@ final class BloomTests {
     void givenDisplaySamePixelsTwice_thenEmptyDisplay() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('1', "00"),
-                new SetFontCharacter('1'),
+                new SetFontCharacter('0'),
                 new Display('0', '0', 5),
                 new Display('0', '0', 5)
             )
@@ -48,8 +47,7 @@ final class BloomTests {
         new Dsl()
             .givenProgram(
                 new SetRegisterValue('0', "%02X".formatted(row)),
-                new SetRegisterValue('2', "00"),
-                new SetFontCharacter('2'),
+                new SetFontCharacter('1'),
                 new Display('0', '1', 5)
             )
             .whenExecuteAllInstructions()
@@ -62,8 +60,7 @@ final class BloomTests {
         new Dsl()
             .givenProgram(
                 new SetRegisterValue('0', "%02X".formatted(column)),
-                new SetRegisterValue('2', "00"),
-                new SetFontCharacter('2'),
+                new SetFontCharacter('1'),
                 new Display('1', '0', 5)
             )
             .whenExecuteAllInstructions()
@@ -74,8 +71,7 @@ final class BloomTests {
     void givenPixelDisabledDuringDisplay_thenFlagRegisterSetToOne() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('1', "00"),
-                new SetFontCharacter('1'),
+                new SetFontCharacter('0'),
                 new Display('0', '0', 5),
                 new Display('0', '0', 5),
                 new Display('F', 'F', 5)
@@ -88,12 +84,25 @@ final class BloomTests {
     void givenClearDisplay_thenEmptyDisplay() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('1', "00"),
-                new SetFontCharacter('1'),
+                new SetFontCharacter('0'),
                 new Display('0', '0', 5),
                 new ClearDisplay()
             )
             .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenJumpForward_thenInstructionSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('1', "01"),
+                new SetFontCharacter('0'),
+                new Jump(4),
+                new SetFontCharacter('1'),//should be skipped
+                new Display('0', '0', 5)
+            )
+            .whenExecuteInstructions(4)
             .thenOutputMatchesExpectation();
     }
 }

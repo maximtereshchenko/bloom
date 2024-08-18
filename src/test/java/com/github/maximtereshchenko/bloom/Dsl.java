@@ -46,7 +46,11 @@ final class Dsl {
         }
 
         Result whenExecuteAllInstructions() {
-            for (var i = 0; i < instructions; i++) {
+            return whenExecuteInstructions(instructions);
+        }
+
+        Result whenExecuteInstructions(int count) {
+            for (var i = 0; i < count; i++) {
                 module.executeNextInstruction();
             }
             return new Result(display);

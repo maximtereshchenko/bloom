@@ -19,7 +19,8 @@ public final class BloomFacade implements BloomModule {
             new SetFontCharacterOperationFactory(),
             new DisplayOperationFactory(),
             new SetRegisterValueOperationFactory(),
-            new ClearDisplayOperationFactory()
+            new ClearDisplayOperationFactory(),
+            new JumpOperationFactory()
         );
     }
 

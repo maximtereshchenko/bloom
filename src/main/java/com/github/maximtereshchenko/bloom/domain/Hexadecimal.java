@@ -15,6 +15,10 @@ final class Hexadecimal {
         this(List.of(first, second));
     }
 
+    Hexadecimal(HexadecimalSymbol first, HexadecimalSymbol second, HexadecimalSymbol third) {
+        this(List.of(first, second, third));
+    }
+
     @Override
     public String toString() {
         return symbols.stream()
@@ -28,6 +32,13 @@ final class Hexadecimal {
             throw new IllegalStateException();
         }
         return Byte.from(Integer.parseInt(toString(), 16));
+    }
+
+    MemoryAddress memoryAddress() {
+        if (symbols.size() != 3) {
+            throw new IllegalStateException();
+        }
+        return MemoryAddress.from(Integer.parseInt(toString(), 16));
     }
 
     HexadecimalSymbol first() {
