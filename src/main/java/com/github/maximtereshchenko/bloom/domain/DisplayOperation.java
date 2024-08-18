@@ -13,36 +13,29 @@ import com.github.maximtereshchenko.bloom.api.Display;
  */
 final class DisplayOperation implements Operation {
 
-    private final Display display;
     private final HexadecimalSymbol startRowRegister;
     private final HexadecimalSymbol startColumnRegister;
     private final int rows;
 
-    DisplayOperation(
-        Display display,
-        HexadecimalSymbol startRowRegister,
-        HexadecimalSymbol startColumnRegister,
-        int rows
-    ) {
-        this.display = display;
+    DisplayOperation(HexadecimalSymbol startRowRegister, HexadecimalSymbol startColumnRegister, int rows) {
         this.startRowRegister = startRowRegister;
         this.startColumnRegister = startColumnRegister;
         this.rows = rows;
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory) {
+    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Display display) {
         var memoryAddress = registers.index().value();
         var flagRegister = registers.flagRegister();
         var startRow = registers.generalPurpose(startRowRegister).value().value() % display.height();
         var startColumn = registers.generalPurpose(startColumnRegister).value().value() % display.width();
         flagRegister.disable();
         for (var row = startRow; row < startRow + rows; row++, memoryAddress = memoryAddress.next()) {
-            displayRow(randomAccessMemory.value(memoryAddress), row, startColumn, flagRegister);
+            displayRow(display, randomAccessMemory.value(memoryAddress), row, startColumn, flagRegister);
         }
     }
 
-    private void displayRow(Byte bits, int row, int startColumn, FlagRegister flagRegister) {
+    private void displayRow(Display display, Byte bits, int row, int startColumn, FlagRegister flagRegister) {
         for (int column = startColumn, bitIndex = 0; bitIndex < Byte.LENGTH; column++, bitIndex++) {
             if (row < display.height() && column < display.width() && bits.has(bitIndex)) {
                 display.flipPixel(row, column);

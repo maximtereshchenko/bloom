@@ -1,14 +1,6 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-import com.github.maximtereshchenko.bloom.api.Display;
-
 final class DisplayOperationFactory implements OperationFactory {
-
-    private final Display display;
-
-    DisplayOperationFactory(Display display) {
-        this.display = display;
-    }
 
     @Override
     public boolean supports(OperationCode operationCode) {
@@ -18,7 +10,6 @@ final class DisplayOperationFactory implements OperationFactory {
     @Override
     public Operation operation(OperationCode operationCode) {
         return new DisplayOperation(
-            display,
             operationCode.nibble(1),
             operationCode.nibble(2),
             operationCode.nibble(3).numericValue()

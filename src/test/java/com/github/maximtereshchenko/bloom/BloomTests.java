@@ -83,4 +83,17 @@ final class BloomTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenClearDisplay_thenEmptyDisplay() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('1', "00"),
+                new SetFontCharacter('1'),
+                new Display('0', '0', 5),
+                new ClearDisplay()
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }
