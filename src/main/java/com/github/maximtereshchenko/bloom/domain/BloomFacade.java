@@ -20,7 +20,8 @@ public final class BloomFacade implements BloomModule {
             new DisplayOperationFactory(),
             new SetRegisterValueOperationFactory(),
             new ClearDisplayOperationFactory(),
-            new JumpOperationFactory()
+            new JumpOperationFactory(),
+            new AddValueToRegisterOperationFactory()
         );
     }
 
@@ -31,9 +32,10 @@ public final class BloomFacade implements BloomModule {
             if (operationFactory.supports(operationCode)) {
                 operationFactory.operation(operationCode)
                     .execute(registers, randomAccessMemory, display);
-                break;
+                return;
             }
         }
+        throw new IllegalArgumentException(operationCode.toString());
     }
 
     private OperationCode operationCode() {

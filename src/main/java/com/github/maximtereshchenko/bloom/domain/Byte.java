@@ -37,4 +37,8 @@ final class Byte {
             HexadecimalSymbol.from(string.charAt(1))
         );
     }
+
+    Byte sum(Byte other) {
+        return Byte.from(value + other.value());
+    }
 }

@@ -105,4 +105,17 @@ final class BloomTests {
             .whenExecuteInstructions(4)
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenAddValueToRegister_thenRegisterHasSum() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "01"),
+                new AddValueToRegister('0', "02"),
+                new SetFontCharacter('0'),
+                new Display('1', '1', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }

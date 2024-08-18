@@ -1,5 +1,6 @@
 package com.github.maximtereshchenko.bloom.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,5 +48,14 @@ final class Hexadecimal {
 
     HexadecimalSymbol last() {
         return symbols.getLast();
+    }
+
+    Hexadecimal concat(Hexadecimal hexadecimal) {
+        var copy = new ArrayList<>(symbols);
+        copy.addAll(hexadecimal.symbols);
+        if (copy.size() > 4) {
+            throw new IllegalStateException();
+        }
+        return new Hexadecimal(copy);
     }
 }

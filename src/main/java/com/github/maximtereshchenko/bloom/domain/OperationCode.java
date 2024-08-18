@@ -10,6 +10,11 @@ final class OperationCode {
         this.second = second;
     }
 
+    @Override
+    public String toString() {
+        return first.hexadecimal().concat(second.hexadecimal()).toString();
+    }
+
     HexadecimalSymbol nibble(int index) {
         return switch (index) {
             case 0 -> first.hexadecimal().first();
