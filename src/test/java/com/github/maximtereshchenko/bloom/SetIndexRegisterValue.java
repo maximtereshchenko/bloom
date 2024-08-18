@@ -1,15 +1,15 @@
 package com.github.maximtereshchenko.bloom;
 
-final class Jump {
+final class SetIndexRegisterValue {
 
     private final MemoryAddress memoryAddress;
 
-    Jump(MemoryAddress memoryAddress) {
+    SetIndexRegisterValue(MemoryAddress memoryAddress) {
         this.memoryAddress = memoryAddress;
     }
 
     @Override
     public String toString() {
-        return "1" + memoryAddress;
+        return "A" + memoryAddress;
     }
 }

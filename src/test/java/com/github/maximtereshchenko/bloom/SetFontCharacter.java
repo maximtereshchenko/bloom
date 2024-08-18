@@ -1,9 +1,15 @@
 package com.github.maximtereshchenko.bloom;
 
-record SetFontCharacter(char register) implements Instruction {
+final class SetFontCharacter {
+
+    private final char register;
+
+    SetFontCharacter(char register) {
+        this.register = register;
+    }
 
     @Override
-    public String hexadecimal() {
+    public String toString() {
         return "F%c29".formatted(register);
     }
 }

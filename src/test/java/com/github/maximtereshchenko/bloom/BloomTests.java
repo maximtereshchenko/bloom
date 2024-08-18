@@ -98,7 +98,7 @@ final class BloomTests {
             .givenProgram(
                 new SetRegisterValue('1', "01"),
                 new SetFontCharacter('0'),
-                new Jump(4),
+                new Jump(new MemoryAddress(4)),
                 new SetFontCharacter('1'),//should be skipped
                 new Display('0', '0', 5)
             )
@@ -116,6 +116,18 @@ final class BloomTests {
                 new Display('1', '1', 5)
             )
             .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSetIndexRegisterValue_thenValueFromMemoryAddressDisplayed() {
+        new Dsl()
+            .givenProgram(
+                new SetIndexRegisterValue(new MemoryAddress(2)),
+                new Display('0', '0', 2),
+                "FFFF"
+            )
+            .whenExecuteInstructions(2)
             .thenOutputMatchesExpectation();
     }
 }

@@ -1,9 +1,17 @@
 package com.github.maximtereshchenko.bloom;
 
-record SetRegisterValue(char register, String value) implements Instruction {
+final class SetRegisterValue {
+
+    private final char register;
+    private final String value;
+
+    SetRegisterValue(char register, String value) {
+        this.register = register;
+        this.value = value;
+    }
 
     @Override
-    public String hexadecimal() {
+    public String toString() {
         return "6" + register + value;
     }
 }

@@ -1,9 +1,9 @@
 package com.github.maximtereshchenko.bloom;
 
-final class ClearDisplay implements Instruction {
+final class ClearDisplay {
 
     @Override
-    public String hexadecimal() {
+    public String toString() {
         return "00E0";
     }
 }

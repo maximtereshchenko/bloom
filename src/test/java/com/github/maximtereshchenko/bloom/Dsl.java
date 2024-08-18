@@ -10,19 +10,19 @@ import org.approvaltests.reporters.Junit5Reporter;
 
 final class Dsl {
 
-    Execution givenProgram(Instruction... instructions) {
+    Execution givenProgram(Object... bytes) {
         var display = new FakeDisplay();
         return new Execution(
-            new BloomFacade(program(instructions), display),
+            new BloomFacade(program(bytes), display),
             display,
-            instructions.length
+            bytes.length
         );
     }
 
-    private byte[] program(Instruction... instructions) {
-        var program = new byte[instructions.length * 2];
+    private byte[] program(Object... bytes) {
+        var program = new byte[bytes.length * 2];
         for (var i = 0; i < program.length; i += 2) {
-            var hexadecimal = instructions[i / 2].hexadecimal();
+            var hexadecimal = bytes[i / 2].toString();
             program[i] = toByte(hexadecimal.substring(0, 2));
             program[i + 1] = toByte(hexadecimal.substring(2));
         }
@@ -37,16 +37,16 @@ final class Dsl {
 
         private final BloomModule module;
         private final Display display;
-        private final int instructions;
+        private final int length;
 
-        private Execution(BloomModule module, Display display, int instructions) {
+        private Execution(BloomModule module, Display display, int length) {
             this.module = module;
             this.display = display;
-            this.instructions = instructions;
+            this.length = length;
         }
 
         Result whenExecuteAllInstructions() {
-            return whenExecuteInstructions(instructions);
+            return whenExecuteInstructions(length);
         }
 
         Result whenExecuteInstructions(int count) {
