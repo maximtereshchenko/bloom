@@ -1,13 +1,21 @@
-package com.github.maximtereshchenko.bloom;
+package com.github.maximtereshchenko.bloom.application;
 
 import com.github.maximtereshchenko.bloom.api.Display;
+import java.io.IOException;
+import java.io.Writer;
 
-final class FakeDisplay implements Display {
+final class WriterDisplay implements Display {
 
     static final int WIDTH = 64;
     static final int HEIGHT = 32;
 
+    private final Writer writer;
     private final byte[][] pixels = new byte[HEIGHT][WIDTH];
+    private boolean isEmpty = true;
+
+    WriterDisplay(Writer writer) {
+        this.writer = writer;
+    }
 
     @Override
     public int width() {
@@ -39,6 +47,21 @@ final class FakeDisplay implements Display {
             }
             builder.append(System.lineSeparator());
         }
-        return builder.toString();
+        return builder.substring(0, builder.length() - 1);
+    }
+
+    void draw() throws IOException {
+        if (!isEmpty) {
+            clear();
+        }
+        writer.write(toString());
+        isEmpty = false;
+    }
+
+    /**
+     * Clear entire line. Cursor position does not change.
+     */
+    private void clear() throws IOException {
+        writer.write("\033[2K".repeat(HEIGHT));
     }
 }

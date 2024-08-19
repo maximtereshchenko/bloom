@@ -1,4 +1,4 @@
-package com.github.maximtereshchenko.bloom;
+package com.github.maximtereshchenko.bloom.application;
 
 final class Jump {
 

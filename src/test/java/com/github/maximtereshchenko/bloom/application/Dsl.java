@@ -1,20 +1,24 @@
-package com.github.maximtereshchenko.bloom;
+package com.github.maximtereshchenko.bloom.application;
 
 import static org.approvaltests.Approvals.verify;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
-import com.github.maximtereshchenko.bloom.api.Display;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import org.approvaltests.core.Options;
 import org.approvaltests.reporters.Junit5Reporter;
 
 final class Dsl {
 
     Execution givenProgram(Object... bytes) {
-        var display = new FakeDisplay();
+        var writer = new StringWriter();
+        var display = new WriterDisplay(writer);
         return new Execution(
             new BloomFacade(program(bytes), display),
             display,
+            writer,
             bytes.length
         );
     }
@@ -36,37 +40,40 @@ final class Dsl {
     static final class Execution {
 
         private final BloomModule module;
-        private final Display display;
+        private final WriterDisplay display;
+        private final Writer writer;
         private final int length;
 
-        private Execution(BloomModule module, Display display, int length) {
+        private Execution(BloomModule module, WriterDisplay display, Writer writer, int length) {
             this.module = module;
             this.display = display;
+            this.writer = writer;
             this.length = length;
         }
 
-        Result whenExecuteAllInstructions() {
+        Result whenExecuteAllInstructions() throws IOException {
             return whenExecuteInstructions(length);
         }
 
-        Result whenExecuteInstructions(int count) {
+        Result whenExecuteInstructions(int count) throws IOException {
             for (var i = 0; i < count; i++) {
                 module.executeNextInstruction();
             }
-            return new Result(display);
+            display.draw();
+            return new Result(writer);
         }
     }
 
     static final class Result {
 
-        private final Display display;
+        private final Writer writer;
         private final Options options = new Options()
             .withReporter(new Junit5Reporter())
             .forFile()
             .withNamer(new ResourcesNamer());
 
-        private Result(Display display) {
-            this.display = display;
+        private Result(Writer writer) {
+            this.writer = writer;
         }
 
         void thenOutputMatchesExpectation() {
@@ -86,7 +93,7 @@ final class Dsl {
         }
 
         private void thenOutputMatchesExpectation(Options options) {
-            verify(display, options);
+            verify(writer, options);
         }
     }
 }
