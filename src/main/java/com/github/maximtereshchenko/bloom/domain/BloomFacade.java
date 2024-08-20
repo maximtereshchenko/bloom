@@ -1,20 +1,19 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
-import com.github.maximtereshchenko.bloom.api.Display;
 import java.util.Set;
 
 public final class BloomFacade implements BloomModule {
 
-    private final Registers registers;
     private final RandomAccessMemory randomAccessMemory;
+    private final Registers registers;
     private final Display display;
     private final Set<OperationFactory> operationFactories;
 
-    public BloomFacade(byte[] program, Display display) {
-        this.registers = new Registers();
+    public BloomFacade(byte[] program) {
         this.randomAccessMemory = RandomAccessMemory.withProgram(program);
-        this.display = display;
+        this.registers = new Registers();
+        this.display = new Display();
         this.operationFactories = Set.of(
             new SetFontCharacterOperationFactory(),
             new DisplayOperationFactory(),
@@ -37,6 +36,11 @@ public final class BloomFacade implements BloomModule {
             }
         }
         throw new IllegalArgumentException(operationCode.toString());
+    }
+
+    @Override
+    public boolean[][] displayMask() {
+        return display.mask();
     }
 
     private OperationCode operationCode() {

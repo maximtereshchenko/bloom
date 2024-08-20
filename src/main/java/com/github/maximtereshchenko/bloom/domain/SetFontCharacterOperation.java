@@ -1,7 +1,5 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-import com.github.maximtereshchenko.bloom.api.Display;
-
 /**
  * The index register I is set to the address of the hexadecimal character in VX.
  */

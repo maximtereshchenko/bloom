@@ -1,7 +1,5 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-import com.github.maximtereshchenko.bloom.api.Display;
-
 /**
  * Add the value NN to VX.
  */

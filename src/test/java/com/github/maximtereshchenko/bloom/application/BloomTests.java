@@ -1,6 +1,5 @@
 package com.github.maximtereshchenko.bloom.application;
 
-import java.io.IOException;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -10,16 +9,16 @@ import org.junit.jupiter.params.provider.ValueSource;
 final class BloomTests {
 
     static IntStream widthIndexes() {
-        return IntStream.rangeClosed(0, WriterDisplay.WIDTH);
+        return IntStream.rangeClosed(0, 64);
     }
 
     static IntStream heightIndexes() {
-        return IntStream.rangeClosed(0, WriterDisplay.HEIGHT);
+        return IntStream.rangeClosed(0, 32);
     }
 
     @ParameterizedTest
     @ValueSource(chars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'})
-    void givenDisplayFontCharacter_thenCharacterDisplayed(char character) throws IOException {
+    void givenDisplayFontCharacter_thenCharacterDisplayed(char character) {
         new Dsl()
             .givenProgram(
                 new SetRegisterValue('1', "0" + character),
@@ -31,7 +30,7 @@ final class BloomTests {
     }
 
     @Test
-    void givenDisplaySamePixelsTwice_thenEmptyDisplay() throws IOException {
+    void givenDisplaySamePixelsTwice_thenEmptyDisplay() {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
@@ -44,7 +43,7 @@ final class BloomTests {
 
     @ParameterizedTest
     @MethodSource("heightIndexes")
-    void givenDisplayWithRowRegister_thenCharacterDisplayedStartingAtRow(int row) throws IOException {
+    void givenDisplayWithRowRegister_thenCharacterDisplayedStartingAtRow(int row) {
         new Dsl()
             .givenProgram(
                 new SetRegisterValue('0', "%02X".formatted(row)),
@@ -57,7 +56,7 @@ final class BloomTests {
 
     @ParameterizedTest
     @MethodSource("widthIndexes")
-    void givenDisplayWithColumnRegister_thenCharacterDisplayedStartingAtColumn(int column) throws IOException {
+    void givenDisplayWithColumnRegister_thenCharacterDisplayedStartingAtColumn(int column) {
         new Dsl()
             .givenProgram(
                 new SetRegisterValue('0', "%02X".formatted(column)),
@@ -69,7 +68,7 @@ final class BloomTests {
     }
 
     @Test
-    void givenPixelDisabledDuringDisplay_thenFlagRegisterSetToOne() throws IOException {
+    void givenPixelDisabledDuringDisplay_thenFlagRegisterSetToOne() {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
@@ -82,7 +81,7 @@ final class BloomTests {
     }
 
     @Test
-    void givenClearDisplay_thenEmptyDisplay() throws IOException {
+    void givenClearDisplay_thenEmptyDisplay() {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
@@ -94,7 +93,7 @@ final class BloomTests {
     }
 
     @Test
-    void givenJumpForward_thenInstructionSkipped() throws IOException {
+    void givenJumpForward_thenInstructionSkipped() {
         new Dsl()
             .givenProgram(
                 new SetRegisterValue('1', "01"),
@@ -108,7 +107,7 @@ final class BloomTests {
     }
 
     @Test
-    void givenAddValueToRegister_thenRegisterHasSum() throws IOException {
+    void givenAddValueToRegister_thenRegisterHasSum() {
         new Dsl()
             .givenProgram(
                 new SetRegisterValue('0', "01"),
@@ -121,7 +120,7 @@ final class BloomTests {
     }
 
     @Test
-    void givenSetIndexRegisterValue_thenValueFromMemoryAddressDisplayed() throws IOException {
+    void givenSetIndexRegisterValue_thenValueFromMemoryAddressDisplayed() {
         new Dsl()
             .givenProgram(
                 new SetIndexRegisterValue(new MemoryAddress(2)),
