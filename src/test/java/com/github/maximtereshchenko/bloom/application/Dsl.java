@@ -15,7 +15,7 @@ import org.approvaltests.strings.Printable;
 
 final class Dsl {
 
-    Execution givenProgram(String name, int count) throws URISyntaxException, IOException {
+    Execution givenProgram(String name) throws URISyntaxException, IOException {
         var bytes = Files.readAllBytes(
             Path.of(
                 Objects.requireNonNull(
@@ -26,15 +26,15 @@ final class Dsl {
                     .toURI()
             )
         );
-        return givenProgram(bytes, count);
+        return givenProgram(bytes, bytes.length / 2);
     }
 
     Execution givenProgram(Object... hexadecimalBytes) {
         return givenProgram(bytes(hexadecimalBytes), hexadecimalBytes.length);
     }
 
-    private Execution givenProgram(byte[] bytes, int count) {
-        return new Execution(new BloomFacade(bytes), count);
+    private Execution givenProgram(byte[] bytes, int approximateInstructionCount) {
+        return new Execution(new BloomFacade(bytes), approximateInstructionCount);
     }
 
     private byte[] bytes(Object... hexadecimalBytes) {
@@ -54,15 +54,15 @@ final class Dsl {
     static final class Execution {
 
         private final BloomModule module;
-        private final int count;
+        private final int approximateInstructionCount;
 
-        private Execution(BloomModule module, int count) {
+        private Execution(BloomModule module, int approximateInstructionCount) {
             this.module = module;
-            this.count = count;
+            this.approximateInstructionCount = approximateInstructionCount;
         }
 
         Result whenExecuteAllInstructions() {
-            return whenExecuteInstructions(count);
+            return whenExecuteInstructions(approximateInstructionCount);
         }
 
         Result whenExecuteInstructions(int count) {

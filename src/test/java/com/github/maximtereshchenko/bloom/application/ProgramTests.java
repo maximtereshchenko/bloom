@@ -9,8 +9,8 @@ final class ProgramTests {
     @Test
     void givenSetIndexRegisterValue_thenValueFromMemoryAddressDisplayed() throws URISyntaxException, IOException {
         new Dsl()
-            .givenProgram("ibm-logo.ch8", 100)
-            .whenExecuteAllInstructions()
+            .givenProgram("ibm-logo.ch8")
+            .whenExecuteInstructions(40)
             .thenOutputMatchesExpectation();
     }
 }
