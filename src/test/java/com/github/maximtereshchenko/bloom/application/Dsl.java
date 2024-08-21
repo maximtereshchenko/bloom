@@ -4,20 +4,43 @@ import static org.approvaltests.Approvals.verify;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Objects;
 import org.approvaltests.core.Options;
 import org.approvaltests.reporters.Junit5Reporter;
 import org.approvaltests.strings.Printable;
 
 final class Dsl {
 
-    Execution givenProgram(Object... bytes) {
-        return new Execution(new BloomFacade(program(bytes)), bytes.length);
+    Execution givenProgram(String name, int count) throws URISyntaxException, IOException {
+        var bytes = Files.readAllBytes(
+            Path.of(
+                Objects.requireNonNull(
+                        Thread.currentThread()
+                            .getContextClassLoader()
+                            .getResource(name)
+                    )
+                    .toURI()
+            )
+        );
+        return givenProgram(bytes, count);
     }
 
-    private byte[] program(Object... bytes) {
-        var program = new byte[bytes.length * 2];
+    Execution givenProgram(Object... hexadecimalBytes) {
+        return givenProgram(bytes(hexadecimalBytes), hexadecimalBytes.length);
+    }
+
+    private Execution givenProgram(byte[] bytes, int count) {
+        return new Execution(new BloomFacade(bytes), count);
+    }
+
+    private byte[] bytes(Object... hexadecimalBytes) {
+        var program = new byte[hexadecimalBytes.length * 2];
         for (var i = 0; i < program.length; i += 2) {
-            var hexadecimal = bytes[i / 2].toString();
+            var hexadecimal = hexadecimalBytes[i / 2].toString();
             program[i] = toByte(hexadecimal.substring(0, 2));
             program[i + 1] = toByte(hexadecimal.substring(2));
         }
@@ -31,15 +54,15 @@ final class Dsl {
     static final class Execution {
 
         private final BloomModule module;
-        private final int length;
+        private final int count;
 
-        private Execution(BloomModule module, int length) {
+        private Execution(BloomModule module, int count) {
             this.module = module;
-            this.length = length;
+            this.count = count;
         }
 
         Result whenExecuteAllInstructions() {
-            return whenExecuteInstructions(length);
+            return whenExecuteInstructions(count);
         }
 
         Result whenExecuteInstructions(int count) {

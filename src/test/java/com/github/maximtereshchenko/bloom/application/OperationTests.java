@@ -48,7 +48,7 @@ final class OperationTests {
             .givenProgram(
                 new SetRegisterValue('0', "%02X".formatted(row)),
                 new SetFontCharacter('1'),
-                new Display('0', '1', 5)
+                new Display('1', '0', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation(row);
@@ -61,7 +61,7 @@ final class OperationTests {
             .givenProgram(
                 new SetRegisterValue('0', "%02X".formatted(column)),
                 new SetFontCharacter('1'),
-                new Display('1', '0', 5)
+                new Display('0', '1', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation(column);

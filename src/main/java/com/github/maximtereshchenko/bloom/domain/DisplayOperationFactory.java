@@ -10,8 +10,8 @@ final class DisplayOperationFactory implements OperationFactory {
     @Override
     public Operation operation(OperationCode operationCode) {
         return new DisplayOperation(
-            operationCode.nibble(1),
             operationCode.nibble(2),
+            operationCode.nibble(1),
             operationCode.nibble(3).numericValue()
         );
     }
