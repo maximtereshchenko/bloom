@@ -15,9 +15,9 @@ final class SkipIfRegisterValueNotEqualOperation implements Operation {
 
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
-        if (!registers.generalPurpose(registerName).value().equals(value)) {
+        if (!registers.generalPurpose(registerName).get().equals(value)) {
             var programCounter = registers.programCounter();
-            programCounter.set(programCounter.value().next().next());
+            programCounter.set(programCounter.get().next().next());
         }
     }
 }

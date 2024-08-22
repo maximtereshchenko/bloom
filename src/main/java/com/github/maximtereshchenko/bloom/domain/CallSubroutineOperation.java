@@ -15,7 +15,7 @@ final class CallSubroutineOperation implements Operation {
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
         var programCounter = registers.programCounter();
-        stack.push(programCounter.value());
+        stack.push(programCounter.get());
         programCounter.set(memoryAddress);
     }
 }

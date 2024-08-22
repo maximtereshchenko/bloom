@@ -2,7 +2,7 @@ package com.github.maximtereshchenko.bloom.domain;
 
 interface Register<T> {
 
-    T value();
+    T get();
 
     void set(T value);
 }

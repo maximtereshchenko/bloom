@@ -12,7 +12,7 @@ final class MemoryAddress {
         return new MemoryAddress((short) value);
     }
 
-    short value() {
+    short primitive() {
         return value;
     }
 

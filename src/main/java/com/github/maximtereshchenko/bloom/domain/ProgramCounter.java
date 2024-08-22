@@ -7,7 +7,7 @@ final class ProgramCounter implements Register<MemoryAddress> {
     private MemoryAddress memoryAddress = INITIAL;
 
     @Override
-    public MemoryAddress value() {
+    public MemoryAddress get() {
         return memoryAddress;
     }
 

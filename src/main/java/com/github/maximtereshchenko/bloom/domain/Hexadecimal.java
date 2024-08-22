@@ -23,7 +23,7 @@ final class Hexadecimal {
     @Override
     public String toString() {
         return symbols.stream()
-            .map(HexadecimalSymbol::value)
+            .map(HexadecimalSymbol::primitive)
             .map(String::valueOf)
             .collect(Collectors.joining());
     }

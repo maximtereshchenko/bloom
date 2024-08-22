@@ -38,7 +38,7 @@ final class Byte {
         return Objects.hash(value);
     }
 
-    byte value() {
+    byte primitive() {
         return value;
     }
 
@@ -55,6 +55,6 @@ final class Byte {
     }
 
     Byte sum(Byte other) {
-        return Byte.from(value + other.value());
+        return Byte.from(value + other.primitive());
     }
 }

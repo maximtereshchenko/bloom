@@ -17,11 +17,11 @@ final class SkipIfRegisterValuesEqualOperation implements Operation {
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
         if (value(registers, firstRegisterName).equals(value(registers, secondRegisterName))) {
             var programCounter = registers.programCounter();
-            programCounter.set(programCounter.value().next().next());
+            programCounter.set(programCounter.get().next().next());
         }
     }
 
     private Byte value(Registers registers, HexadecimalSymbol registerName) {
-        return registers.generalPurpose(registerName).value();
+        return registers.generalPurpose(registerName).get();
     }
 }

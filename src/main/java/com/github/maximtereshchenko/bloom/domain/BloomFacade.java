@@ -52,7 +52,7 @@ public final class BloomFacade implements BloomModule {
     }
 
     private OperationCode operationCode() {
-        var first = registers.programCounter().value();
+        var first = registers.programCounter().get();
         var second = first.next();
         var operationCode = new OperationCode(randomAccessMemory.value(first), randomAccessMemory.value(second));
         registers.programCounter().set(second.next());

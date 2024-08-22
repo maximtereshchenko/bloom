@@ -17,7 +17,7 @@ final class SetFontCharacterOperation implements Operation {
             .set(
                 randomAccessMemory.fontCharacterAddress(
                     registers.generalPurpose(registerName)
-                        .value()
+                        .get()
                         .hexadecimal()
                         .last()
                 )

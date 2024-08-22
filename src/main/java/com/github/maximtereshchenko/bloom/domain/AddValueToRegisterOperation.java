@@ -16,6 +16,6 @@ final class AddValueToRegisterOperation implements Operation {
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
         var register = registers.generalPurpose(registerName);
-        register.set(register.value().sum(value));
+        register.set(register.get().sum(value));
     }
 }

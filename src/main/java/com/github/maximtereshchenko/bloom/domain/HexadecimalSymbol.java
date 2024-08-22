@@ -23,12 +23,12 @@ enum HexadecimalSymbol {
 
     static HexadecimalSymbol from(char character) {
         return Stream.of(values())
-            .filter(symbol -> symbol.value() == character)
+            .filter(symbol -> symbol.primitive() == character)
             .findAny()
             .orElseThrow(() -> new IllegalArgumentException(String.valueOf(character)));
     }
 
-    char value() {
+    char primitive() {
         var ordinal = ordinal();
         if (ordinal <= 9) {
             return (char) ('0' + ordinal);
@@ -37,6 +37,6 @@ enum HexadecimalSymbol {
     }
 
     int numericValue() {
-        return Character.getNumericValue(value());
+        return Character.getNumericValue(primitive());
     }
 }

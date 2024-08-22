@@ -5,7 +5,7 @@ final class GeneralPurposeRegister implements Register<Byte> {
     private Byte value = new Byte();
 
     @Override
-    public Byte value() {
+    public Byte get() {
         return value;
     }
 

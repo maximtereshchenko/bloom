@@ -23,10 +23,10 @@ final class DisplayOperation implements Operation {
 
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
-        var memoryAddress = registers.index().value();
+        var memoryAddress = registers.index().get();
         var flagRegister = registers.flagRegister();
-        var startRow = registers.generalPurpose(startRowRegister).value().value() % Display.HEIGHT;
-        var startColumn = registers.generalPurpose(startColumnRegister).value().value() % Display.WIDTH;
+        var startRow = registers.generalPurpose(startRowRegister).get().primitive() % Display.HEIGHT;
+        var startColumn = registers.generalPurpose(startColumnRegister).get().primitive() % Display.WIDTH;
         flagRegister.disable();
         for (var row = startRow; row < startRow + rows; row++, memoryAddress = memoryAddress.next()) {
             displayRow(display, randomAccessMemory.value(memoryAddress), row, startColumn, flagRegister);

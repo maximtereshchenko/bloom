@@ -5,7 +5,7 @@ final class Index implements Register<MemoryAddress> {
     private MemoryAddress memoryAddress = MemoryAddress.from(0);
 
     @Override
-    public MemoryAddress value() {
+    public MemoryAddress get() {
         return memoryAddress;
     }
 

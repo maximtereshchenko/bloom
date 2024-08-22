@@ -12,9 +12,9 @@ final class RandomAccessMemory {
     static RandomAccessMemory withProgram(byte[] program) {
         var array = new Byte[4096];
         var fontBits = new Font().bytes();
-        System.arraycopy(fontBits, 0, array, FONT_MEMORY_ADDRESS.value(), fontBits.length);
+        System.arraycopy(fontBits, 0, array, FONT_MEMORY_ADDRESS.primitive(), fontBits.length);
         for (int i = 0; i < program.length; i++) {
-            array[ProgramCounter.INITIAL.value() + i] = Byte.from(program[i]);
+            array[ProgramCounter.INITIAL.primitive() + i] = Byte.from(program[i]);
         }
         return new RandomAccessMemory(array);
     }
@@ -24,6 +24,6 @@ final class RandomAccessMemory {
     }
 
     Byte value(MemoryAddress memoryAddress) {
-        return bytes[memoryAddress.value()];
+        return bytes[memoryAddress.primitive()];
     }
 }
