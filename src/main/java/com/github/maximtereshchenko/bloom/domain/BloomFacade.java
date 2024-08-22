@@ -25,7 +25,8 @@ public final class BloomFacade implements BloomModule {
             new AddValueToRegisterOperationFactory(),
             new SetIndexRegisterValueOperationFactory(),
             new CallSubroutineOperationFactory(),
-            new ReturnFromSubroutineOperationFactory()
+            new ReturnFromSubroutineOperationFactory(),
+            new SkipIfRegisterValueEqualsOperationFactory()
         );
     }
 

@@ -1,5 +1,7 @@
 package com.github.maximtereshchenko.bloom.domain;
 
+import java.util.Objects;
+
 final class Byte {
 
     static final int LENGTH = 8;
@@ -20,6 +22,20 @@ final class Byte {
 
     static Byte from(String bits) {
         return new Byte((byte) Integer.parseInt(bits, 2));
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        return object instanceof Byte other &&
+            value == other.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 
     byte value() {
