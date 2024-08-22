@@ -65,4 +65,8 @@ final class Byte {
     Byte and(Byte other) {
         return from(value & other.value);
     }
+
+    Byte xor(Byte other) {
+        return from(value ^ other.value);
+    }
 }

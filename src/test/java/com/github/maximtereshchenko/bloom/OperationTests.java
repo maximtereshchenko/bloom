@@ -225,4 +225,18 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenBinaryXor_thenRegisterHasExclusiveOrValue() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "01"),
+                new SetRegisterValue('1', "03"),
+                new BinaryXor('0', '1'),
+                new SetFontCharacter('0'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }
