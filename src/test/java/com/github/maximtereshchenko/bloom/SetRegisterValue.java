@@ -1,4 +1,4 @@
-package com.github.maximtereshchenko.bloom.application;
+package com.github.maximtereshchenko.bloom;
 
 final class SetRegisterValue {
 

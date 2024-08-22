@@ -1,4 +1,4 @@
-package com.github.maximtereshchenko.bloom.application;
+package com.github.maximtereshchenko.bloom;
 
 import static org.approvaltests.Approvals.verify;
 
@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import org.approvaltests.core.Options;
-import org.approvaltests.reporters.Junit5Reporter;
 import org.approvaltests.strings.Printable;
 
 final class Dsl {
@@ -76,17 +75,13 @@ final class Dsl {
     static final class Result {
 
         private final BloomModule module;
-        private final Options options = new Options()
-            .withReporter(new Junit5Reporter())
-            .forFile()
-            .withNamer(new ResourcesNamer());
 
         private Result(BloomModule module) {
             this.module = module;
         }
 
         void thenOutputMatchesExpectation() {
-            thenOutputMatchesExpectation(options);
+            thenOutputMatchesExpectation(ApprovalsOptions.defaultConfiguration());
         }
 
         void thenOutputMatchesExpectation(char parameter) {
@@ -98,7 +93,7 @@ final class Dsl {
         }
 
         private void thenOutputMatchesExpectation(String parameter) {
-            thenOutputMatchesExpectation(options.forFile().withAdditionalInformation(parameter));
+            thenOutputMatchesExpectation(ApprovalsOptions.withParameter(parameter));
         }
 
         private void thenOutputMatchesExpectation(Options options) {

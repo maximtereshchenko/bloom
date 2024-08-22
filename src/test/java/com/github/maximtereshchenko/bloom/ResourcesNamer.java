@@ -1,4 +1,4 @@
-package com.github.maximtereshchenko.bloom.application;
+package com.github.maximtereshchenko.bloom;
 
 import java.io.File;
 import java.nio.file.Paths;

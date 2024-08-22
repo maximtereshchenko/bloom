@@ -1,4 +1,4 @@
-package com.github.maximtereshchenko.bloom.application;
+package com.github.maximtereshchenko.bloom;
 
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Test;
