@@ -14,7 +14,7 @@ final class SetRegisterValueOperation implements Operation {
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Display display) {
+    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
         registers.generalPurpose(registerName).set(value);
     }
 }

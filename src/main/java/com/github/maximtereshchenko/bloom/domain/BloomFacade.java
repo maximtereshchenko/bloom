@@ -7,12 +7,14 @@ public final class BloomFacade implements BloomModule {
 
     private final RandomAccessMemory randomAccessMemory;
     private final Registers registers;
+    private final Stack stack;
     private final Display display;
     private final Set<OperationFactory> operationFactories;
 
     public BloomFacade(byte[] program) {
         this.randomAccessMemory = RandomAccessMemory.withProgram(program);
         this.registers = new Registers();
+        this.stack = new Stack();
         this.display = new Display();
         this.operationFactories = Set.of(
             new SetFontCharacterOperationFactory(),
@@ -21,7 +23,9 @@ public final class BloomFacade implements BloomModule {
             new ClearDisplayOperationFactory(),
             new JumpOperationFactory(),
             new AddValueToRegisterOperationFactory(),
-            new SetIndexRegisterValueOperationFactory()
+            new SetIndexRegisterValueOperationFactory(),
+            new CallSubroutineOperationFactory(),
+            new ReturnFromSubroutineOperationFactory()
         );
     }
 
@@ -31,7 +35,7 @@ public final class BloomFacade implements BloomModule {
         for (var operationFactory : operationFactories) {
             if (operationFactory.supports(operationCode)) {
                 operationFactory.operation(operationCode)
-                    .execute(registers, randomAccessMemory, display);
+                    .execute(registers, randomAccessMemory, stack, display);
                 return;
             }
         }

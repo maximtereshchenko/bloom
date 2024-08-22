@@ -12,7 +12,7 @@ final class JumpOperation implements Operation {
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Display display) {
+    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
         registers.programCounter().set(memoryAddress);
     }
 }

@@ -130,4 +130,17 @@ final class OperationTests {
             .whenExecuteInstructions(2)
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenSubroutine_thenSubroutineExecuted() {
+        new Dsl()
+            .givenProgram(
+                new CallSubroutine(new MemoryAddress(2)),
+                new Display('0', '0', 5),
+                new SetFontCharacter('0'),
+                new ReturnFromSubroutine()
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }
