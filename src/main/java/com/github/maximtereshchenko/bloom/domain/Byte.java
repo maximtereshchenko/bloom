@@ -61,4 +61,8 @@ final class Byte {
     Byte or(Byte other) {
         return from(value | other.value);
     }
+
+    Byte and(Byte other) {
+        return from(value & other.value);
+    }
 }

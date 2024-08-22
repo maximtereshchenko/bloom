@@ -205,8 +205,22 @@ final class OperationTests {
                 new SetRegisterValue('0', "01"),
                 new SetRegisterValue('1', "02"),
                 new BinaryOr('0', '1'),
-                new SetFontCharacter('2'),
-                new Display('0', '0', 5)
+                new SetFontCharacter('0'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenBinaryAnd_thenRegisterHasConjunctionValue() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "01"),
+                new SetRegisterValue('1', "03"),
+                new BinaryAnd('0', '1'),
+                new SetFontCharacter('0'),
+                new Display('2', '2', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();

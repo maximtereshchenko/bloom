@@ -22,6 +22,9 @@ final class RegisterOperationFactory implements OperationFactory {
         if (first == HexadecimalSymbol.EIGHT && last == HexadecimalSymbol.ONE) {
             return binaryOr(middleLeft, middleRight);
         }
+        if (first == HexadecimalSymbol.EIGHT && last == HexadecimalSymbol.TWO) {
+            return binaryAnd(middleLeft, middleRight);
+        }
         return Optional.empty();
     }
 
@@ -46,6 +49,14 @@ final class RegisterOperationFactory implements OperationFactory {
             firstRegisterName,
             secondRegisterName,
             (first, second) -> first.set(first.get().or(second.get()))
+        ));
+    }
+
+    private Optional<Operation> binaryAnd(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+        return Optional.of(new RegisterOperation(
+            firstRegisterName,
+            secondRegisterName,
+            (first, second) -> first.set(first.get().and(second.get()))
         ));
     }
 }
