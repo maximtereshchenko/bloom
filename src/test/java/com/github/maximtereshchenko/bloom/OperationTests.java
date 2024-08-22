@@ -184,4 +184,17 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenCopyRegisterValue_thenRegisterHasSameValue() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "01"),
+                new CopyRegisterValue('0', '1'),
+                new SetFontCharacter('1'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }
