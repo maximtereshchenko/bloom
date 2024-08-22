@@ -14,6 +14,6 @@ final class Display {
 
     @Override
     public String toString() {
-        return "D" + startRowRegister + startColumnRegister + rows;
+        return "D" + startColumnRegister + startRowRegister + rows;
     }
 }

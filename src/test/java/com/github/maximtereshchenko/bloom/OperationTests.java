@@ -58,7 +58,7 @@ final class OperationTests {
             .givenProgram(
                 new SetRegisterValue('0', "%02X".formatted(row)),
                 new SetFontCharacter('1'),
-                new Display('1', '0', 5)
+                new Display('0', '1', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation(row);
@@ -71,7 +71,7 @@ final class OperationTests {
             .givenProgram(
                 new SetRegisterValue('0', "%02X".formatted(column)),
                 new SetFontCharacter('1'),
-                new Display('0', '1', 5)
+                new Display('1', '0', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation(column);
@@ -193,6 +193,20 @@ final class OperationTests {
                 new CopyRegisterValue('0', '1'),
                 new SetFontCharacter('1'),
                 new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenBinaryOr_thenRegisterHasDisjunctionValue() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "01"),
+                new SetRegisterValue('1', "02"),
+                new BinaryOr('0', '1'),
+                new SetFontCharacter('2'),
+                new Display('0', '0', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
