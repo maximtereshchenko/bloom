@@ -145,7 +145,7 @@ final class OperationTests {
     }
 
     @Test
-    void givenSkipIfRegisterEquals_thenNextInstructionSkipped() {
+    void givenSkipIfRegisterValueEquals_thenNextInstructionSkipped() {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
@@ -159,12 +159,40 @@ final class OperationTests {
     }
 
     @Test
-    void givenSkipIfRegisterEquals_thenNextInstructionNotSkipped() {
+    void givenSkipIfRegisterValueEquals_thenNextInstructionNotSkipped() {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
                 new SetRegisterValue('1', "01"),
                 new SkipIfRegisterValueEquals('0', "01"),
+                new SetFontCharacter('1'),
+                new Display('0', '0', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSkipIfRegisterValueNotEqual_thenNextInstructionSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new SetRegisterValue('1', "01"),
+                new SkipIfRegisterValueNotEqual('0', "01"),
+                new SetFontCharacter('1'),//should be skipped
+                new Display('0', '0', 5)
+            )
+            .whenExecuteInstructions(4)
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSkipIfRegisterValueNotEqual_thenNextInstructionNotSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new SetRegisterValue('1', "01"),
+                new SkipIfRegisterValueNotEqual('0', "00"),
                 new SetFontCharacter('1'),
                 new Display('0', '0', 5)
             )
