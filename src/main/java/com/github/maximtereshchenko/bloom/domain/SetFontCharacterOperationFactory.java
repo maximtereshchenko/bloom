@@ -1,16 +1,16 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class SetFontCharacterOperationFactory implements OperationFactory {
+final class SetFontCharacterOperationFactory extends SimpleOperationFactory {
 
     @Override
-    public boolean supports(OperationCode operationCode) {
+    boolean supports(OperationCode operationCode) {
         return operationCode.nibble(0) == HexadecimalSymbol.F &&
             operationCode.nibble(2) == HexadecimalSymbol.TWO
             && operationCode.nibble(3) == HexadecimalSymbol.NINE;
     }
 
     @Override
-    public Operation operation(OperationCode operationCode) {
+    Operation supportedOperation(OperationCode operationCode) {
         return new SetFontCharacterOperation(operationCode.nibble(1));
     }
 }

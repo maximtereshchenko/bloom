@@ -1,9 +1,9 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class ClearDisplayOperationFactory implements OperationFactory {
+final class ClearDisplayOperationFactory extends SimpleOperationFactory {
 
     @Override
-    public boolean supports(OperationCode operationCode) {
+    boolean supports(OperationCode operationCode) {
         return operationCode.nibble(0) == HexadecimalSymbol.ZERO &&
             operationCode.nibble(1) == HexadecimalSymbol.ZERO &&
             operationCode.nibble(2) == HexadecimalSymbol.E &&
@@ -11,7 +11,7 @@ final class ClearDisplayOperationFactory implements OperationFactory {
     }
 
     @Override
-    public Operation operation(OperationCode operationCode) {
+    Operation supportedOperation(OperationCode operationCode) {
         return new ClearDisplayOperation();
     }
 }

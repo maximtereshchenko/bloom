@@ -1,14 +1,14 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class CallSubroutineOperationFactory implements OperationFactory {
+final class CallSubroutineOperationFactory extends SimpleOperationFactory {
 
     @Override
-    public boolean supports(OperationCode operationCode) {
+    boolean supports(OperationCode operationCode) {
         return operationCode.nibble(0) == HexadecimalSymbol.TWO;
     }
 
     @Override
-    public Operation operation(OperationCode operationCode) {
+    Operation supportedOperation(OperationCode operationCode) {
         return new CallSubroutineOperation(
             new Hexadecimal(
                 operationCode.nibble(1),

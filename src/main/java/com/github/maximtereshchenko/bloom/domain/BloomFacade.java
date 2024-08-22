@@ -1,6 +1,7 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
+import java.util.Optional;
 import java.util.Set;
 
 public final class BloomFacade implements BloomModule {
@@ -36,14 +37,12 @@ public final class BloomFacade implements BloomModule {
     @Override
     public void executeNextInstruction() {
         var operationCode = operationCode();
-        for (var operationFactory : operationFactories) {
-            if (operationFactory.supports(operationCode)) {
-                operationFactory.operation(operationCode)
-                    .execute(registers, randomAccessMemory, stack, display);
-                return;
-            }
-        }
-        throw new IllegalArgumentException(operationCode.toString());
+        operationFactories.stream()
+            .map(operationFactory -> operationFactory.operation(operationCode))
+            .flatMap(Optional::stream)
+            .findAny()
+            .orElseThrow(() -> new IllegalArgumentException(operationCode.toString()))
+            .execute(registers, randomAccessMemory, stack, display);
     }
 
     @Override

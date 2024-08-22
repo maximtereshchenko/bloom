@@ -1,14 +1,14 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class SetIndexRegisterValueOperationFactory implements OperationFactory {
+final class SetIndexRegisterValueOperationFactory extends SimpleOperationFactory {
 
     @Override
-    public boolean supports(OperationCode operationCode) {
+    boolean supports(OperationCode operationCode) {
         return operationCode.nibble(0) == HexadecimalSymbol.A;
     }
 
     @Override
-    public Operation operation(OperationCode operationCode) {
+    Operation supportedOperation(OperationCode operationCode) {
         return new SetIndexRegisterValueOperation(
             new Hexadecimal(
                 operationCode.nibble(1),
