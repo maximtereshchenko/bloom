@@ -31,17 +31,12 @@ final class ApplicationTests {
                     .toURI()
             )
         );
-        var eraseInLineSequence = "\033[2k".repeat(33);
         Approvals.settings().allowMultipleVerifyCallsForThisMethod();
         application.start();
 
         await().atMost(Duration.ofSeconds(3)).untilAsserted(() -> {
             var output = outputStream.toString(StandardCharsets.UTF_8);
-            var trimmed = output.substring(0, output.lastIndexOf(eraseInLineSequence));
-            verify(
-                trimmed.substring(trimmed.lastIndexOf(eraseInLineSequence)),
-                ApprovalsOptions.defaultConfiguration()
-            );
+            verify(output.substring(output.lastIndexOf("\033[34F")), ApprovalsOptions.defaultConfiguration());
         });
         application.stop();
     }

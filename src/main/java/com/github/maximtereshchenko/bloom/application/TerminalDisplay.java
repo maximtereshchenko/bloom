@@ -2,16 +2,17 @@ package com.github.maximtereshchenko.bloom.application;
 
 import com.github.maximtereshchenko.bloom.api.DisplayMaskUseCase;
 import java.io.PrintStream;
+import java.util.Arrays;
 
 final class TerminalDisplay {
 
-    private static final String ERASE_LINE = "\033[2k";
+    private static final String MOVE_CURSOR_34_LINES_UP = "\033[34F";
     private static final String BLACK_BACKGROUND = "\033[48;5;0m";
     private static final String WHITE_BACKGROUND = "\033[48;5;7m";
 
     private final PrintStream printStream;
     private final DisplayMaskUseCase useCase;
-    private boolean isOutputEmpty = true;
+    private boolean[][] previousDisplayMask = new boolean[0][0];
 
     TerminalDisplay(PrintStream printStream, DisplayMaskUseCase useCase) {
         this.printStream = printStream;
@@ -20,15 +21,14 @@ final class TerminalDisplay {
 
     void draw() {
         var displayMask = useCase.displayMask();
-        if (!isOutputEmpty) {
-            erase(displayMask.length);
+        if (Arrays.deepEquals(displayMask, previousDisplayMask)) {
+            return;
+        }
+        if (previousDisplayMask.length != 0) {
+            printStream.print(MOVE_CURSOR_34_LINES_UP);
         }
         print(displayMask);
-        isOutputEmpty = false;
-    }
-
-    private void erase(int height) {
-        printStream.print(ERASE_LINE.repeat(height + 1));
+        previousDisplayMask = displayMask;
     }
 
     private void print(boolean[][] displayMask) {

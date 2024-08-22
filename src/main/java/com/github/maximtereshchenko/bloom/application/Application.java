@@ -27,18 +27,8 @@ final class Application {
     }
 
     void start() {
-        executorService.scheduleAtFixedRate(
-            useCase::executeNextInstruction,
-            0,
-            TimeUnit.SECONDS.toMicros(1) / 60,
-            TimeUnit.MICROSECONDS
-        );
-        executorService.scheduleAtFixedRate(
-            display::draw,
-            0,
-            TimeUnit.SECONDS.toMicros(1) / 60,
-            TimeUnit.MICROSECONDS
-        );
+        runAtFrequency(useCase::executeNextInstruction, 700);
+        runAtFrequency(display::draw, 60);
     }
 
     void stop() throws InterruptedException {
@@ -46,5 +36,14 @@ final class Application {
         if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
             executorService.shutdownNow();
         }
+    }
+
+    private void runAtFrequency(Runnable runnable, int hertz) {
+        executorService.scheduleAtFixedRate(
+            runnable,
+            0,
+            TimeUnit.SECONDS.toMicros(1) / hertz,
+            TimeUnit.MICROSECONDS
+        );
     }
 }

@@ -16,6 +16,10 @@ final class Display {
     }
 
     boolean[][] mask() {
-        return pixels.clone();
+        var clone = pixels.clone();
+        for (int i = 0; i < clone.length; i++) {
+            clone[i] = pixels[i].clone();
+        }
+        return clone;
     }
 }
