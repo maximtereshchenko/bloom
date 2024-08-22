@@ -108,7 +108,7 @@ final class Dsl {
                 }
                 builder.append(System.lineSeparator());
             }
-            return builder.substring(0, builder.length() - 1);
+            return builder.toString();
         }
     }
 }

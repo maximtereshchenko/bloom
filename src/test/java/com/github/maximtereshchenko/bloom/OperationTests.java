@@ -1,6 +1,7 @@
 package com.github.maximtereshchenko.bloom;
 
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,6 +15,15 @@ final class OperationTests {
 
     static IntStream heightIndexes() {
         return IntStream.rangeClosed(0, 32);
+    }
+
+    static Stream<Object> skipConditionallyOperations() {
+        return Stream.of(
+            new SkipIfRegisterValueEquals('0', "00"),
+            new SkipIfRegisterValueNotEqual('0', "01"),
+            new SkipIfRegisterValuesEqual('0', '1'),
+            new SkipIfRegisterValuesNotEqual('0', '2')
+        );
     }
 
     @ParameterizedTest
@@ -93,7 +103,7 @@ final class OperationTests {
     }
 
     @Test
-    void givenJumpForward_thenInstructionSkipped() {
+    void givenJump_thenInstructionSkipped() {
         new Dsl()
             .givenProgram(
                 new SetRegisterValue('1', "01"),
@@ -144,113 +154,32 @@ final class OperationTests {
             .thenOutputMatchesExpectation();
     }
 
-    @Test
-    void givenSkipIfRegisterValueEquals_thenNextInstructionSkipped() {
+    @ParameterizedTest
+    @MethodSource("skipConditionallyOperations")
+    void givenSkipConditionally_thenNextInstructionSkipped(Object instruction) {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
-                new SetRegisterValue('1', "01"),
-                new SkipIfRegisterValueEquals('0', "00"),
-                new SetFontCharacter('1'),//should be skipped
+                new SetRegisterValue('2', "01"),
+                instruction,
+                new SetFontCharacter('2'),//should be skipped
                 new Display('0', '0', 5)
             )
             .whenExecuteInstructions(4)
             .thenOutputMatchesExpectation();
     }
 
-    @Test
-    void givenSkipIfRegisterValueEquals_thenNextInstructionNotSkipped() {
+    @ParameterizedTest
+    @MethodSource("skipConditionallyOperations")
+    void givenSkipConditionally_thenNextInstructionNotSkipped(Object instruction) {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
-                new SetRegisterValue('1', "01"),
-                new SkipIfRegisterValueEquals('0', "01"),
-                new SetFontCharacter('1'),
-                new Display('0', '0', 5)
-            )
-            .whenExecuteAllInstructions()
-            .thenOutputMatchesExpectation();
-    }
-
-    @Test
-    void givenSkipIfRegisterValueNotEqual_thenNextInstructionSkipped() {
-        new Dsl()
-            .givenProgram(
-                new SetFontCharacter('0'),
-                new SetRegisterValue('1', "01"),
-                new SkipIfRegisterValueNotEqual('0', "01"),
-                new SetFontCharacter('1'),//should be skipped
-                new Display('0', '0', 5)
-            )
-            .whenExecuteInstructions(4)
-            .thenOutputMatchesExpectation();
-    }
-
-    @Test
-    void givenSkipIfRegisterValueNotEqual_thenNextInstructionNotSkipped() {
-        new Dsl()
-            .givenProgram(
-                new SetFontCharacter('0'),
-                new SetRegisterValue('1', "01"),
-                new SkipIfRegisterValueNotEqual('0', "00"),
-                new SetFontCharacter('1'),
-                new Display('0', '0', 5)
-            )
-            .whenExecuteAllInstructions()
-            .thenOutputMatchesExpectation();
-    }
-
-    @Test
-    void givenSkipIfRegisterValuesEqual_thenNextInstructionSkipped() {
-        new Dsl()
-            .givenProgram(
-                new SetFontCharacter('0'),
-                new SetRegisterValue('1', "01"),
-                new SkipIfRegisterValuesEqual('0', '2'),
-                new SetFontCharacter('1'),//should be skipped
-                new Display('0', '0', 5)
-            )
-            .whenExecuteInstructions(4)
-            .thenOutputMatchesExpectation();
-    }
-
-    @Test
-    void givenSkipIfRegisterValuesEqual_thenNextInstructionNotSkipped() {
-        new Dsl()
-            .givenProgram(
-                new SetFontCharacter('0'),
-                new SetRegisterValue('1', "01"),
-                new SkipIfRegisterValuesEqual('0', '1'),
-                new SetFontCharacter('1'),
-                new Display('0', '0', 5)
-            )
-            .whenExecuteAllInstructions()
-            .thenOutputMatchesExpectation();
-    }
-
-    @Test
-    void givenSkipIfRegisterValuesNotEqual_thenNextInstructionSkipped() {
-        new Dsl()
-            .givenProgram(
-                new SetFontCharacter('0'),
-                new SetRegisterValue('1', "01"),
-                new SkipIfRegisterValuesNotEqual('0', '1'),
-                new SetFontCharacter('1'),//should be skipped
-                new Display('0', '0', 5)
-            )
-            .whenExecuteInstructions(4)
-            .thenOutputMatchesExpectation();
-    }
-
-    @Test
-    void givenSkipIfRegisterValuesNotEqual_thenNextInstructionNotSkipped() {
-        new Dsl()
-            .givenProgram(
-                new SetFontCharacter('0'),
-                new SetRegisterValue('1', "01"),
-                new SkipIfRegisterValuesNotEqual('0', '2'),
-                new SetFontCharacter('1'),
-                new Display('0', '0', 5)
+                new SetRegisterValue('2', "01"),
+                new SetRegisterValue('0', "01"),
+                instruction,
+                new SetFontCharacter('2'),
+                new Display('1', '1', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();

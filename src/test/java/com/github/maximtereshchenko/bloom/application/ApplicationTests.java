@@ -12,7 +12,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Objects;
-import org.approvaltests.Approvals;
 import org.junit.jupiter.api.Test;
 
 final class ApplicationTests {
@@ -31,7 +30,6 @@ final class ApplicationTests {
                     .toURI()
             )
         );
-        Approvals.settings().allowMultipleVerifyCallsForThisMethod();
         application.start();
 
         await().atMost(Duration.ofSeconds(3)).untilAsserted(() -> {
