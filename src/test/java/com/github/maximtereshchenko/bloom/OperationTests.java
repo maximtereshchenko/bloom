@@ -199,4 +199,32 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenSkipIfRegisterValuesEqual_thenNextInstructionSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new SetRegisterValue('1', "01"),
+                new SkipIfRegisterValuesEqual('0', '2'),
+                new SetFontCharacter('1'),//should be skipped
+                new Display('0', '0', 5)
+            )
+            .whenExecuteInstructions(4)
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSkipIfRegisterValuesEqual_thenNextInstructionNotSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new SetRegisterValue('1', "01"),
+                new SkipIfRegisterValuesEqual('0', '1'),
+                new SetFontCharacter('1'),
+                new Display('0', '0', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }
