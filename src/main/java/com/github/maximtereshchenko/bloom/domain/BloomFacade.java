@@ -20,16 +20,13 @@ public final class BloomFacade implements BloomModule {
         this.operationFactories = Set.of(
             new SetFontCharacterOperationFactory(),
             new DisplayOperationFactory(),
-            new SetRegisterValueOperationFactory(),
             new ClearDisplayOperationFactory(),
             new JumpOperationFactory(),
-            new AddValueToRegisterOperationFactory(),
             new SetIndexRegisterValueOperationFactory(),
             new CallSubroutineOperationFactory(),
             new ReturnFromSubroutineOperationFactory(),
             new SkipConditionallyOperationFactory(),
-            new CopyRegisterValueOperationFactory(),
-            new BinaryOrOperationFactory()
+            new RegisterOperationFactory()
         );
     }
 
