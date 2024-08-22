@@ -8,54 +8,62 @@ final class SkipConditionallyOperationFactory implements OperationFactory {
     @Override
     public Optional<Operation> operation(OperationCode operationCode) {
         var first = operationCode.nibble(0);
-        return skipConditionallyForSingleRegister(operationCode, first)
-            .or(() -> skipConditionallyForRegisters(operationCode, first));
+        var middleLeft = operationCode.nibble(1);
+        var middleRight = operationCode.nibble(2);
+        var last = operationCode.nibble(3);
+        return skipIfRegisterValues(first, middleLeft, middleRight, last)
+            .or(() -> skipIfSingleRegisterValue(first, middleLeft, middleRight, last));
     }
 
-    private Optional<Operation> skipConditionallyForRegisters(OperationCode operationCode, HexadecimalSymbol first) {
-        if (operationCode.nibble(3) != HexadecimalSymbol.ZERO) {
+    private Optional<Operation> skipIfRegisterValues(
+        HexadecimalSymbol first,
+        HexadecimalSymbol middleLeft,
+        HexadecimalSymbol middleRight,
+        HexadecimalSymbol last
+    ) {
+        if (last != HexadecimalSymbol.ZERO) {
             return Optional.empty();
         }
-        if (first == HexadecimalSymbol.FIVE) {
-            return skipConditionally(ifRegisterValuesEquals(operationCode));
-        }
-        if (first == HexadecimalSymbol.NINE) {
-            return skipConditionally(ifRegisterValuesEquals(operationCode).negate());
-        }
-        return Optional.empty();
+        return switch (first) {
+            case FIVE -> skipConditionally(ifRegisterValuesEquals(middleLeft, middleRight));
+            case NINE -> skipConditionally(ifRegisterValuesEquals(middleLeft, middleRight).negate());
+            default -> Optional.empty();
+        };
     }
 
-    private Optional<Operation> skipConditionallyForSingleRegister(
-        OperationCode operationCode,
-        HexadecimalSymbol firstNibble
+    private Optional<Operation> skipIfSingleRegisterValue(
+        HexadecimalSymbol first,
+        HexadecimalSymbol middleLeft,
+        HexadecimalSymbol middleRight,
+        HexadecimalSymbol last
     ) {
-        if (firstNibble == HexadecimalSymbol.THREE) {
-            return skipConditionally(ifSingleRegisterValueEquals(operationCode));
-        }
-        if (firstNibble == HexadecimalSymbol.FOUR) {
-            return skipConditionally(ifSingleRegisterValueEquals(operationCode).negate());
-        }
-        return Optional.empty();
+        return switch (first) {
+            case THREE -> skipConditionally(ifSingleRegisterValueEquals(middleLeft, middleRight, last));
+            case FOUR -> skipConditionally(ifSingleRegisterValueEquals(middleLeft, middleRight, last).negate());
+            default -> Optional.empty();
+        };
     }
 
     private Optional<Operation> skipConditionally(Predicate<Registers> predicate) {
         return Optional.of(new SkipConditionallyOperation(predicate));
     }
 
-    private Predicate<Registers> ifSingleRegisterValueEquals(OperationCode operationCode) {
-        return registers -> registerValue(registers, operationCode, 1)
-            .equals(
-                new Hexadecimal(operationCode.nibble(2), operationCode.nibble(3))
-                    .asByte()
-            );
+    private Predicate<Registers> ifSingleRegisterValueEquals(
+        HexadecimalSymbol registerName,
+        HexadecimalSymbol firstValueComponent,
+        HexadecimalSymbol secondValueComponent
+    ) {
+        return registers -> registers.generalPurpose(registerName)
+            .get()
+            .equals(new Hexadecimal(firstValueComponent, secondValueComponent).asByte());
     }
 
-    private Predicate<Registers> ifRegisterValuesEquals(OperationCode operationCode) {
-        return registers -> registerValue(registers, operationCode, 1)
-            .equals(registerValue(registers, operationCode, 2));
-    }
-
-    private Byte registerValue(Registers registers, OperationCode operationCode, int index) {
-        return registers.generalPurpose(operationCode.nibble(index)).get();
+    private Predicate<Registers> ifRegisterValuesEquals(
+        HexadecimalSymbol firstRegisterName,
+        HexadecimalSymbol secondRegisterName
+    ) {
+        return registers -> registers.generalPurpose(firstRegisterName)
+            .get()
+            .equals(registers.generalPurpose(secondRegisterName).get());
     }
 }
