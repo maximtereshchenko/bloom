@@ -10,13 +10,13 @@ final class RegisterOperationFactory implements OperationFactory {
             case SIX -> Optional.of(
                 new SetRegisterValueOperation(
                     operationCode.middleLeftNibble(),
-                    new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).asByte()
+                    new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
                 )
             );
             case SEVEN -> Optional.of(
                 new AddToRegisterValueOperation(
                     operationCode.middleLeftNibble(),
-                    new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).asByte()
+                    new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
                 )
             );
             case EIGHT -> switch (operationCode.lastNibble()) {

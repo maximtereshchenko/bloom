@@ -10,13 +10,13 @@ final class SkipConditionallyOperationFactory implements OperationFactory {
             case THREE -> Optional.of(
                 new SkipIfSingleRegisterValueEqualOperation(
                     operationCode.middleLeftNibble(),
-                    new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).asByte()
+                    new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
                 )
             );
             case FOUR -> Optional.of(
                 new SkipIfSingleRegisterValueNotEqualOperation(
                     operationCode.middleLeftNibble(),
-                    new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).asByte()
+                    new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
                 )
             );
             default -> skipIfRegisterValues(operationCode);

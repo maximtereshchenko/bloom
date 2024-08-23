@@ -31,7 +31,7 @@ final class OperationTests {
     void givenDisplayFontCharacter_thenCharacterDisplayed(char character) {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('1', "0" + character),
+                new Set('1', "0" + character),
                 new SetFontCharacter('1'),
                 new Display('0', '0', 5)
             )
@@ -56,7 +56,7 @@ final class OperationTests {
     void givenDisplayWithRowRegister_thenCharacterDisplayedStartingAtRow(int row) {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "%02X".formatted(row)),
+                new Set('0', "%02X".formatted(row)),
                 new SetFontCharacter('1'),
                 new Display('0', '1', 5)
             )
@@ -69,7 +69,7 @@ final class OperationTests {
     void givenDisplayWithColumnRegister_thenCharacterDisplayedStartingAtColumn(int column) {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "%02X".formatted(column)),
+                new Set('0', "%02X".formatted(column)),
                 new SetFontCharacter('1'),
                 new Display('1', '0', 5)
             )
@@ -106,7 +106,7 @@ final class OperationTests {
     void givenJump_thenInstructionSkipped() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('1', "01"),
+                new Set('1', "01"),
                 new SetFontCharacter('0'),
                 new Jump(new MemoryAddress(4)),
                 new SetFontCharacter('1'),//should be skipped
@@ -120,8 +120,8 @@ final class OperationTests {
     void givenAddValueToRegister_thenRegisterHasSum() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "01"),
-                new AddValueToRegister('0', "02"),
+                new Set('0', "01"),
+                new Add('0', "02"),
                 new SetFontCharacter('0'),
                 new Display('1', '1', 5)
             )
@@ -130,10 +130,10 @@ final class OperationTests {
     }
 
     @Test
-    void givenSetIndexRegisterValue_thenValueFromMemoryAddressDisplayed() {
+    void givenSetIndex_thenValueFromMemoryAddressDisplayed() {
         new Dsl()
             .givenProgram(
-                new SetIndexRegisterValue(new MemoryAddress(2)),
+                new SetIndex(new MemoryAddress(2)),
                 new Display('0', '0', 2),
                 "FFFF"
             )
@@ -160,7 +160,7 @@ final class OperationTests {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
-                new SetRegisterValue('2', "01"),
+                new Set('2', "01"),
                 instruction,
                 new SetFontCharacter('2'),//should be skipped
                 new Display('0', '0', 5)
@@ -175,8 +175,8 @@ final class OperationTests {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
-                new SetRegisterValue('2', "01"),
-                new SetRegisterValue('0', "01"),
+                new Set('2', "01"),
+                new Set('0', "01"),
                 instruction,
                 new SetFontCharacter('2'),
                 new Display('1', '1', 5)
@@ -186,11 +186,11 @@ final class OperationTests {
     }
 
     @Test
-    void givenCopyRegisterValue_thenRegisterHasSameValue() {
+    void givenCopy_thenRegisterHasSameValue() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "01"),
-                new CopyRegisterValue('0', '1'),
+                new Set('0', "01"),
+                new Copy('0', '1'),
                 new SetFontCharacter('1'),
                 new Display('2', '2', 5)
             )
@@ -202,8 +202,8 @@ final class OperationTests {
     void givenBinaryOr_thenRegisterHasDisjunctionValue() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "01"),
-                new SetRegisterValue('1', "02"),
+                new Set('0', "01"),
+                new Set('1', "02"),
                 new BinaryOr('0', '1'),
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
@@ -216,8 +216,8 @@ final class OperationTests {
     void givenBinaryAnd_thenRegisterHasConjunctionValue() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "01"),
-                new SetRegisterValue('1', "03"),
+                new Set('0', "01"),
+                new Set('1', "03"),
                 new BinaryAnd('0', '1'),
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
@@ -230,8 +230,8 @@ final class OperationTests {
     void givenBinaryXor_thenRegisterHasExclusiveOrValue() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "01"),
-                new SetRegisterValue('1', "03"),
+                new Set('0', "01"),
+                new Set('1', "03"),
                 new BinaryXor('0', '1'),
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
@@ -241,12 +241,12 @@ final class OperationTests {
     }
 
     @Test
-    void givenSumRegisterValues_thenRegisterHasSum() {
+    void givenSum_thenRegisterHasSum() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "01"),
-                new SetRegisterValue('1', "02"),
-                new SumRegisterValues('0', '1'),
+                new Set('0', "01"),
+                new Set('1', "02"),
+                new Sum('0', '1'),
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
             )
@@ -255,10 +255,10 @@ final class OperationTests {
     }
 
     @Test
-    void givenSumRegisterValues_thenFlagRegisterNotSet() {
+    void givenSum_thenFlagRegisterNotSet() {
         new Dsl()
             .givenProgram(
-                new SumRegisterValues('0', '1'),
+                new Sum('0', '1'),
                 new SetFontCharacter('F'),
                 new Display('0', '0', 5)
             )
@@ -267,12 +267,12 @@ final class OperationTests {
     }
 
     @Test
-    void givenSumRegisterValues_thenFlagRegisterSet() {
+    void givenSum_thenFlagRegisterSet() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "FF"),
-                new SetRegisterValue('1', "01"),
-                new SumRegisterValues('0', '1'),
+                new Set('0', "FF"),
+                new Set('1', "01"),
+                new Sum('0', '1'),
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
@@ -281,12 +281,12 @@ final class OperationTests {
     }
 
     @Test
-    void givenSubtractRegisterValues_thenRegisterHasDifference() {
+    void givenSubtract_thenRegisterHasDifference() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "03"),
-                new SetRegisterValue('1', "01"),
-                new SubtractRegisterValues('0', '1'),
+                new Set('0', "03"),
+                new Set('1', "01"),
+                new Subtract('0', '1'),
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
             )
@@ -295,12 +295,12 @@ final class OperationTests {
     }
 
     @Test
-    void givenSubtractRegisterValues_thenFlagRegisterNotSet() {
+    void givenSubtract_thenFlagRegisterNotSet() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "01"),
-                new SetRegisterValue('1', "02"),
-                new SubtractRegisterValues('0', '1'),
+                new Set('0', "01"),
+                new Set('1', "02"),
+                new Subtract('0', '1'),
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
@@ -309,12 +309,12 @@ final class OperationTests {
     }
 
     @Test
-    void givenSubtractRegisterValues_thenFlagRegisterSet() {
+    void givenSubtract_thenFlagRegisterSet() {
         new Dsl()
             .givenProgram(
-                new SetRegisterValue('0', "02"),
-                new SetRegisterValue('1', "01"),
-                new SubtractRegisterValues('0', '1'),
+                new Set('0', "02"),
+                new Set('1', "01"),
+                new Subtract('0', '1'),
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )

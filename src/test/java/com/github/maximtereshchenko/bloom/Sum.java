@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom;
 
-final class SumRegisterValues {
+final class Sum {
 
     private final char firstRegister;
     private final char secondRegister;
 
-    SumRegisterValues(char firstRegister, char secondRegister) {
+    Sum(char firstRegister, char secondRegister) {
         this.firstRegister = firstRegister;
         this.secondRegister = secondRegister;
     }

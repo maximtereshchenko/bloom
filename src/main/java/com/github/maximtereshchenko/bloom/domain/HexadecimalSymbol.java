@@ -33,15 +33,15 @@ enum HexadecimalSymbol {
         return String.valueOf(primitive());
     }
 
-    char primitive() {
+    UnsignedByte numericValue() {
+        return UnsignedByte.from(Character.getNumericValue(primitive()));
+    }
+
+    private char primitive() {
         var ordinal = ordinal();
         if (ordinal <= 9) {
             return (char) ('0' + ordinal);
         }
         return (char) ('A' + ordinal - 10);
-    }
-
-    int numericValue() {
-        return Character.getNumericValue(primitive());
     }
 }

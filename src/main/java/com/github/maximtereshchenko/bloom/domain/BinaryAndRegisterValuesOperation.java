@@ -12,7 +12,7 @@ final class BinaryAndRegisterValuesOperation extends BinaryRegisterValueOperatio
     }
 
     @Override
-    Byte operation(Byte first, Byte second) {
+    UnsignedByte operation(UnsignedByte first, UnsignedByte second) {
         return first.and(second);
     }
 }

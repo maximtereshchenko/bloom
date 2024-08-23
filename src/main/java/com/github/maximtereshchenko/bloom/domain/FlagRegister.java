@@ -1,24 +1,24 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class FlagRegister implements Register<Byte> {
+final class FlagRegister implements Register<UnsignedByte> {
 
-    private Byte value = new Byte();
+    private UnsignedByte value = new UnsignedByte();
 
     @Override
-    public Byte get() {
+    public UnsignedByte get() {
         return value;
     }
 
     @Override
-    public void set(Byte value) {
+    public void set(UnsignedByte value) {
         this.value = value;
     }
 
     void disable() {
-        set(Byte.from(0));
+        set(UnsignedByte.from(0));
     }
 
     void enable() {
-        set(Byte.from(1));
+        set(UnsignedByte.from(1));
     }
 }

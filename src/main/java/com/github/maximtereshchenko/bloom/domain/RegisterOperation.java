@@ -6,11 +6,11 @@ final class RegisterOperation implements Operation {
 
     private final HexadecimalSymbol firstRegisterName;
     private final HexadecimalSymbol secondRegisterName;
-    private final BiConsumer<Register<Byte>, Register<Byte>> consumer;
+    private final BiConsumer<Register<UnsignedByte>, Register<UnsignedByte>> consumer;
 
     RegisterOperation(
         HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName,
-        BiConsumer<Register<Byte>, Register<Byte>> consumer
+        BiConsumer<Register<UnsignedByte>, Register<UnsignedByte>> consumer
     ) {
         this.firstRegisterName = firstRegisterName;
         this.secondRegisterName = secondRegisterName;

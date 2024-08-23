@@ -2,17 +2,17 @@ package com.github.maximtereshchenko.bloom.domain;
 
 final class Display {
 
-    static final int HEIGHT = 32;
-    static final int WIDTH = 64;
+    static final UnsignedByte HEIGHT = UnsignedByte.from(32);
+    static final UnsignedByte WIDTH = UnsignedByte.from(64);
 
-    private final boolean[][] pixels = new boolean[HEIGHT][WIDTH];
+    private final boolean[][] pixels = new boolean[HEIGHT.primitive()][WIDTH.primitive()];
 
-    void flipPixel(int row, int column) {
-        pixels[row][column] = !pixels[row][column];
+    void flipPixel(UnsignedByte row, UnsignedByte column) {
+        pixels[row.primitive()][column.primitive()] = !pixels[row.primitive()][column.primitive()];
     }
 
-    boolean isPixelEnabled(int row, int column) {
-        return pixels[row][column];
+    boolean isPixelEnabled(UnsignedByte row, UnsignedByte column) {
+        return pixels[row.primitive()][column.primitive()];
     }
 
     boolean[][] mask() {

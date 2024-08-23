@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom;
 
-final class SetRegisterValue {
+final class Set {
 
     private final char register;
     private final String value;
 
-    SetRegisterValue(char register, String value) {
+    Set(char register, String value) {
         this.register = register;
         this.value = value;
     }

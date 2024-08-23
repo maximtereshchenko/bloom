@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom;
 
-final class SubtractRegisterValues {
+final class Subtract {
 
     private final char firstRegister;
     private final char secondRegister;
 
-    SubtractRegisterValues(char firstRegister, char secondRegister) {
+    Subtract(char firstRegister, char secondRegister) {
         this.firstRegister = firstRegister;
         this.secondRegister = secondRegister;
     }

@@ -1,16 +1,16 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class GeneralPurposeRegister implements Register<Byte> {
+final class GeneralPurposeRegister implements Register<UnsignedByte> {
 
-    private Byte value = new Byte();
+    private UnsignedByte value = new UnsignedByte();
 
     @Override
-    public Byte get() {
+    public UnsignedByte get() {
         return value;
     }
 
     @Override
-    public void set(Byte value) {
+    public void set(UnsignedByte value) {
         this.value = value;
     }
 }

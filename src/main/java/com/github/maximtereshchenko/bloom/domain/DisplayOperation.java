@@ -12,9 +12,9 @@ final class DisplayOperation implements Operation {
 
     private final HexadecimalSymbol startRowRegister;
     private final HexadecimalSymbol startColumnRegister;
-    private final int rows;
+    private final UnsignedByte rows;
 
-    DisplayOperation(HexadecimalSymbol startRowRegister, HexadecimalSymbol startColumnRegister, int rows) {
+    DisplayOperation(HexadecimalSymbol startRowRegister, HexadecimalSymbol startColumnRegister, UnsignedByte rows) {
         this.startRowRegister = startRowRegister;
         this.startColumnRegister = startColumnRegister;
         this.rows = rows;
@@ -22,24 +22,59 @@ final class DisplayOperation implements Operation {
 
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
-        var memoryAddress = registers.index().get();
-        var flagRegister = registers.flagRegister();
-        var startRow = registers.generalPurpose(startRowRegister).get().primitive() % Display.HEIGHT;
-        var startColumn = registers.generalPurpose(startColumnRegister).get().primitive() % Display.WIDTH;
+        display(
+            randomAccessMemory,
+            registers.flagRegister(),
+            display,
+            registers.index().get(),
+            registers.generalPurpose(startRowRegister).get().moduloRemainder(Display.HEIGHT),
+            registers.generalPurpose(startColumnRegister).get().moduloRemainder(Display.WIDTH)
+        );
+    }
+
+    private void display(
+        RandomAccessMemory randomAccessMemory,
+        FlagRegister flagRegister,
+        Display display,
+        MemoryAddress startMemoryAddress,
+        UnsignedByte startRow,
+        UnsignedByte startColumn
+    ) {
         flagRegister.disable();
-        for (var row = startRow; row < startRow + rows; row++, memoryAddress = memoryAddress.next()) {
-            displayRow(display, randomAccessMemory.value(memoryAddress), row, startColumn, flagRegister);
+        var rowIterator = startRow.rangeTo(endRow(startRow));
+        var currentMemoryAddress = startMemoryAddress;
+        while (rowIterator.hasNext()) {
+            var row = rowIterator.next();
+            displayRow(flagRegister, display, row, startColumn, randomAccessMemory.value(currentMemoryAddress));
+            currentMemoryAddress = currentMemoryAddress.next();
         }
     }
 
-    private void displayRow(Display display, Byte bits, int row, int startColumn, FlagRegister flagRegister) {
-        for (int column = startColumn, bitIndex = 0; bitIndex < Byte.LENGTH; column++, bitIndex++) {
-            if (row < Display.HEIGHT && column < Display.WIDTH && bits.hasBit(bitIndex)) {
+    private void displayRow(
+        FlagRegister flagRegister,
+        Display display,
+        UnsignedByte row,
+        UnsignedByte startColumn,
+        UnsignedByte value
+    ) {
+        var columnIterator = startColumn.rangeTo(Display.WIDTH);
+        var bitIterator = value.bits();
+        while (columnIterator.hasNext() && bitIterator.hasNext()) {
+            var column = columnIterator.next();
+            if (Boolean.TRUE.equals(bitIterator.next())) {
                 display.flipPixel(row, column);
                 if (!display.isPixelEnabled(row, column)) {
                     flagRegister.enable();
                 }
             }
         }
+    }
+
+    private UnsignedByte endRow(UnsignedByte startRow) {
+        var requested = startRow.sum(rows);
+        if (requested.compareTo(Display.HEIGHT) < 0) {
+            return requested;
+        }
+        return Display.HEIGHT;
     }
 }

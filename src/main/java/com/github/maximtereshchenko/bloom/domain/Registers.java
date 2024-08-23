@@ -11,7 +11,7 @@ final class Registers {
     private final ProgramCounter programCounter = new ProgramCounter();
     private final Index index = new Index();
     private final FlagRegister flagRegister = new FlagRegister();
-    private final Map<HexadecimalSymbol, Register<Byte>> generalPurpose = Stream.of(HexadecimalSymbol.values())
+    private final Map<HexadecimalSymbol, Register<UnsignedByte>> generalPurpose = Stream.of(HexadecimalSymbol.values())
         .collect(
             Collectors.toMap(
                 Function.identity(),
@@ -33,7 +33,7 @@ final class Registers {
         return flagRegister;
     }
 
-    Register<Byte> generalPurpose(HexadecimalSymbol registerName) {
+    Register<UnsignedByte> generalPurpose(HexadecimalSymbol registerName) {
         return generalPurpose.get(registerName);
     }
 }

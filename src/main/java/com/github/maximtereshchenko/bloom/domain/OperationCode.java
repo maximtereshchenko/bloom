@@ -2,10 +2,10 @@ package com.github.maximtereshchenko.bloom.domain;
 
 final class OperationCode {
 
-    private final Byte first;
-    private final Byte second;
+    private final UnsignedByte first;
+    private final UnsignedByte second;
 
-    OperationCode(Byte first, Byte second) {
+    OperationCode(UnsignedByte first, UnsignedByte second) {
         this.first = first;
         this.second = second;
     }

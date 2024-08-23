@@ -1,10 +1,10 @@
 package com.github.maximtereshchenko.bloom;
 
-final class SetIndexRegisterValue {
+final class SetIndex {
 
     private final MemoryAddress memoryAddress;
 
-    SetIndexRegisterValue(MemoryAddress memoryAddress) {
+    SetIndex(MemoryAddress memoryAddress) {
         this.memoryAddress = memoryAddress;
     }
 

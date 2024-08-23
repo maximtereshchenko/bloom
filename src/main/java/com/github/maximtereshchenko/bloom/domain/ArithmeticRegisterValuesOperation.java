@@ -23,7 +23,7 @@ abstract class ArithmeticRegisterValuesOperation implements Operation {
         register.set(result(first, second));
     }
 
-    abstract boolean shouldEnableFlagRegister(Byte first, Byte second);
+    abstract boolean shouldEnableFlagRegister(UnsignedByte first, UnsignedByte second);
 
-    abstract Byte result(Byte first, Byte second);
+    abstract UnsignedByte result(UnsignedByte first, UnsignedByte second);
 }

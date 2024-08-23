@@ -7,8 +7,12 @@ final class ClearDisplayOperation implements Operation {
 
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
-        for (var row = 0; row < Display.HEIGHT; row++) {
-            for (var column = 0; column < Display.WIDTH; column++) {
+        var rowIterator = new UnsignedByte().rangeTo(Display.HEIGHT);
+        while (rowIterator.hasNext()) {
+            var row = rowIterator.next();
+            var columnIterator = new UnsignedByte().rangeTo(Display.WIDTH);
+            while (columnIterator.hasNext()) {
+                var column = columnIterator.next();
                 if (display.isPixelEnabled(row, column)) {
                     display.flipPixel(row, column);
                 }

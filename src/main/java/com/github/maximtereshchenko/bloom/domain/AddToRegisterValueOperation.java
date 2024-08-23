@@ -6,9 +6,9 @@ package com.github.maximtereshchenko.bloom.domain;
 final class AddToRegisterValueOperation implements Operation {
 
     private final HexadecimalSymbol registerName;
-    private final Byte value;
+    private final UnsignedByte value;
 
-    AddToRegisterValueOperation(HexadecimalSymbol registerName, Byte value) {
+    AddToRegisterValueOperation(HexadecimalSymbol registerName, UnsignedByte value) {
         this.registerName = registerName;
         this.value = value;
     }

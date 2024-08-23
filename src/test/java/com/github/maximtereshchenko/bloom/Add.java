@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom;
 
-final class AddValueToRegister {
+final class Add {
 
     private final char register;
     private final String value;
 
-    AddValueToRegister(char register, String value) {
+    Add(char register, String value) {
         this.register = register;
         this.value = value;
     }

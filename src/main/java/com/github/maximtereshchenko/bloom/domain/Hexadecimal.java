@@ -23,16 +23,15 @@ final class Hexadecimal {
     @Override
     public String toString() {
         return symbols.stream()
-            .map(HexadecimalSymbol::primitive)
-            .map(String::valueOf)
+            .map(HexadecimalSymbol::toString)
             .collect(Collectors.joining());
     }
 
-    Byte asByte() {
+    UnsignedByte unsignedByte() {
         if (symbols.size() != 2) {
             throw new IllegalStateException();
         }
-        return Byte.from(Integer.parseInt(toString(), 16));
+        return UnsignedByte.from(Integer.parseInt(toString(), 16));
     }
 
     MemoryAddress memoryAddress() {

@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 final class Font {
 
-    Byte[] bytes() {
+    UnsignedByte[] bytes() {
         return Stream.of(
                 """
                     1111
@@ -123,8 +123,8 @@ final class Font {
             .map(symbol -> symbol.split(System.lineSeparator()))
             .flatMap(Stream::of)
             .map(this::withZeros)
-            .map(Byte::from)
-            .toArray(Byte[]::new);
+            .map(UnsignedByte::from)
+            .toArray(UnsignedByte[]::new);
     }
 
     private String withZeros(String ones) {

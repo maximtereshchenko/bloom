@@ -16,5 +16,5 @@ abstract class BinaryRegisterValueOperation implements Operation {
         register.set(operation(register.get(), registers.generalPurpose(secondRegisterName).get()));
     }
 
-    abstract Byte operation(Byte first, Byte second);
+    abstract UnsignedByte operation(UnsignedByte first, UnsignedByte second);
 }

@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom;
 
-final class CopyRegisterValue {
+final class Copy {
 
     private final char fromRegister;
     private final char toRegister;
 
-    CopyRegisterValue(char fromRegister, char toRegister) {
+    Copy(char fromRegister, char toRegister) {
         this.fromRegister = fromRegister;
         this.toRegister = toRegister;
     }

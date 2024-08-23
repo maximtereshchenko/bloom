@@ -11,12 +11,12 @@ final class SubtractRegisterValuesOperation extends ArithmeticRegisterValuesOper
     }
 
     @Override
-    boolean shouldEnableFlagRegister(Byte first, Byte second) {
+    boolean shouldEnableFlagRegister(UnsignedByte first, UnsignedByte second) {
         return first.compareTo(second) > 0;
     }
 
     @Override
-    Byte result(Byte first, Byte second) {
+    UnsignedByte result(UnsignedByte first, UnsignedByte second) {
         return first.difference(second);
     }
 }

@@ -12,12 +12,12 @@ final class SumRegisterValuesOperation extends ArithmeticRegisterValuesOperation
     }
 
     @Override
-    boolean shouldEnableFlagRegister(Byte first, Byte second) {
-        return Byte.MAX.difference(first).compareTo(second) < 0;
+    boolean shouldEnableFlagRegister(UnsignedByte first, UnsignedByte second) {
+        return UnsignedByte.MAX.difference(first).compareTo(second) < 0;
     }
 
     @Override
-    Byte result(Byte first, Byte second) {
+    UnsignedByte result(UnsignedByte first, UnsignedByte second) {
         return first.sum(second);
     }
 }
