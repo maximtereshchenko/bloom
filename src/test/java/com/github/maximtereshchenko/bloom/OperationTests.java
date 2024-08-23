@@ -397,4 +397,17 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenConvertToBinaryCodedDecimal_thenMemoryHoldsBinaryCodedDecimal() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "7B"),
+                new SetIndex(new MemoryAddress(4)),
+                new ConvertToBinaryCodedDecimal('0'),
+                new Display('1', '1', 3)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }

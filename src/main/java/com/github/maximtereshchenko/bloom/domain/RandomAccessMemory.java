@@ -23,7 +23,15 @@ final class RandomAccessMemory {
         return FONT_MEMORY_ADDRESS.withOffset(character.ordinal() * 5);
     }
 
-    UnsignedByte value(MemoryAddress memoryAddress) {
-        return bytes[memoryAddress.primitive()];
+    UnsignedByte get(MemoryAddress memoryAddress) {
+        var value = bytes[memoryAddress.primitive()];
+        if (value == null) {
+            return new UnsignedByte();
+        }
+        return value;
+    }
+
+    void set(MemoryAddress memoryAddress, UnsignedByte value) {
+        bytes[memoryAddress.primitive()] = value;
     }
 }

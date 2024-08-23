@@ -38,7 +38,8 @@ public final class BloomFacade implements BloomModule {
             new SkipIfRegisterValuesEqualOperationFactory(),
             new SkipIfRegisterValuesNotEqualOperationFactory(),
             new SkipIfSingleRegisterValueEqualOperationFactory(),
-            new SkipIfSingleRegisterValueNotEqualOperationFactory()
+            new SkipIfSingleRegisterValueNotEqualOperationFactory(),
+            new ConvertToBinaryCodedDecimalOperationFactory()
         );
     }
 
@@ -61,7 +62,7 @@ public final class BloomFacade implements BloomModule {
     private OperationCode operationCode() {
         var first = registers.programCounter().get();
         var second = first.next();
-        var operationCode = new OperationCode(randomAccessMemory.value(first), randomAccessMemory.value(second));
+        var operationCode = new OperationCode(randomAccessMemory.get(first), randomAccessMemory.get(second));
         registers.programCounter().set(second.next());
         return operationCode;
     }

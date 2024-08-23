@@ -41,11 +41,9 @@ final class DisplayOperation implements Operation {
         UnsignedByte startColumn
     ) {
         flagRegister.disable();
-        var rowIterator = startRow.rangeTo(endRow(startRow));
         var currentMemoryAddress = startMemoryAddress;
-        while (rowIterator.hasNext()) {
-            var row = rowIterator.next();
-            displayRow(flagRegister, display, row, startColumn, randomAccessMemory.value(currentMemoryAddress));
+        for (var row : startRow.rangeTo(endRow(startRow))) {
+            displayRow(flagRegister, display, row, startColumn, randomAccessMemory.get(currentMemoryAddress));
             currentMemoryAddress = currentMemoryAddress.next();
         }
     }
@@ -57,7 +55,7 @@ final class DisplayOperation implements Operation {
         UnsignedByte startColumn,
         UnsignedByte value
     ) {
-        var columnIterator = startColumn.rangeTo(Display.WIDTH);
+        var columnIterator = startColumn.rangeTo(Display.WIDTH).iterator();
         var bitIterator = value.bits().iterator();
         while (columnIterator.hasNext() && bitIterator.hasNext()) {
             var column = columnIterator.next();
