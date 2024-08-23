@@ -5,7 +5,6 @@ package com.github.maximtereshchenko.bloom.domain;
  * greater than 8 bits (i.e., > 255) VF is set to 1, otherwise 0. Only the lowest 8 bits of the result are kept, and
  * stored in Vx.
  */
-//TODO carry flag
 final class SumRegisterValuesOperation implements Operation {
 
     private final HexadecimalSymbol firstRegisterName;
@@ -18,7 +17,13 @@ final class SumRegisterValuesOperation implements Operation {
 
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+        var flagRegister = registers.flagRegister();
+        flagRegister.disable();
         var register = registers.generalPurpose(firstRegisterName);
-        register.set(register.get().sum(registers.generalPurpose(secondRegisterName).get()));
+        var sum = register.get().sum(registers.generalPurpose(secondRegisterName).get());
+        if (sum.compareTo(register.get()) < 0) {
+            flagRegister.enable();
+        }
+        register.set(sum);
     }
 }

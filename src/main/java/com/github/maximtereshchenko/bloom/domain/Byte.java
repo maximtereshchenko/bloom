@@ -2,26 +2,26 @@ package com.github.maximtereshchenko.bloom.domain;
 
 import java.util.Objects;
 
-final class Byte {
+final class Byte implements Comparable<Byte> {
 
     static final int LENGTH = 8;
 
-    private final byte value;
+    private final int value;
 
-    private Byte(byte value) {
+    private Byte(int value) {
         this.value = value;
     }
 
     Byte() {
-        this((byte) 0);
+        this(0);
     }
 
     static Byte from(int value) {
-        return new Byte((byte) value);
+        return new Byte(value & 0xFF);
     }
 
     static Byte from(String bits) {
-        return new Byte((byte) Integer.parseInt(bits, 2));
+        return from(Integer.parseInt(bits, 2));
     }
 
     @Override
@@ -38,11 +38,16 @@ final class Byte {
         return Objects.hash(value);
     }
 
-    byte primitive() {
+    @Override
+    public int compareTo(Byte other) {
+        return Integer.compare(value, other.value);
+    }
+
+    int primitive() {
         return value;
     }
 
-    boolean has(int index) {
+    boolean hasBit(int index) {
         return (value & (1 << LENGTH - index - 1)) != 0;
     }
 

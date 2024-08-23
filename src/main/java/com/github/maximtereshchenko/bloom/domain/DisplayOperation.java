@@ -34,7 +34,7 @@ final class DisplayOperation implements Operation {
 
     private void displayRow(Display display, Byte bits, int row, int startColumn, FlagRegister flagRegister) {
         for (int column = startColumn, bitIndex = 0; bitIndex < Byte.LENGTH; column++, bitIndex++) {
-            if (row < Display.HEIGHT && column < Display.WIDTH && bits.has(bitIndex)) {
+            if (row < Display.HEIGHT && column < Display.WIDTH && bits.hasBit(bitIndex)) {
                 display.flipPixel(row, column);
                 if (!display.isPixelEnabled(row, column)) {
                     flagRegister.enable();

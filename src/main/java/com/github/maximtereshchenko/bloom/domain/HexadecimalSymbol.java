@@ -28,6 +28,11 @@ enum HexadecimalSymbol {
             .orElseThrow(() -> new IllegalArgumentException(String.valueOf(character)));
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(primitive());
+    }
+
     char primitive() {
         var ordinal = ordinal();
         if (ordinal <= 9) {

@@ -19,7 +19,7 @@ final class OperationTests {
 
     static Stream<Object> skipConditionallyOperations() {
         return Stream.of(
-            new SkipIfRegisterValueEquals('0', "00"),
+            new SkipIfRegisterValueEqual('0', "00"),
             new SkipIfRegisterValueNotEqual('0', "01"),
             new SkipIfRegisterValuesEqual('0', '1'),
             new SkipIfRegisterValuesNotEqual('0', '2')
@@ -248,6 +248,32 @@ final class OperationTests {
                 new SetRegisterValue('1', "02"),
                 new SumRegisterValues('0', '1'),
                 new SetFontCharacter('0'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSumRegisterValues_thenFlagRegisterNotSet() {
+        new Dsl()
+            .givenProgram(
+                new SumRegisterValues('0', '1'),
+                new SetFontCharacter('F'),
+                new Display('0', '0', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSumRegisterValues_thenFlagRegisterSet() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "FF"),
+                new SetRegisterValue('1', "01"),
+                new SumRegisterValues('0', '1'),
+                new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
             .whenExecuteAllInstructions()
