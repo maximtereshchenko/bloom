@@ -321,4 +321,42 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenShiftRight_thenRegisterHasValueShiftedOneBitRight() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "02"),
+                new ShiftRight('0'),
+                new SetFontCharacter('0'),
+                new Display('1', '1', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenShiftRight_thenFlagRegisterSet() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new ShiftRight('0'),
+                new SetFontCharacter('F'),
+                new Display('1', '1', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenShiftRight_thenFlagRegisterNotSet() {
+        new Dsl()
+            .givenProgram(
+                new ShiftRight('0'),
+                new SetFontCharacter('F'),
+                new Display('1', '1', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }

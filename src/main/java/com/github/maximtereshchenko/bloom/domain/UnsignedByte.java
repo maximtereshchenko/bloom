@@ -1,6 +1,7 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
@@ -54,10 +55,6 @@ final class UnsignedByte implements Comparable<UnsignedByte> {
         );
     }
 
-    UnsignedByte next() {
-        return UnsignedByte.from(value + 1);
-    }
-
     UnsignedByte moduloRemainder(UnsignedByte other) {
         return UnsignedByte.from(value % other.value);
     }
@@ -82,16 +79,20 @@ final class UnsignedByte implements Comparable<UnsignedByte> {
         return from(value ^ other.value);
     }
 
+    UnsignedByte shiftedRight() {
+        return from(value >> 1);
+    }
+
     Iterator<UnsignedByte> rangeTo(UnsignedByte upperBound) {
         return IntStream.range(value, upperBound.value)
             .mapToObj(UnsignedByte::from)
             .iterator();
     }
 
-    Iterator<Boolean> bits() {
+    List<Boolean> bits() {
         return IntStream.range(0, 8)
             .mapToObj(index -> (value & (1 << 7 - index)) != 0)
-            .iterator();
+            .toList();
     }
 
     int primitive() {

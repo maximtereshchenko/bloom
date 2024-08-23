@@ -50,6 +50,7 @@ final class RegisterOperationFactory implements OperationFactory {
                         operationCode.middleRightNibble()
                     )
                 );
+                case SIX -> Optional.of(new ShiftRightRegisterValueOperation(operationCode.middleLeftNibble()));
                 default -> Optional.empty();
             };
             default -> Optional.empty();

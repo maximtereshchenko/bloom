@@ -58,7 +58,7 @@ final class DisplayOperation implements Operation {
         UnsignedByte value
     ) {
         var columnIterator = startColumn.rangeTo(Display.WIDTH);
-        var bitIterator = value.bits();
+        var bitIterator = value.bits().iterator();
         while (columnIterator.hasNext() && bitIterator.hasNext()) {
             var column = columnIterator.next();
             if (Boolean.TRUE.equals(bitIterator.next())) {
