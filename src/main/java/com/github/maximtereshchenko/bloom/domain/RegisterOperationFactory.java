@@ -20,6 +20,7 @@ final class RegisterOperationFactory implements OperationFactory {
                 case ONE -> binaryOr(middleLeft, middleRight);
                 case TWO -> binaryAnd(middleLeft, middleRight);
                 case THREE -> binaryXor(middleLeft, middleRight);
+                case FOUR -> sumRegisterValues(middleLeft, middleRight);
                 default -> Optional.empty();
             };
             default -> Optional.empty();
@@ -77,6 +78,13 @@ final class RegisterOperationFactory implements OperationFactory {
 
     private Optional<Operation> binaryXor(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
         return valueModificationOperation(firstRegisterName, secondRegisterName, Byte::xor);
+    }
+
+    private Optional<Operation> sumRegisterValues(
+        HexadecimalSymbol firstRegisterName,
+        HexadecimalSymbol secondRegisterName
+    ) {
+        return valueModificationOperation(firstRegisterName, secondRegisterName, Byte::sum);
     }
 
     private Optional<Operation> valueModificationOperation(

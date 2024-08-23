@@ -239,4 +239,18 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenSumRegisterValues_thenRegisterHasSum() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "01"),
+                new SetRegisterValue('1', "02"),
+                new SumRegisterValues('0', '1'),
+                new SetFontCharacter('0'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }
