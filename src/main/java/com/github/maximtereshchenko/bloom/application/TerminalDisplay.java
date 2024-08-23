@@ -4,9 +4,10 @@ import com.github.maximtereshchenko.bloom.api.DisplayMaskUseCase;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-final class TerminalDisplay {
+final class TerminalDisplay implements AutoCloseable {
 
     private static final String HIDE_CURSOR = "\033[?25l";
+    private static final String SHOW_CURSOR = "\033[?25h";
     private static final String MOVE_CURSOR_34_LINES_UP = "\033[34F";
     private static final String BLACK_BACKGROUND = "\033[48;5;0m";
     private static final String WHITE_BACKGROUND = "\033[48;5;7m";
@@ -18,6 +19,11 @@ final class TerminalDisplay {
     TerminalDisplay(PrintStream printStream, DisplayMaskUseCase useCase) {
         this.printStream = printStream;
         this.useCase = useCase;
+    }
+
+    @Override
+    public void close() {
+        printStream.print(SHOW_CURSOR);
     }
 
     void draw() {

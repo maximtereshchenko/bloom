@@ -12,30 +12,37 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Objects;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 final class ApplicationTests {
 
-    @Test
-    void givenIbmLogoProgram_thenIbmLogoDisplayed() throws URISyntaxException, IOException, InterruptedException {
-        var outputStream = new ByteArrayOutputStream();
-        var application = Application.from(
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+    @ParameterizedTest
+    @ValueSource(strings = {"ibm-logo.ch8", "opcodes.ch8"})
+    void givenProgram_thenProgramExecutedSuccessfully(String program) throws Exception {
+        try (var application = application(program)) {
+            application.start();
+
+            await().atMost(Duration.ofSeconds(3)).untilAsserted(() -> {
+                var output = outputStream.toString(StandardCharsets.UTF_8);
+                verify(output.substring(output.lastIndexOf("\033[34F")), ApprovalsOptions.withParameter(program));
+            });
+        }
+    }
+
+    private Application application(String program) throws URISyntaxException, IOException {
+        return Application.from(
             new PrintStream(outputStream),
             Path.of(
                 Objects.requireNonNull(
                         Thread.currentThread()
                             .getContextClassLoader()
-                            .getResource("ibm-logo.ch8")
+                            .getResource(program)
                     )
                     .toURI()
             )
         );
-        application.start();
-
-        await().atMost(Duration.ofSeconds(3)).untilAsserted(() -> {
-            var output = outputStream.toString(StandardCharsets.UTF_8);
-            verify(output.substring(output.lastIndexOf("\033[34F")), ApprovalsOptions.defaultConfiguration());
-        });
-        application.stop();
     }
 }

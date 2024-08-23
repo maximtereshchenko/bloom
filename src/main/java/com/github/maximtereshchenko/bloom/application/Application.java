@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-final class Application {
+final class Application implements AutoCloseable {
 
     private final ExecuteNextInstructionUseCase useCase;
     private final TerminalDisplay display;
@@ -28,16 +28,18 @@ final class Application {
         return new Application(module, new TerminalDisplay(printStream, module), printStream);
     }
 
-    void start() {
-        runAtFrequency(useCase::executeNextInstruction, 700);
-        runAtFrequency(display::draw, 60);
-    }
-
-    void stop() throws InterruptedException {
+    @Override
+    public void close() throws InterruptedException {
         executorService.shutdown();
         if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
             executorService.shutdownNow();
         }
+        display.close();
+    }
+
+    void start() {
+        runAtFrequency(useCase::executeNextInstruction, 700);
+        runAtFrequency(display::draw, 60);
     }
 
     private void runAtFrequency(Runnable runnable, int hertz) {
