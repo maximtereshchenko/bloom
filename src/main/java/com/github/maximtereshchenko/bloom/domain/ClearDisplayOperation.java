@@ -1,7 +1,7 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 /**
- * It should clear the display, turning all pixels off to 0.
+ * 00E0 - CLS. Clear the display.
  */
 final class ClearDisplayOperation implements Operation {
 

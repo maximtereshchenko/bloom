@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom;
 
-final class SkipIfRegisterValueEquals {
+final class SkipIfRegisterValueEqual {
 
     private final char register;
     private final String value;
 
-    SkipIfRegisterValueEquals(char register, String value) {
+    SkipIfRegisterValueEqual(char register, String value) {
         this.register = register;
         this.value = value;
     }

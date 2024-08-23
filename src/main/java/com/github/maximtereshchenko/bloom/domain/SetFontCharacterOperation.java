@@ -1,7 +1,8 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 /**
- * The index register I is set to the address of the hexadecimal character in VX.
+ * Fx29 - LD F, Vx. Set I = location of sprite for digit Vx. The value of I is set to the location for the hexadecimal
+ * sprite corresponding to the value of Vx.
  */
 final class SetFontCharacterOperation implements Operation {
 

@@ -4,10 +4,10 @@ final class ReturnFromSubroutineOperationFactory extends SimpleOperationFactory 
 
     @Override
     boolean supports(OperationCode operationCode) {
-        return operationCode.nibble(0) == HexadecimalSymbol.ZERO &&
-            operationCode.nibble(1) == HexadecimalSymbol.ZERO &&
-            operationCode.nibble(2) == HexadecimalSymbol.E &&
-            operationCode.nibble(3) == HexadecimalSymbol.E;
+        return operationCode.firstNibble() == HexadecimalSymbol.ZERO &&
+            operationCode.middleLeftNibble() == HexadecimalSymbol.ZERO &&
+            operationCode.middleRightNibble() == HexadecimalSymbol.E &&
+            operationCode.lastNibble() == HexadecimalSymbol.E;
     }
 
     @Override

@@ -4,16 +4,16 @@ final class JumpOperationFactory extends SimpleOperationFactory {
 
     @Override
     boolean supports(OperationCode operationCode) {
-        return operationCode.nibble(0) == HexadecimalSymbol.ONE;
+        return operationCode.firstNibble() == HexadecimalSymbol.ONE;
     }
 
     @Override
     Operation supportedOperation(OperationCode operationCode) {
         return new JumpOperation(
             new Hexadecimal(
-                operationCode.nibble(1),
-                operationCode.nibble(2),
-                operationCode.nibble(3)
+                operationCode.middleLeftNibble(),
+                operationCode.middleRightNibble(),
+                operationCode.lastNibble()
             )
                 .memoryAddress()
         );

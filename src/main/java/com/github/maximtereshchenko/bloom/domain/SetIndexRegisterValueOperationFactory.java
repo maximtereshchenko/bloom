@@ -4,16 +4,16 @@ final class SetIndexRegisterValueOperationFactory extends SimpleOperationFactory
 
     @Override
     boolean supports(OperationCode operationCode) {
-        return operationCode.nibble(0) == HexadecimalSymbol.A;
+        return operationCode.firstNibble() == HexadecimalSymbol.A;
     }
 
     @Override
     Operation supportedOperation(OperationCode operationCode) {
         return new SetIndexRegisterValueOperation(
             new Hexadecimal(
-                operationCode.nibble(1),
-                operationCode.nibble(2),
-                operationCode.nibble(3)
+                operationCode.middleLeftNibble(),
+                operationCode.middleRightNibble(),
+                operationCode.lastNibble()
             )
                 .memoryAddress()
         );

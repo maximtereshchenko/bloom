@@ -1,13 +1,12 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 /**
- * It will draw an N pixels tall sprite from the memory location that the I index register is holding to the screen, at
- * the horizontal X coordinate in VX and the Y coordinate in VY. All the pixels that are “on” in the sprite will flip
- * the pixels on the screen that it is drawn to (from left to right, from most to least significant bit). If any pixels
- * on the screen were turned “off” by this, the VF flag register is set to 1. Otherwise, it’s set to 0. The starting
- * position of the sprite will wrap. In other words, an X coordinate of 5 is the same as an X of 68 (since the screen is
- * 64 pixels wide). However, the actual drawing of the sprite should not wrap. If a sprite is drawn near the edge of the
- * screen, it should be clipped, and not wrap.
+ * Dxyn - DRW Vx, Vy, nibble. Display n-byte sprite starting at memory location I at (Vx, Vy), set VF = collision. The
+ * interpreter reads n bytes from memory, starting at the address stored in I. These bytes are then displayed as sprites
+ * on screen at coordinates (Vx, Vy). Sprites are XORed onto the existing screen. If this causes any pixels to be
+ * erased, VF is set to 1, otherwise it is set to 0. The starting position of the sprite will wrap. In other words, an X
+ * coordinate of 5 is the same as an X of 68 (since the screen is 64 pixels wide). However, the actual drawing of the
+ * sprite should not wrap. If a sprite is drawn near the edge of the screen, it should be clipped, and not wrap.
  */
 final class DisplayOperation implements Operation {
 

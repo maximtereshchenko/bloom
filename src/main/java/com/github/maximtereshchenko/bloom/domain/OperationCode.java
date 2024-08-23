@@ -15,13 +15,19 @@ final class OperationCode {
         return first.hexadecimal().concat(second.hexadecimal()).toString();
     }
 
-    HexadecimalSymbol nibble(int index) {
-        return switch (index) {
-            case 0 -> first.hexadecimal().first();
-            case 1 -> first.hexadecimal().last();
-            case 2 -> second.hexadecimal().first();
-            case 3 -> second.hexadecimal().last();
-            default -> throw new IndexOutOfBoundsException(index);
-        };
+    HexadecimalSymbol firstNibble() {
+        return first.hexadecimal().first();
+    }
+
+    HexadecimalSymbol middleLeftNibble() {
+        return first.hexadecimal().last();
+    }
+
+    HexadecimalSymbol middleRightNibble() {
+        return second.hexadecimal().first();
+    }
+
+    HexadecimalSymbol lastNibble() {
+        return second.hexadecimal().last();
     }
 }

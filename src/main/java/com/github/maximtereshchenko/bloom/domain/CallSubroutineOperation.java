@@ -1,8 +1,8 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 /**
- * Calls the subroutine at memory location NNN. This instruction should first push the current PC to the stack, then set
- * PC to NNN.
+ * 2nnn - CALL addr. Call subroutine at nnn. The interpreter increments the stack pointer, then puts the current PC on
+ * the top of the stack. The PC is then set to nnn.
  */
 final class CallSubroutineOperation implements Operation {
 
