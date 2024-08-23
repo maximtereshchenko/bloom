@@ -293,4 +293,32 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenSubtractRegisterValues_thenFlagRegisterNotSet() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "01"),
+                new SetRegisterValue('1', "02"),
+                new SubtractRegisterValues('0', '1'),
+                new SetFontCharacter('F'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSubtractRegisterValues_thenFlagRegisterSet() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "02"),
+                new SetRegisterValue('1', "01"),
+                new SubtractRegisterValues('0', '1'),
+                new SetFontCharacter('F'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }
