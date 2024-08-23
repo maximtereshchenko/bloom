@@ -1,26 +1,24 @@
 package com.github.maximtereshchenko.bloom.domain;
 
+import java.util.List;
+
 /**
  * 8xyE - SHL Vx {, Vy}. Set Vx = Vx SHL 1. If the most-significant bit of Vx is 1, then VF is set to 1, otherwise to 0.
  * Then Vx is multiplied by 2.
  */
-final class ShiftLeftRegisterValueOperation implements Operation {
-
-    private final HexadecimalSymbol registerName;
+final class ShiftLeftRegisterValueOperation extends ShiftRegisterValueOperation {
 
     ShiftLeftRegisterValueOperation(HexadecimalSymbol registerName) {
-        this.registerName = registerName;
+        super(registerName);
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
-        var register = registers.generalPurpose(registerName);
-        var value = register.get();
-        var flagRegister = registers.flagRegister();
-        flagRegister.disable();
-        if (Boolean.TRUE.equals(value.bits().getFirst())) {
-            flagRegister.enable();
-        }
-        register.set(value.shiftedLeft());
+    Boolean bit(List<Boolean> bits) {
+        return bits.getFirst();
+    }
+
+    @Override
+    UnsignedByte operation(UnsignedByte value) {
+        return value.shiftedLeft();
     }
 }
