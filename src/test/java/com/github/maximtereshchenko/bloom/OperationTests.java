@@ -253,4 +253,18 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenSubtractRegisterValues_thenRegisterHasDifference() {
+        new Dsl()
+            .givenProgram(
+                new SetRegisterValue('0', "03"),
+                new SetRegisterValue('1', "01"),
+                new SubtractRegisterValues('0', '1'),
+                new SetFontCharacter('0'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }

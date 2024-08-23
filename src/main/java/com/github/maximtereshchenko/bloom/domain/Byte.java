@@ -55,7 +55,11 @@ final class Byte {
     }
 
     Byte sum(Byte other) {
-        return Byte.from(value + other.primitive());
+        return Byte.from(value + other.value);
+    }
+
+    Byte difference(Byte other) {
+        return Byte.from(value - other.value);
     }
 
     Byte or(Byte other) {
