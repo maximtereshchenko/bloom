@@ -1,6 +1,6 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class SetIndexRegisterValueOperationFactory extends SimpleOperationFactory {
+final class SetIndexOperationFactory extends SimpleOperationFactory {
 
     @Override
     boolean supports(OperationCode operationCode) {
@@ -9,7 +9,7 @@ final class SetIndexRegisterValueOperationFactory extends SimpleOperationFactory
 
     @Override
     Operation supportedOperation(OperationCode operationCode) {
-        return new SetIndexRegisterValueOperation(
+        return new SetIndexOperation(
             new Hexadecimal(
                 operationCode.middleLeftNibble(),
                 operationCode.middleRightNibble(),

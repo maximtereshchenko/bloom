@@ -3,12 +3,12 @@ package com.github.maximtereshchenko.bloom.domain;
 /**
  * 8xy0 - LD Vx, Vy. Set Vx = Vy. Stores the value of register Vy in register Vx.
  */
-final class CopyRegisterValueOperation implements Operation {
+final class CopyOperation implements Operation {
 
     private final HexadecimalSymbol from;
     private final HexadecimalSymbol to;
 
-    CopyRegisterValueOperation(HexadecimalSymbol from, HexadecimalSymbol hexadecimalSymbol) {
+    CopyOperation(HexadecimalSymbol from, HexadecimalSymbol hexadecimalSymbol) {
         this.from = from;
         to = hexadecimalSymbol;
     }

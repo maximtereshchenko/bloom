@@ -3,12 +3,12 @@ package com.github.maximtereshchenko.bloom.domain;
 /**
  * 6xkk - LD Vx, byte. Set Vx = kk. The interpreter puts the value kk into register Vx.
  */
-final class SetRegisterValueOperation implements Operation {
+final class SetOperation implements Operation {
 
     private final HexadecimalSymbol registerName;
     private final UnsignedByte value;
 
-    SetRegisterValueOperation(HexadecimalSymbol registerName, UnsignedByte value) {
+    SetOperation(HexadecimalSymbol registerName, UnsignedByte value) {
         this.registerName = registerName;
         this.value = value;
     }

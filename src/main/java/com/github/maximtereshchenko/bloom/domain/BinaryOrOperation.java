@@ -5,9 +5,9 @@ package com.github.maximtereshchenko.bloom.domain;
  * A bitwise OR compares the corresponding bits from two values, and if either bit is 1, then the same bit in the result
  * is also 1. Otherwise, it is 0.
  */
-final class BinaryOrRegisterValuesOperation extends BinaryRegisterValueOperation {
+final class BinaryOrOperation extends BinaryOperation {
 
-    BinaryOrRegisterValuesOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    BinaryOrOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
         super(firstRegisterName, secondRegisterName);
     }
 

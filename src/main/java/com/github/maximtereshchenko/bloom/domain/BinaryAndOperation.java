@@ -5,9 +5,9 @@ package com.github.maximtereshchenko.bloom.domain;
  * Vx. A bitwise AND compares the corresponding bits from two values, and if both bits are 1, then the same bit in the
  * result is also 1. Otherwise, it is 0.
  */
-final class BinaryAndRegisterValuesOperation extends BinaryRegisterValueOperation {
+final class BinaryAndOperation extends BinaryOperation {
 
-    BinaryAndRegisterValuesOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    BinaryAndOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
         super(firstRegisterName, secondRegisterName);
     }
 

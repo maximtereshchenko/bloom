@@ -1,6 +1,6 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class AddToRegisterValueOperationFactory extends SimpleOperationFactory {
+final class AddOperationFactory extends SimpleOperationFactory {
 
     @Override
     boolean supports(OperationCode operationCode) {
@@ -9,7 +9,7 @@ final class AddToRegisterValueOperationFactory extends SimpleOperationFactory {
 
     @Override
     Operation supportedOperation(OperationCode operationCode) {
-        return new AddToRegisterValueOperation(
+        return new AddOperation(
             operationCode.middleLeftNibble(),
             new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
         );

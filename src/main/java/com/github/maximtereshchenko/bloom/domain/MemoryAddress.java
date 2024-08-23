@@ -2,6 +2,8 @@ package com.github.maximtereshchenko.bloom.domain;
 
 final class MemoryAddress {
 
+    private static final int PRIMITIVE_MAX = 0xFFF;
+
     private final short value;
 
     private MemoryAddress(short value) {
@@ -9,7 +11,7 @@ final class MemoryAddress {
     }
 
     static MemoryAddress from(int value) {
-        return new MemoryAddress((short) value);
+        return new MemoryAddress((short) (value & PRIMITIVE_MAX));
     }
 
     short primitive() {

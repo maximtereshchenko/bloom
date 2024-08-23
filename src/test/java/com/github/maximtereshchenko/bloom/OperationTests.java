@@ -410,4 +410,19 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenStore_thenRegistersUpToSpecifiedStoredInMemory() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "FF"),
+                new Set('1', "FF"),
+                new Set('2', "FF"),
+                new SetIndex(new MemoryAddress(6)),
+                new Store('1'),
+                new Display('3', '3', 3)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
 }

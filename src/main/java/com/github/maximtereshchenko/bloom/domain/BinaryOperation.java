@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-abstract class BinaryRegisterValueOperation implements Operation {
+abstract class BinaryOperation implements Operation {
 
     private final HexadecimalSymbol firstRegisterName;
     private final HexadecimalSymbol secondRegisterName;
 
-    BinaryRegisterValueOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    BinaryOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
         this.firstRegisterName = firstRegisterName;
         this.secondRegisterName = secondRegisterName;
     }

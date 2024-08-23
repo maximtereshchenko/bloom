@@ -5,9 +5,9 @@ package com.github.maximtereshchenko.bloom.domain;
  * result in Vx. An exclusive OR compares the corresponding bits from two values, and if the bits are not both the same,
  * then the corresponding bit in the result is set to 1. Otherwise, it is 0.
  */
-final class BinaryXorRegisterValuesOperation extends BinaryRegisterValueOperation {
+final class BinaryXorOperation extends BinaryOperation {
 
-    BinaryXorRegisterValuesOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    BinaryXorOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
         super(firstRegisterName, secondRegisterName);
     }
 

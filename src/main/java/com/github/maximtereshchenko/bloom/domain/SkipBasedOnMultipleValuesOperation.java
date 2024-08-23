@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-abstract class SkipBasedOnRegisterValuesOperation extends SkipConditionallyOperation {
+abstract class SkipBasedOnMultipleValuesOperation extends SkipConditionallyOperation {
 
     private final HexadecimalSymbol firstRegisterName;
     private final HexadecimalSymbol secondRegisterName;
 
-    SkipBasedOnRegisterValuesOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    SkipBasedOnMultipleValuesOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
         this.firstRegisterName = firstRegisterName;
         this.secondRegisterName = secondRegisterName;
     }

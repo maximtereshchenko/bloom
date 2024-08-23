@@ -5,9 +5,9 @@ package com.github.maximtereshchenko.bloom.domain;
  * greater than 8 bits (i.e., > 255) VF is set to 1, otherwise 0. Only the lowest 8 bits of the result are kept, and
  * stored in Vx.
  */
-final class SumRegisterValuesOperation extends ArithmeticRegisterValuesOperation {
+final class SumOperation extends ArithmeticOperation {
 
-    SumRegisterValuesOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    SumOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
         super(firstRegisterName, secondRegisterName);
     }
 

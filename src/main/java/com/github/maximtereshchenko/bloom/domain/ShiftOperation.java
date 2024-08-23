@@ -2,11 +2,11 @@ package com.github.maximtereshchenko.bloom.domain;
 
 import java.util.List;
 
-abstract class ShiftRegisterValueOperation implements Operation {
+abstract class ShiftOperation implements Operation {
 
     private final HexadecimalSymbol registerName;
 
-    ShiftRegisterValueOperation(HexadecimalSymbol registerName) {
+    ShiftOperation(HexadecimalSymbol registerName) {
         this.registerName = registerName;
     }
 

@@ -1,11 +1,11 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-abstract class ArithmeticRegisterValuesOperation implements Operation {
+abstract class ArithmeticOperation implements Operation {
 
     private final HexadecimalSymbol firstRegisterName;
     private final HexadecimalSymbol secondRegisterName;
 
-    ArithmeticRegisterValuesOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    ArithmeticOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
         this.firstRegisterName = firstRegisterName;
         this.secondRegisterName = secondRegisterName;
     }
