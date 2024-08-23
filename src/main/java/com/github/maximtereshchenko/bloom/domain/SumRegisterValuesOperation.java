@@ -5,25 +5,19 @@ package com.github.maximtereshchenko.bloom.domain;
  * greater than 8 bits (i.e., > 255) VF is set to 1, otherwise 0. Only the lowest 8 bits of the result are kept, and
  * stored in Vx.
  */
-final class SumRegisterValuesOperation implements Operation {
-
-    private final HexadecimalSymbol firstRegisterName;
-    private final HexadecimalSymbol secondRegisterName;
+final class SumRegisterValuesOperation extends ArithmeticRegisterValuesOperation {
 
     SumRegisterValuesOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
-        this.firstRegisterName = firstRegisterName;
-        this.secondRegisterName = secondRegisterName;
+        super(firstRegisterName, secondRegisterName);
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
-        var flagRegister = registers.flagRegister();
-        flagRegister.disable();
-        var register = registers.generalPurpose(firstRegisterName);
-        var sum = register.get().sum(registers.generalPurpose(secondRegisterName).get());
-        if (sum.compareTo(register.get()) < 0) {
-            flagRegister.enable();
-        }
-        register.set(sum);
+    boolean shouldEnableFlagRegister(Byte first, Byte second) {
+        return Byte.MAX.difference(first).compareTo(second) < 0;
+    }
+
+    @Override
+    Byte result(Byte first, Byte second) {
+        return first.sum(second);
     }
 }

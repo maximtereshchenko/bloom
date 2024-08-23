@@ -5,6 +5,8 @@ import java.util.Objects;
 final class Byte implements Comparable<Byte> {
 
     static final int LENGTH = 8;
+    private static final int PRIMITIVE_MAX = 0xFF;
+    static final Byte MAX = from(PRIMITIVE_MAX);
 
     private final int value;
 
@@ -17,7 +19,7 @@ final class Byte implements Comparable<Byte> {
     }
 
     static Byte from(int value) {
-        return new Byte(value & 0xFF);
+        return new Byte(value & PRIMITIVE_MAX);
     }
 
     static Byte from(String bits) {
