@@ -425,4 +425,19 @@ final class OperationTests {
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenLoad_thenRegistersUpToSpecifiedHaveValuesFromMemory() {
+        new Dsl()
+            .givenProgram(
+                new SetIndex(new MemoryAddress(4)),
+                new Load('1'),
+                new SetFontCharacter('2'),
+                new Display('0', '1', 5),
+                "0101",
+                "FF00"
+            )
+            .whenExecuteInstructions(4)
+            .thenOutputMatchesExpectation();
+    }
 }

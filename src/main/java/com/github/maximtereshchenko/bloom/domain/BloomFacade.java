@@ -40,7 +40,8 @@ public final class BloomFacade implements BloomModule {
             new SkipIfSingleRegisterValueEqualOperationFactory(),
             new SkipIfSingleRegisterValueNotEqualOperationFactory(),
             new ConvertToBinaryCodedDecimalOperationFactory(),
-            new StoreOperationFactory()
+            new StoreOperationFactory(),
+            new LoadOperationFactory()
         );
     }
 
