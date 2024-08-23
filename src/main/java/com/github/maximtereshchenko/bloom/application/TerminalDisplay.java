@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 final class TerminalDisplay {
 
+    private static final String HIDE_CURSOR = "\033[?25l";
     private static final String MOVE_CURSOR_34_LINES_UP = "\033[34F";
     private static final String BLACK_BACKGROUND = "\033[48;5;0m";
     private static final String WHITE_BACKGROUND = "\033[48;5;7m";
@@ -24,7 +25,9 @@ final class TerminalDisplay {
         if (Arrays.deepEquals(displayMask, previousDisplayMask)) {
             return;
         }
-        if (previousDisplayMask.length != 0) {
+        if (previousDisplayMask.length == 0) {
+            printStream.print(HIDE_CURSOR);
+        } else {
             printStream.print(MOVE_CURSOR_34_LINES_UP);
         }
         print(displayMask);

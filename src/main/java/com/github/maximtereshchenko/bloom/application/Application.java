@@ -14,16 +14,18 @@ final class Application {
 
     private final ExecuteNextInstructionUseCase useCase;
     private final TerminalDisplay display;
+    private final PrintStream printStream;
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
 
-    Application(ExecuteNextInstructionUseCase useCase, TerminalDisplay display) {
+    Application(ExecuteNextInstructionUseCase useCase, TerminalDisplay display, PrintStream printStream) {
         this.useCase = useCase;
         this.display = display;
+        this.printStream = printStream;
     }
 
     static Application from(PrintStream printStream, Path program) throws IOException {
         var module = new BloomFacade(Files.readAllBytes(program));
-        return new Application(module, new TerminalDisplay(printStream, module));
+        return new Application(module, new TerminalDisplay(printStream, module), printStream);
     }
 
     void start() {
@@ -40,10 +42,20 @@ final class Application {
 
     private void runAtFrequency(Runnable runnable, int hertz) {
         executorService.scheduleAtFixedRate(
-            runnable,
+            () -> printException(runnable),
             0,
             TimeUnit.SECONDS.toMicros(1) / hertz,
             TimeUnit.MICROSECONDS
         );
+    }
+
+    private void printException(Runnable runnable) {
+        try {
+            runnable.run();
+        } catch (Exception e) {
+            executorService.shutdown();
+            e.printStackTrace(printStream);
+            throw e;
+        }
     }
 }
