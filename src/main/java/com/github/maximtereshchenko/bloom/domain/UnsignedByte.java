@@ -83,6 +83,10 @@ final class UnsignedByte implements Comparable<UnsignedByte> {
         return from(value >> 1);
     }
 
+    UnsignedByte shiftedLeft() {
+        return from(value << 1);
+    }
+
     Iterator<UnsignedByte> rangeTo(UnsignedByte upperBound) {
         return IntStream.range(value, upperBound.value)
             .mapToObj(UnsignedByte::from)

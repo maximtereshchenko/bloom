@@ -1,6 +1,6 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class ShiftRightOperationFactory extends SimpleOperationFactory {
+final class ShiftRightRegisterValueOperationFactory extends SimpleOperationFactory {
 
     @Override
     boolean supports(OperationCode operationCode) {
