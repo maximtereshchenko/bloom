@@ -323,6 +323,48 @@ final class OperationTests {
     }
 
     @Test
+    void givenNegativeSubtract_thenRegisterHasNegativeDifference() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new Set('1', "03"),
+                new NegativeSubtract('0', '1'),
+                new SetFontCharacter('0'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenNegativeSubtract_thenFlagRegisterNotSet() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "02"),
+                new Set('1', "01"),
+                new NegativeSubtract('0', '1'),
+                new SetFontCharacter('F'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenNegativeSubtract_thenFlagRegisterSet() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new Set('1', "02"),
+                new NegativeSubtract('0', '1'),
+                new SetFontCharacter('F'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
     void givenShiftRight_thenRegisterHasValueShiftedOneBitRight() {
         new Dsl()
             .givenProgram(

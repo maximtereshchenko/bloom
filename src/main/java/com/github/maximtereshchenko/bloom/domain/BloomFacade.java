@@ -34,6 +34,7 @@ public final class BloomFacade implements BloomModule {
             new ShiftRightOperationFactory(),
             new ShiftLeftOperationFactory(),
             new SubtractOperationFactory(),
+            new NegativeSubtractOperationFactory(),
             new SumOperationFactory(),
             new SkipIfRegisterValuesEqualOperationFactory(),
             new SkipIfRegisterValuesNotEqualOperationFactory(),

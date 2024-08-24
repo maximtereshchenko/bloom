@@ -46,6 +46,11 @@ final class UnsignedByte implements Comparable<UnsignedByte> {
         return Integer.compare(value, other.value);
     }
 
+    @Override
+    public String toString() {
+        return hexadecimal().toString();
+    }
+
     Hexadecimal hexadecimal() {
         var string = "%02X".formatted(value);
         return new Hexadecimal(
