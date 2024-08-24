@@ -18,6 +18,10 @@ final class MemoryAddress {
         return value;
     }
 
+    MemoryAddress withOffset(UnsignedByte offset) {
+        return withOffset(offset.primitive());
+    }
+
     MemoryAddress withOffset(int offset) {
         return MemoryAddress.from(value + offset);
     }

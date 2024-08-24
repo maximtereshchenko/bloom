@@ -117,7 +117,7 @@ final class OperationTests {
     }
 
     @Test
-    void givenAddValueToRegister_thenRegisterHasSum() {
+    void givenAdd_thenRegisterHasSum() {
         new Dsl()
             .givenProgram(
                 new Set('0', "01"),
@@ -478,6 +478,20 @@ final class OperationTests {
                 new Display('0', '1', 5),
                 "0101",
                 "FF00"
+            )
+            .whenExecuteInstructions(4)
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenAddToIndex_thenIndexHasSum() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new SetIndex(new MemoryAddress(4)),
+                new AddToIndex('0'),
+                new Display('1', '1', 1),
+                "00FF"
             )
             .whenExecuteInstructions(4)
             .thenOutputMatchesExpectation();
