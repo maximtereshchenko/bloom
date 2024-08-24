@@ -12,7 +12,7 @@ final class SubtractOperation extends ArithmeticOperation {
 
     @Override
     boolean shouldEnableFlagRegister(UnsignedByte first, UnsignedByte second) {
-        return first.compareTo(second) > 0;
+        return first.compareTo(second) >= 0;
     }
 
     @Override

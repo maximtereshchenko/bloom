@@ -323,6 +323,20 @@ final class OperationTests {
     }
 
     @Test
+    void givenSubtractEqualNumbers_thenFlagRegisterSet() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new Set('1', "01"),
+                new Subtract('0', '1'),
+                new SetFontCharacter('F'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
     void givenNegativeSubtract_thenRegisterHasNegativeDifference() {
         new Dsl()
             .givenProgram(
@@ -356,6 +370,20 @@ final class OperationTests {
             .givenProgram(
                 new Set('0', "01"),
                 new Set('1', "02"),
+                new NegativeSubtract('0', '1'),
+                new SetFontCharacter('F'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenNegativeSubtractEqualNumbers_thenFlagRegisterSet() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new Set('1', "01"),
                 new NegativeSubtract('0', '1'),
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
