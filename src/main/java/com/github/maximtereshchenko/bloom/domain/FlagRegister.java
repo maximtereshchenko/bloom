@@ -17,16 +17,4 @@ final class FlagRegister implements Register<UnsignedByte> {
     void set(boolean value) {
         set(UnsignedByte.from(value ? 1 : 0));
     }
-
-    //TODO
-    @Deprecated
-    void disable() {
-        set(UnsignedByte.from(0));
-    }
-
-    //TODO
-    @Deprecated
-    void enable() {
-        set(UnsignedByte.from(1));
-    }
 }

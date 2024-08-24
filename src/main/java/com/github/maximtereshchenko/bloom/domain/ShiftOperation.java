@@ -14,12 +14,8 @@ abstract class ShiftOperation implements Operation {
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
         var register = registers.generalPurpose(registerName);
         var value = register.get();
-        var flagRegister = registers.flagRegister();
-        flagRegister.disable();
-        if (Boolean.TRUE.equals(bit(value.bits()))) {
-            flagRegister.enable();
-        }
         register.set(operation(value));
+        registers.flagRegister().set(Boolean.TRUE.equals(bit(value.bits())));
     }
 
     abstract Boolean bit(List<Boolean> bits);

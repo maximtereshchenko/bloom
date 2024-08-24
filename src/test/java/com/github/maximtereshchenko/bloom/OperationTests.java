@@ -473,6 +473,19 @@ final class OperationTests {
     }
 
     @Test
+    void givenShiftRightWithFlagRegister_thenFlagRegisterOverriddenWithShiftedBit() {
+        new Dsl()
+            .givenProgram(
+                new Set('F', "01"),
+                new ShiftRight('F'),
+                new SetFontCharacter('F'),
+                new Display('0', '0', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
     void givenShiftLeft_thenRegisterHasValueShiftedOneBitLeft() {
         new Dsl()
             .givenProgram(
@@ -505,6 +518,19 @@ final class OperationTests {
                 new ShiftLeft('0'),
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenShiftLeftWithFlagRegister_thenFlagRegisterOverriddenWithShiftedBit() {
+        new Dsl()
+            .givenProgram(
+                new Set('F', "80"),
+                new ShiftLeft('F'),
+                new SetFontCharacter('F'),
+                new Display('0', '0', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();

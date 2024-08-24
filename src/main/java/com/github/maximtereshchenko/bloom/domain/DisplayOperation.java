@@ -40,7 +40,7 @@ final class DisplayOperation implements Operation {
         UnsignedByte startRow,
         UnsignedByte startColumn
     ) {
-        flagRegister.disable();
+        flagRegister.set(false);
         var currentMemoryAddress = startMemoryAddress;
         for (var row : startRow.rangeTo(endRow(startRow))) {
             displayRow(flagRegister, display, row, startColumn, randomAccessMemory.get(currentMemoryAddress));
@@ -62,7 +62,7 @@ final class DisplayOperation implements Operation {
             if (Boolean.TRUE.equals(bitIterator.next())) {
                 display.flipPixel(row, column);
                 if (!display.isPixelEnabled(row, column)) {
-                    flagRegister.enable();
+                    flagRegister.set(true);
                 }
             }
         }

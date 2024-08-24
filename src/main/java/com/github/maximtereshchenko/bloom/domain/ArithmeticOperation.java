@@ -15,8 +15,8 @@ abstract class ArithmeticOperation implements Operation {
         var register = registers.generalPurpose(firstRegisterName);
         var first = register.get();
         var second = registers.generalPurpose(secondRegisterName).get();
-        registers.flagRegister().set(shouldEnableFlagRegister(first, second));
         register.set(result(first, second));
+        registers.flagRegister().set(shouldEnableFlagRegister(first, second));
     }
 
     abstract boolean shouldEnableFlagRegister(UnsignedByte first, UnsignedByte second);
