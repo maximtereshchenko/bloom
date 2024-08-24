@@ -12,14 +12,10 @@ abstract class ArithmeticOperation implements Operation {
 
     @Override
     public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
-        var flagRegister = registers.flagRegister();
-        flagRegister.disable();
         var register = registers.generalPurpose(firstRegisterName);
         var first = register.get();
         var second = registers.generalPurpose(secondRegisterName).get();
-        if (shouldEnableFlagRegister(first, second)) {
-            flagRegister.enable();
-        }
+        registers.flagRegister().set(shouldEnableFlagRegister(first, second));
         register.set(result(first, second));
     }
 

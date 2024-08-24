@@ -281,6 +281,20 @@ final class OperationTests {
     }
 
     @Test
+    void givenSumWithFlagRegister_thenRegisterHasSum() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new Set('F', "01"),
+                new Sum('0', 'F'),
+                new SetFontCharacter('0'),
+                new Display('1', '1', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
     void givenSubtract_thenRegisterHasDifference() {
         new Dsl()
             .givenProgram(
@@ -337,6 +351,20 @@ final class OperationTests {
     }
 
     @Test
+    void givenSubtractWithFlagRegister_thenRegisterHasDifference() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "02"),
+                new Set('F', "01"),
+                new Subtract('0', 'F'),
+                new SetFontCharacter('0'),
+                new Display('1', '1', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
     void givenNegativeSubtract_thenRegisterHasNegativeDifference() {
         new Dsl()
             .givenProgram(
@@ -387,6 +415,20 @@ final class OperationTests {
                 new NegativeSubtract('0', '1'),
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
+            )
+            .whenExecuteAllInstructions()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenNegativeSubtractWithFlagRegister_thenRegisterHasDifference() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new Set('F', "02"),
+                new NegativeSubtract('0', 'F'),
+                new SetFontCharacter('0'),
+                new Display('1', '1', 5)
             )
             .whenExecuteAllInstructions()
             .thenOutputMatchesExpectation();
