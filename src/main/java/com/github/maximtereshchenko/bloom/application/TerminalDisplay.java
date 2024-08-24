@@ -60,6 +60,10 @@ final class TerminalDisplay implements AutoCloseable {
                 }
                 printStream.print("  ");
             }
+            if (!isBackgroundBlack) {
+                printStream.print(BLACK_BACKGROUND);
+                isBackgroundBlack = true;
+            }
             printStream.print('|');
             printStream.print(System.lineSeparator());
             if (i == displayMask.length - 1) {

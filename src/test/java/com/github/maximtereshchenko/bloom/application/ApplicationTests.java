@@ -18,19 +18,24 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 final class ApplicationTests {
 
+    private static final String MOVE_CURSOR_34_LINES_UP = "\033[34F";
+
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     @ParameterizedTest
-    @ValueSource(strings = {"ibm-logo.ch8", "opcodes.ch8", "bc-test.ch8"})
+    @ValueSource(strings = {"1-chip8-logo.ch8", "2-ibm-logo.ch8", "3-opcodes.ch8"})
     void givenProgram_thenProgramExecutedSuccessfully(String program) throws Exception {
         try (var application = application(program)) {
             application.start();
 
-            await().atMost(Duration.ofSeconds(3)).untilAsserted(() -> {
+            await().atMost(Duration.ofSeconds(1)).untilAsserted(() -> {
                 var output = outputStream.toString(StandardCharsets.UTF_8);
-                var start = output.lastIndexOf("\033[34F");
+                var start = output.lastIndexOf(MOVE_CURSOR_34_LINES_UP);
                 assertNotEquals(-1, start);
-                verify(output.substring(start), ApprovalsOptions.withParameter(program));
+                verify(
+                    output.substring(start + MOVE_CURSOR_34_LINES_UP.length()),
+                    ApprovalsOptions.withParameter(program)
+                );
             });
         }
     }
