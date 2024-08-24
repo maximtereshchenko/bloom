@@ -2,6 +2,7 @@ package com.github.maximtereshchenko.bloom.application;
 
 import static org.approvaltests.Approvals.verify;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.github.maximtereshchenko.bloom.ApprovalsOptions;
 import java.io.ByteArrayOutputStream;
@@ -20,14 +21,16 @@ final class ApplicationTests {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     @ParameterizedTest
-    @ValueSource(strings = {"ibm-logo.ch8", "opcodes.ch8"})
+    @ValueSource(strings = {"ibm-logo.ch8", "opcodes.ch8", "bc-test.ch8"})
     void givenProgram_thenProgramExecutedSuccessfully(String program) throws Exception {
         try (var application = application(program)) {
             application.start();
 
             await().atMost(Duration.ofSeconds(3)).untilAsserted(() -> {
                 var output = outputStream.toString(StandardCharsets.UTF_8);
-                verify(output.substring(output.lastIndexOf("\033[34F")), ApprovalsOptions.withParameter(program));
+                var start = output.lastIndexOf("\033[34F");
+                assertNotEquals(-1, start);
+                verify(output.substring(start), ApprovalsOptions.withParameter(program));
             });
         }
     }
