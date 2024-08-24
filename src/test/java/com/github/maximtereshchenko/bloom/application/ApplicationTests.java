@@ -23,12 +23,12 @@ final class ApplicationTests {
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
     @ParameterizedTest
-    @ValueSource(strings = {"1-chip8-logo.ch8", "2-ibm-logo.ch8", "3-opcodes.ch8"})
+    @ValueSource(strings = {"1-chip8-logo.ch8", "2-ibm-logo.ch8", "3-opcodes.ch8", "4-flags.ch8"})
     void givenProgram_thenProgramExecutedSuccessfully(String program) throws Exception {
         try (var application = application(program)) {
             application.start();
 
-            await().atMost(Duration.ofSeconds(1)).untilAsserted(() -> {
+            await().atMost(Duration.ofSeconds(2)).untilAsserted(() -> {
                 var output = outputStream.toString(StandardCharsets.UTF_8);
                 var start = output.lastIndexOf(MOVE_CURSOR_34_LINES_UP);
                 assertNotEquals(-1, start);
