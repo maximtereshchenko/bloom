@@ -10,6 +10,7 @@ public final class BloomFacade implements BloomModule {
     private final Registers registers;
     private final RandomAccessMemory randomAccessMemory;
     private final Display display;
+    private final DelayTimer delayTimer;
     private final SoundTimer soundTimer;
     private final Set<OperationFactory> operationFactories;
 
@@ -17,9 +18,9 @@ public final class BloomFacade implements BloomModule {
         this.registers = new Registers();
         this.randomAccessMemory = RandomAccessMemory.withProgram(program);
         this.display = new Display();
+        this.delayTimer = new DelayTimer();
         this.soundTimer = new SoundTimer(sound);
         var stack = new Stack();
-        var delayTimer = new DelayTimer();
         this.operationFactories = Set.of(
             new SetFontCharacterOperationFactory(registers, randomAccessMemory),
             new DisplayOperationFactory(registers, randomAccessMemory, display),
@@ -75,6 +76,11 @@ public final class BloomFacade implements BloomModule {
     @Override
     public void decrementSoundTimer() {
         soundTimer.decrement();
+    }
+
+    @Override
+    public void decrementDelayTimer() {
+        delayTimer.decrement();
     }
 
     private OperationCode operationCode() {

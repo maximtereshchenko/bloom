@@ -1,16 +1,18 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 final class DelayTimer {
 
-    private final AtomicReference<UnsignedByte> reference = new AtomicReference<>(new UnsignedByte());
+    private UnsignedByte value = new UnsignedByte();
 
-    void set(UnsignedByte value) {
-        reference.set(value);
+    synchronized void set(UnsignedByte value) {
+        this.value = value;
     }
 
-    UnsignedByte get() {
-        return reference.get();
+    synchronized UnsignedByte get() {
+        return value;
+    }
+
+    synchronized void decrement() {
+        value = value.difference(UnsignedByte.from(1));
     }
 }

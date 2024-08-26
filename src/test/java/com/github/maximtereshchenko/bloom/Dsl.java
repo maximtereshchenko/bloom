@@ -4,7 +4,12 @@ import static org.approvaltests.Approvals.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
+import com.github.maximtereshchenko.bloom.api.DecrementSoundTimerUseCase;
+import com.github.maximtereshchenko.bloom.api.ExecuteNextOperationUseCase;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 import org.approvaltests.core.Options;
 import org.approvaltests.strings.Printable;
 
@@ -46,8 +51,7 @@ final class Dsl {
         }
 
         Result whenDecrementSoundTimer() {
-            module.decrementSoundTimer();
-            return new Result(module, sound);
+            return when(DecrementSoundTimerUseCase::decrementSoundTimer);
         }
 
         Result whenExecuteAllOperations() {
@@ -55,9 +59,20 @@ final class Dsl {
         }
 
         Result whenExecuteOperations(int count) {
-            for (var i = 0; i < count; i++) {
-                module.executeNextOperation();
-            }
+            return when(
+                Stream.<Consumer<BloomModule>>generate(() -> ExecuteNextOperationUseCase::executeNextOperation)
+                    .limit(count)
+                    .toList()
+            );
+        }
+
+        @SafeVarargs
+        final Result when(Consumer<BloomModule>... actions) {
+            return when(List.of(actions));
+        }
+
+        private Result when(List<Consumer<BloomModule>> actions) {
+            actions.forEach(action -> action.accept(module));
             return new Result(module, sound);
         }
     }

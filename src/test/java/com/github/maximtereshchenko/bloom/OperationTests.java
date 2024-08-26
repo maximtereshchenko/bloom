@@ -1,5 +1,7 @@
 package com.github.maximtereshchenko.bloom;
 
+import com.github.maximtereshchenko.bloom.api.DecrementDelayTimerUseCase;
+import com.github.maximtereshchenko.bloom.api.ExecuteNextOperationUseCase;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
@@ -697,5 +699,26 @@ final class OperationTests {
             )
             .whenDecrementSoundTimer()
             .thenSoundEnabled(false);
+    }
+
+    @Test
+    void givenDecrementDelayTimer_thenDelayTimerDecremented() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new SetDelayTimer('0'),
+                new ReadDelayTimer('1'),
+                new SetFontCharacter('1'),
+                new Display('2', '2', 5)
+            )
+            .when(
+                ExecuteNextOperationUseCase::executeNextOperation,
+                ExecuteNextOperationUseCase::executeNextOperation,
+                DecrementDelayTimerUseCase::decrementDelayTimer,
+                ExecuteNextOperationUseCase::executeNextOperation,
+                ExecuteNextOperationUseCase::executeNextOperation,
+                ExecuteNextOperationUseCase::executeNextOperation
+            )
+            .thenOutputMatchesExpectation();
     }
 }
