@@ -44,7 +44,8 @@ public final class BloomFacade implements BloomModule {
             new ConvertToBinaryCodedDecimalOperationFactory(registers, randomAccessMemory),
             new StoreOperationFactory(registers, randomAccessMemory),
             new LoadOperationFactory(registers, randomAccessMemory),
-            new AddToIndexOperationFactory(registers)
+            new AddToIndexOperationFactory(registers),
+            new GetKeyOperationFactory(registers, keypad)
         );
     }
 

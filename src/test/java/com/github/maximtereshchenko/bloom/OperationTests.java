@@ -191,11 +191,12 @@ final class OperationTests {
             .givenProgram(
                 new SetFontCharacter('0'),
                 new Set('1', "01"),
-                new SkipIfKeyPressed('0'),
+                new Set('2', "0F"),
+                new SkipIfKeyPressed('2'),
                 new SetFontCharacter('1'),//should be skipped
-                new Display('2', '2', 5)
+                new Display('0', '0', 5)
             )
-            .whenExecuteOperations(4)
+            .whenExecuteOperations(5)
             .thenOutputMatchesExpectation();
     }
 
@@ -233,6 +234,7 @@ final class OperationTests {
             .givenProgram(
                 new SetFontCharacter('0'),
                 new Set('1', "01"),
+                new Set('0', "0F"),
                 new SkipIfKeyNotPressed('0'),
                 new SetFontCharacter('1'),
                 new Display('2', '2', 5)
@@ -646,6 +648,18 @@ final class OperationTests {
                 "00FF"
             )
             .whenExecuteOperations(4)
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenGetKey_thenRegisterHasKey() {
+        new Dsl()
+            .givenProgram(
+                new GetKey('0'),
+                new SetFontCharacter('0'),
+                new Display('1', '1', 5)
+            )
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 }
