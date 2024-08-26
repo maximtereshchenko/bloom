@@ -1,15 +1,28 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class DisplayOperationFactory extends SimpleOperationFactory {
+final class DisplayOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+    private final RandomAccessMemory randomAccessMemory;
+    private final Display display;
+
+    DisplayOperationFactory(Registers registers, RandomAccessMemory randomAccessMemory, Display display) {
+        this.registers = registers;
+        this.randomAccessMemory = randomAccessMemory;
+        this.display = display;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.D;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
+    public Operation supportedOperation(OperationCode operationCode) {
         return new DisplayOperation(
+            registers,
+            randomAccessMemory,
+            display,
             operationCode.middleRightNibble(),
             operationCode.middleLeftNibble(),
             operationCode.lastNibble().numericValue()

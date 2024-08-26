@@ -1,16 +1,24 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class LoadOperationFactory extends SimpleOperationFactory {
+final class LoadOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+    private final RandomAccessMemory randomAccessMemory;
+
+    LoadOperationFactory(Registers registers, RandomAccessMemory randomAccessMemory) {
+        this.registers = registers;
+        this.randomAccessMemory = randomAccessMemory;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
             operationCode.middleRightNibble() == HexadecimalSymbol.SIX &&
             operationCode.lastNibble() == HexadecimalSymbol.FIVE;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
-        return new LoadOperation(operationCode.middleLeftNibble());
+    public Operation supportedOperation(OperationCode operationCode) {
+        return new LoadOperation(registers, randomAccessMemory, operationCode.middleLeftNibble());
     }
 }

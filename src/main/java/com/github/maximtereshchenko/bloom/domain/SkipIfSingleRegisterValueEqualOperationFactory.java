@@ -1,15 +1,22 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class SkipIfSingleRegisterValueEqualOperationFactory extends SimpleOperationFactory {
+final class SkipIfSingleRegisterValueEqualOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+
+    SkipIfSingleRegisterValueEqualOperationFactory(Registers registers) {
+        this.registers = registers;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.THREE;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
+    public Operation supportedOperation(OperationCode operationCode) {
         return new SkipIfSingleRegisterValueEqualOperation(
+            registers,
             operationCode.middleLeftNibble(),
             new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
         );

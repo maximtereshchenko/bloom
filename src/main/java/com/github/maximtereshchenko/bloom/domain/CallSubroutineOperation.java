@@ -6,14 +6,18 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class CallSubroutineOperation implements Operation {
 
+    private final Registers registers;
+    private final Stack stack;
     private final MemoryAddress memoryAddress;
 
-    CallSubroutineOperation(MemoryAddress memoryAddress) {
+    CallSubroutineOperation(Registers registers, Stack stack, MemoryAddress memoryAddress) {
+        this.registers = registers;
+        this.stack = stack;
         this.memoryAddress = memoryAddress;
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         var programCounter = registers.programCounter();
         stack.push(programCounter.get());
         programCounter.set(memoryAddress);

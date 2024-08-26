@@ -1,16 +1,28 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class ConvertToBinaryCodedDecimalOperationFactory extends SimpleOperationFactory {
+final class ConvertToBinaryCodedDecimalOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+    private final RandomAccessMemory randomAccessMemory;
+
+    ConvertToBinaryCodedDecimalOperationFactory(Registers registers, RandomAccessMemory randomAccessMemory) {
+        this.registers = registers;
+        this.randomAccessMemory = randomAccessMemory;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
             operationCode.middleRightNibble() == HexadecimalSymbol.THREE &&
             operationCode.lastNibble() == HexadecimalSymbol.THREE;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
-        return new ConvertToBinaryCodedDecimalOperation(operationCode.middleLeftNibble());
+    public Operation supportedOperation(OperationCode operationCode) {
+        return new ConvertToBinaryCodedDecimalOperation(
+            registers,
+            randomAccessMemory,
+            operationCode.middleLeftNibble()
+        );
     }
 }

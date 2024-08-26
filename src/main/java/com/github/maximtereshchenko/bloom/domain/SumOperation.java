@@ -7,8 +7,8 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class SumOperation extends ArithmeticOperation {
 
-    SumOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
-        super(firstRegisterName, secondRegisterName);
+    SumOperation(Registers registers, HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+        super(registers, firstRegisterName, secondRegisterName);
     }
 
     @Override

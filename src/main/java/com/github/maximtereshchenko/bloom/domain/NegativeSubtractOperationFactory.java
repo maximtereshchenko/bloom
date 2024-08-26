@@ -1,15 +1,25 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class NegativeSubtractOperationFactory extends SimpleOperationFactory {
+final class NegativeSubtractOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+
+    NegativeSubtractOperationFactory(Registers registers) {
+        this.registers = registers;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
             operationCode.lastNibble() == HexadecimalSymbol.SEVEN;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
-        return new NegativeSubtractOperation(operationCode.middleLeftNibble(), operationCode.middleRightNibble());
+    public Operation supportedOperation(OperationCode operationCode) {
+        return new NegativeSubtractOperation(
+            registers,
+            operationCode.middleLeftNibble(),
+            operationCode.middleRightNibble()
+        );
     }
 }

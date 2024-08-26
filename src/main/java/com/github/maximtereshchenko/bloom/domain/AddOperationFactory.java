@@ -1,15 +1,22 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class AddOperationFactory extends SimpleOperationFactory {
+final class AddOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+
+    AddOperationFactory(Registers registers) {
+        this.registers = registers;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.SEVEN;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
+    public Operation supportedOperation(OperationCode operationCode) {
         return new AddOperation(
+            registers,
             operationCode.middleLeftNibble(),
             new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
         );

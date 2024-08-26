@@ -6,12 +6,16 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 class SkipIfSingleRegisterValueNotEqualOperation extends SkipBasedOnSingleValueOperation {
 
-    SkipIfSingleRegisterValueNotEqualOperation(HexadecimalSymbol registerName, UnsignedByte value) {
-        super(registerName, value);
+    SkipIfSingleRegisterValueNotEqualOperation(
+        Registers registers,
+        HexadecimalSymbol registerName,
+        UnsignedByte value
+    ) {
+        super(registers, registerName, value);
     }
 
     @Override
-    boolean shouldSkip(Registers registers) {
-        return !registerValueEquals(registers);
+    boolean shouldSkip() {
+        return !registerValueEquals();
     }
 }

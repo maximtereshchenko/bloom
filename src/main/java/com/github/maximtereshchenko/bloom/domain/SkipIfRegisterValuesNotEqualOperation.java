@@ -6,12 +6,16 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 class SkipIfRegisterValuesNotEqualOperation extends SkipBasedOnMultipleValuesOperation {
 
-    SkipIfRegisterValuesNotEqualOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
-        super(firstRegisterName, secondRegisterName);
+    SkipIfRegisterValuesNotEqualOperation(
+        Registers registers,
+        HexadecimalSymbol firstRegisterName,
+        HexadecimalSymbol secondRegisterName
+    ) {
+        super(registers, firstRegisterName, secondRegisterName);
     }
 
     @Override
-    boolean shouldSkip(Registers registers) {
-        return !registerValuesEqual(registers);
+    boolean shouldSkip() {
+        return !registerValuesEqual();
     }
 }

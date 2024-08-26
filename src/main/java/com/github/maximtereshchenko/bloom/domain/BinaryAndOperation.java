@@ -7,8 +7,8 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class BinaryAndOperation extends BinaryOperation {
 
-    BinaryAndOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
-        super(firstRegisterName, secondRegisterName);
+    BinaryAndOperation(Registers registers, HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+        super(registers, firstRegisterName, secondRegisterName);
     }
 
     @Override

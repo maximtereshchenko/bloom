@@ -6,8 +6,8 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class SubtractOperation extends ArithmeticOperation {
 
-    SubtractOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
-        super(firstRegisterName, secondRegisterName);
+    SubtractOperation(Registers registers, HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+        super(registers, firstRegisterName, secondRegisterName);
     }
 
     @Override

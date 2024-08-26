@@ -7,8 +7,8 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class BinaryXorOperation extends BinaryOperation {
 
-    BinaryXorOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
-        super(firstRegisterName, secondRegisterName);
+    BinaryXorOperation(Registers registers, HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+        super(registers, firstRegisterName, secondRegisterName);
     }
 
     @Override

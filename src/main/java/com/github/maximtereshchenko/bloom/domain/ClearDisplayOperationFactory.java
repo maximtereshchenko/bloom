@@ -1,9 +1,15 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class ClearDisplayOperationFactory extends SimpleOperationFactory {
+final class ClearDisplayOperationFactory implements OperationFactory {
+
+    private final Display display;
+
+    ClearDisplayOperationFactory(Display display) {
+        this.display = display;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.ZERO &&
             operationCode.middleLeftNibble() == HexadecimalSymbol.ZERO &&
             operationCode.middleRightNibble() == HexadecimalSymbol.E &&
@@ -11,7 +17,7 @@ final class ClearDisplayOperationFactory extends SimpleOperationFactory {
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
-        return new ClearDisplayOperation();
+    public Operation supportedOperation(OperationCode operationCode) {
+        return new ClearDisplayOperation(display);
     }
 }

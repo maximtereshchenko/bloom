@@ -186,6 +186,20 @@ final class OperationTests {
     }
 
     @Test
+    void givenSkipIfKeyPressed_thenNextOperationSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new Set('1', "01"),
+                new SkipIfKeyPressed('0'),
+                new SetFontCharacter('1'),//should be skipped
+                new Display('2', '2', 5)
+            )
+            .whenExecuteOperations(4)
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
     void givenCopy_thenRegisterHasSameValue() {
         new Dsl()
             .givenProgram(

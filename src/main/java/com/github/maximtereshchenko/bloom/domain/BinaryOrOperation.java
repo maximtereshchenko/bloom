@@ -7,8 +7,8 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class BinaryOrOperation extends BinaryOperation {
 
-    BinaryOrOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
-        super(firstRegisterName, secondRegisterName);
+    BinaryOrOperation(Registers registers, HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+        super(registers, firstRegisterName, secondRegisterName);
     }
 
     @Override

@@ -10,51 +10,47 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class DisplayOperation implements Operation {
 
+    private final Registers registers;
+    private final RandomAccessMemory randomAccessMemory;
+    private final Display display;
     private final HexadecimalSymbol startRowRegister;
     private final HexadecimalSymbol startColumnRegister;
     private final UnsignedByte rows;
 
-    DisplayOperation(HexadecimalSymbol startRowRegister, HexadecimalSymbol startColumnRegister, UnsignedByte rows) {
+    DisplayOperation(
+        Registers registers,
+        RandomAccessMemory randomAccessMemory,
+        Display display,
+        HexadecimalSymbol startRowRegister,
+        HexadecimalSymbol startColumnRegister,
+        UnsignedByte rows
+    ) {
+        this.registers = registers;
+        this.randomAccessMemory = randomAccessMemory;
+        this.display = display;
         this.startRowRegister = startRowRegister;
         this.startColumnRegister = startColumnRegister;
         this.rows = rows;
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         display(
-            randomAccessMemory,
-            registers.flagRegister(),
-            display,
-            registers.index().get(),
             registers.generalPurpose(startRowRegister).get().moduloRemainder(Display.HEIGHT),
             registers.generalPurpose(startColumnRegister).get().moduloRemainder(Display.WIDTH)
         );
     }
 
-    private void display(
-        RandomAccessMemory randomAccessMemory,
-        FlagRegister flagRegister,
-        Display display,
-        MemoryAddress startMemoryAddress,
-        UnsignedByte startRow,
-        UnsignedByte startColumn
-    ) {
-        flagRegister.set(false);
-        var currentMemoryAddress = startMemoryAddress;
+    private void display(UnsignedByte startRow, UnsignedByte startColumn) {
+        registers.flagRegister().set(false);
+        var currentMemoryAddress = registers.index().get();
         for (var row : startRow.rangeTo(endRow(startRow))) {
-            displayRow(flagRegister, display, row, startColumn, randomAccessMemory.get(currentMemoryAddress));
+            displayRow(row, startColumn, randomAccessMemory.get(currentMemoryAddress));
             currentMemoryAddress = currentMemoryAddress.next();
         }
     }
 
-    private void displayRow(
-        FlagRegister flagRegister,
-        Display display,
-        UnsignedByte row,
-        UnsignedByte startColumn,
-        UnsignedByte value
-    ) {
+    private void displayRow(UnsignedByte row, UnsignedByte startColumn, UnsignedByte value) {
         var columnIterator = startColumn.rangeTo(Display.WIDTH).iterator();
         var bitIterator = value.bits().iterator();
         while (columnIterator.hasNext() && bitIterator.hasNext()) {
@@ -62,7 +58,7 @@ final class DisplayOperation implements Operation {
             if (Boolean.TRUE.equals(bitIterator.next())) {
                 display.flipPixel(row, column);
                 if (!display.isPixelEnabled(row, column)) {
-                    flagRegister.set(true);
+                    registers.flagRegister().set(true);
                 }
             }
         }

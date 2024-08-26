@@ -1,16 +1,23 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class BinaryXorOperationFactory extends SimpleOperationFactory {
+final class BinaryXorOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+
+    BinaryXorOperationFactory(Registers registers) {
+        this.registers = registers;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
             operationCode.lastNibble() == HexadecimalSymbol.THREE;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
+    public Operation supportedOperation(OperationCode operationCode) {
         return new BinaryXorOperation(
+            registers,
             operationCode.middleLeftNibble(),
             operationCode.middleRightNibble()
         );

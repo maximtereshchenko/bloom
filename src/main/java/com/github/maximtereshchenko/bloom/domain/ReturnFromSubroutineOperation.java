@@ -6,8 +6,16 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class ReturnFromSubroutineOperation implements Operation {
 
+    private final Registers registers;
+    private final Stack stack;
+
+    ReturnFromSubroutineOperation(Registers registers, Stack stack) {
+        this.registers = registers;
+        this.stack = stack;
+    }
+
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         registers.programCounter().set(stack.pick());
         stack.pop();
     }

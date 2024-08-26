@@ -6,14 +6,18 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class StoreOperation implements Operation {
 
+    private final Registers registers;
+    private final RandomAccessMemory randomAccessMemory;
     private final HexadecimalSymbol lastRegisterName;
 
-    StoreOperation(HexadecimalSymbol lastRegisterName) {
+    StoreOperation(Registers registers, RandomAccessMemory randomAccessMemory, HexadecimalSymbol lastRegisterName) {
+        this.registers = registers;
+        this.randomAccessMemory = randomAccessMemory;
         this.lastRegisterName = lastRegisterName;
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         var memoryAddress = registers.index().get();
         for (var registerName : HexadecimalSymbol.values()) {
             randomAccessMemory.set(memoryAddress, registers.generalPurpose(registerName).get());

@@ -8,8 +8,8 @@ import java.util.List;
  */
 final class ShiftLeftOperation extends ShiftOperation {
 
-    ShiftLeftOperation(HexadecimalSymbol registerName) {
-        super(registerName);
+    ShiftLeftOperation(Registers registers, HexadecimalSymbol registerName) {
+        super(registers, registerName);
     }
 
     @Override

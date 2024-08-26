@@ -6,8 +6,10 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class NegativeSubtractOperation extends ArithmeticOperation {
 
-    NegativeSubtractOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
-        super(firstRegisterName, secondRegisterName);
+    NegativeSubtractOperation(
+        Registers registers, HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName
+    ) {
+        super(registers, firstRegisterName, secondRegisterName);
     }
 
     @Override

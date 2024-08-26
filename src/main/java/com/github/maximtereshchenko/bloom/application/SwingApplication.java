@@ -34,7 +34,7 @@ final class SwingApplication extends JFrame implements AutoCloseable {
     }
 
     static SwingApplication from(Path path) throws IOException {
-        var module = new BloomFacade(Files.readAllBytes(path));
+        var module = new BloomFacade(Files.readAllBytes(path), null); //TODO keypad
         return new SwingApplication(module, SwingDisplay.from(module));
     }
 

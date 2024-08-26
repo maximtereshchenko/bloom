@@ -5,14 +5,16 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class AddToIndexOperation implements Operation {
 
+    private final Registers registers;
     private final HexadecimalSymbol registerName;
 
-    AddToIndexOperation(HexadecimalSymbol registerName) {
+    AddToIndexOperation(Registers registers, HexadecimalSymbol registerName) {
+        this.registers = registers;
         this.registerName = registerName;
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         var index = registers.index();
         index.set(index.get().withOffset(registers.generalPurpose(registerName).get()));
     }

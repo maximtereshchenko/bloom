@@ -37,7 +37,7 @@ enum HexadecimalSymbol {
         return UnsignedByte.from(Character.getNumericValue(primitive()));
     }
 
-    private char primitive() {
+    char primitive() {
         var ordinal = ordinal();
         if (ordinal <= 9) {
             return (char) ('0' + ordinal);

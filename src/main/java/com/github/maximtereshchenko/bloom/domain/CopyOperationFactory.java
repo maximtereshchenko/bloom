@@ -1,15 +1,21 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class CopyOperationFactory extends SimpleOperationFactory {
+final class CopyOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+
+    CopyOperationFactory(Registers registers) {
+        this.registers = registers;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
             operationCode.lastNibble() == HexadecimalSymbol.ZERO;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
-        return new CopyOperation(operationCode.middleRightNibble(), operationCode.middleLeftNibble());
+    public Operation supportedOperation(OperationCode operationCode) {
+        return new CopyOperation(registers, operationCode.middleRightNibble(), operationCode.middleLeftNibble());
     }
 }

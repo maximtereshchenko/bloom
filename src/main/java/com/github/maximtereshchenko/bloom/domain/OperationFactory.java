@@ -1,8 +1,8 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-import java.util.Optional;
-
 interface OperationFactory {
 
-    Optional<Operation> operation(OperationCode operationCode);
+    boolean supports(OperationCode operationCode);
+
+    Operation supportedOperation(OperationCode operationCode);
 }

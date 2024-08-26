@@ -4,14 +4,16 @@ import java.util.List;
 
 abstract class ShiftOperation implements Operation {
 
+    private final Registers registers;
     private final HexadecimalSymbol registerName;
 
-    ShiftOperation(HexadecimalSymbol registerName) {
+    ShiftOperation(Registers registers, HexadecimalSymbol registerName) {
+        this.registers = registers;
         this.registerName = registerName;
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         var register = registers.generalPurpose(registerName);
         var value = register.get();
         register.set(operation(value));

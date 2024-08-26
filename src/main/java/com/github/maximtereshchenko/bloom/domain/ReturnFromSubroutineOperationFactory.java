@@ -1,9 +1,17 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class ReturnFromSubroutineOperationFactory extends SimpleOperationFactory {
+final class ReturnFromSubroutineOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+    private final Stack stack;
+
+    ReturnFromSubroutineOperationFactory(Registers registers, Stack stack) {
+        this.registers = registers;
+        this.stack = stack;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.ZERO &&
             operationCode.middleLeftNibble() == HexadecimalSymbol.ZERO &&
             operationCode.middleRightNibble() == HexadecimalSymbol.E &&
@@ -11,7 +19,7 @@ final class ReturnFromSubroutineOperationFactory extends SimpleOperationFactory 
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
-        return new ReturnFromSubroutineOperation();
+    public Operation supportedOperation(OperationCode operationCode) {
+        return new ReturnFromSubroutineOperation(registers, stack);
     }
 }

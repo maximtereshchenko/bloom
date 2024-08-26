@@ -5,16 +5,18 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class CopyOperation implements Operation {
 
+    private final Registers registers;
     private final HexadecimalSymbol from;
     private final HexadecimalSymbol to;
 
-    CopyOperation(HexadecimalSymbol from, HexadecimalSymbol hexadecimalSymbol) {
+    CopyOperation(Registers registers, HexadecimalSymbol from, HexadecimalSymbol to) {
+        this.registers = registers;
         this.from = from;
-        to = hexadecimalSymbol;
+        this.to = to;
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         registers.generalPurpose(to).set(registers.generalPurpose(from).get());
     }
 }

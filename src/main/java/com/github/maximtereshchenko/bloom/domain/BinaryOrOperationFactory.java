@@ -1,15 +1,21 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class BinaryOrOperationFactory extends SimpleOperationFactory {
+final class BinaryOrOperationFactory implements OperationFactory {
+
+    private final Registers registers;
+
+    BinaryOrOperationFactory(Registers registers) {
+        this.registers = registers;
+    }
 
     @Override
-    boolean supports(OperationCode operationCode) {
+    public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
             operationCode.lastNibble() == HexadecimalSymbol.ONE;
     }
 
     @Override
-    Operation supportedOperation(OperationCode operationCode) {
-        return new BinaryOrOperation(operationCode.middleLeftNibble(), operationCode.middleRightNibble());
+    public Operation supportedOperation(OperationCode operationCode) {
+        return new BinaryOrOperation(registers, operationCode.middleLeftNibble(), operationCode.middleRightNibble());
     }
 }

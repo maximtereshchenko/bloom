@@ -2,16 +2,22 @@ package com.github.maximtereshchenko.bloom.domain;
 
 abstract class ArithmeticOperation implements Operation {
 
+    private final Registers registers;
     private final HexadecimalSymbol firstRegisterName;
     private final HexadecimalSymbol secondRegisterName;
 
-    ArithmeticOperation(HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    ArithmeticOperation(
+        Registers registers,
+        HexadecimalSymbol firstRegisterName,
+        HexadecimalSymbol secondRegisterName
+    ) {
+        this.registers = registers;
         this.firstRegisterName = firstRegisterName;
         this.secondRegisterName = secondRegisterName;
     }
 
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         var register = registers.generalPurpose(firstRegisterName);
         var first = register.get();
         var second = registers.generalPurpose(secondRegisterName).get();

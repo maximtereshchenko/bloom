@@ -5,8 +5,14 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class ClearDisplayOperation implements Operation {
 
+    private final Display display;
+
+    ClearDisplayOperation(Display display) {
+        this.display = display;
+    }
+
     @Override
-    public void execute(Registers registers, RandomAccessMemory randomAccessMemory, Stack stack, Display display) {
+    public void execute() {
         var zero = new UnsignedByte();
         for (var row : zero.rangeTo(Display.HEIGHT)) {
             for (var column : zero.rangeTo(Display.WIDTH)) {

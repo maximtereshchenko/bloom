@@ -10,7 +10,7 @@ import org.approvaltests.strings.Printable;
 final class Dsl {
 
     Execution givenProgram(Object... hexadecimalBytes) {
-        return new Execution(new BloomFacade(bytes(hexadecimalBytes)), hexadecimalBytes.length);
+        return new Execution(new BloomFacade(bytes(hexadecimalBytes), new FakeKeypad()), hexadecimalBytes.length);
     }
 
     private byte[] bytes(Object... hexadecimalBytes) {
