@@ -3,7 +3,6 @@ package com.github.maximtereshchenko.bloom;
 import com.spun.util.logger.SimpleLogger;
 import org.approvaltests.approvers.FileApprover;
 import org.approvaltests.core.Options;
-import org.approvaltests.reporters.Junit5Reporter;
 
 public final class ApprovalsOptions {
 
@@ -11,7 +10,7 @@ public final class ApprovalsOptions {
         SimpleLogger.logToString();
         FileApprover.tracker.addAllowedDuplicates(file -> true);
         return new Options()
-            .withReporter(new Junit5Reporter())
+            .withReporter(new AssertJReporter())
             .forFile()
             .withNamer(new ResourcesNamer());
     }

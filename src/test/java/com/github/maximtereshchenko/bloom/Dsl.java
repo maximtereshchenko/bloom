@@ -4,36 +4,13 @@ import static org.approvaltests.Approvals.verify;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Objects;
 import org.approvaltests.core.Options;
 import org.approvaltests.strings.Printable;
 
 final class Dsl {
 
-    Execution givenProgram(String name) throws URISyntaxException, IOException {
-        var bytes = Files.readAllBytes(
-            Path.of(
-                Objects.requireNonNull(
-                        Thread.currentThread()
-                            .getContextClassLoader()
-                            .getResource(name)
-                    )
-                    .toURI()
-            )
-        );
-        return givenProgram(bytes, bytes.length / 2);
-    }
-
     Execution givenProgram(Object... hexadecimalBytes) {
-        return givenProgram(bytes(hexadecimalBytes), hexadecimalBytes.length);
-    }
-
-    private Execution givenProgram(byte[] bytes, int approximateInstructionCount) {
-        return new Execution(new BloomFacade(bytes), approximateInstructionCount);
+        return new Execution(new BloomFacade(bytes(hexadecimalBytes)), hexadecimalBytes.length);
     }
 
     private byte[] bytes(Object... hexadecimalBytes) {
@@ -53,20 +30,20 @@ final class Dsl {
     static final class Execution {
 
         private final BloomModule module;
-        private final int approximateInstructionCount;
+        private final int approximateOperationCount;
 
-        private Execution(BloomModule module, int approximateInstructionCount) {
+        private Execution(BloomModule module, int approximateOperationCount) {
             this.module = module;
-            this.approximateInstructionCount = approximateInstructionCount;
+            this.approximateOperationCount = approximateOperationCount;
         }
 
-        Result whenExecuteAllInstructions() {
-            return whenExecuteInstructions(approximateInstructionCount);
+        Result whenExecuteAllOperations() {
+            return whenExecuteOperations(approximateOperationCount);
         }
 
-        Result whenExecuteInstructions(int count) {
+        Result whenExecuteOperations(int count) {
             for (var i = 0; i < count; i++) {
-                module.executeNextInstruction();
+                module.executeNextOperation();
             }
             return new Result(module);
         }

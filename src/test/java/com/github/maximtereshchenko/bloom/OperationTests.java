@@ -35,7 +35,7 @@ final class OperationTests {
                 new SetFontCharacter('1'),
                 new Display('0', '0', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation(character);
     }
 
@@ -47,7 +47,7 @@ final class OperationTests {
                 new Display('0', '0', 5),
                 new Display('0', '0', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -60,7 +60,7 @@ final class OperationTests {
                 new SetFontCharacter('1'),
                 new Display('0', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation(row);
     }
 
@@ -73,7 +73,7 @@ final class OperationTests {
                 new SetFontCharacter('1'),
                 new Display('1', '0', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation(column);
     }
 
@@ -86,7 +86,7 @@ final class OperationTests {
                 new Display('0', '0', 5),
                 new Display('F', 'F', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -98,12 +98,12 @@ final class OperationTests {
                 new Display('0', '0', 5),
                 new ClearDisplay()
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
     @Test
-    void givenJump_thenInstructionSkipped() {
+    void givenJump_thenOperationSkipped() {
         new Dsl()
             .givenProgram(
                 new Set('1', "01"),
@@ -112,7 +112,7 @@ final class OperationTests {
                 new SetFontCharacter('1'),//should be skipped
                 new Display('0', '0', 5)
             )
-            .whenExecuteInstructions(4)
+            .whenExecuteOperations(4)
             .thenOutputMatchesExpectation();
     }
 
@@ -125,7 +125,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -137,7 +137,7 @@ final class OperationTests {
                 new Display('0', '0', 2),
                 "FFFF"
             )
-            .whenExecuteInstructions(2)
+            .whenExecuteOperations(2)
             .thenOutputMatchesExpectation();
     }
 
@@ -150,38 +150,38 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new ReturnFromSubroutine()
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
     @ParameterizedTest
     @MethodSource("skipConditionallyOperations")
-    void givenSkipConditionally_thenNextInstructionSkipped(Object instruction) {
+    void givenSkipConditionally_thenNextOperationSkipped(Object operation) {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
                 new Set('2', "01"),
-                instruction,
+                operation,
                 new SetFontCharacter('2'),//should be skipped
                 new Display('0', '0', 5)
             )
-            .whenExecuteInstructions(4)
+            .whenExecuteOperations(4)
             .thenOutputMatchesExpectation();
     }
 
     @ParameterizedTest
     @MethodSource("skipConditionallyOperations")
-    void givenSkipConditionally_thenNextInstructionNotSkipped(Object instruction) {
+    void givenSkipConditionally_thenNextOperationNotSkipped(Object operation) {
         new Dsl()
             .givenProgram(
                 new SetFontCharacter('0'),
                 new Set('2', "01"),
                 new Set('0', "01"),
-                instruction,
+                operation,
                 new SetFontCharacter('2'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -194,7 +194,7 @@ final class OperationTests {
                 new SetFontCharacter('1'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -208,7 +208,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -222,7 +222,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -236,7 +236,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -250,7 +250,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -262,7 +262,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('0', '0', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -276,7 +276,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -290,7 +290,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -304,7 +304,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -318,7 +318,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -332,7 +332,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -346,7 +346,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -360,7 +360,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -374,7 +374,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -388,7 +388,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -402,7 +402,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -416,7 +416,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('2', '2', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -430,7 +430,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -443,7 +443,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -456,7 +456,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -468,7 +468,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -481,7 +481,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('0', '0', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -494,7 +494,7 @@ final class OperationTests {
                 new SetFontCharacter('0'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -507,7 +507,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -519,7 +519,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -532,7 +532,7 @@ final class OperationTests {
                 new SetFontCharacter('F'),
                 new Display('0', '0', 5)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -545,7 +545,7 @@ final class OperationTests {
                 new ConvertToBinaryCodedDecimal('0'),
                 new Display('1', '1', 3)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -560,7 +560,7 @@ final class OperationTests {
                 new Store('1'),
                 new Display('3', '3', 3)
             )
-            .whenExecuteAllInstructions()
+            .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
 
@@ -575,7 +575,7 @@ final class OperationTests {
                 "0101",
                 "FF00"
             )
-            .whenExecuteInstructions(4)
+            .whenExecuteOperations(4)
             .thenOutputMatchesExpectation();
     }
 
@@ -589,7 +589,7 @@ final class OperationTests {
                 new Display('1', '1', 1),
                 "00FF"
             )
-            .whenExecuteInstructions(4)
+            .whenExecuteOperations(4)
             .thenOutputMatchesExpectation();
     }
 }

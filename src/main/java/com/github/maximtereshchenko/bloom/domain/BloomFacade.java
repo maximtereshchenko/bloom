@@ -48,7 +48,7 @@ public final class BloomFacade implements BloomModule {
     }
 
     @Override
-    public void executeNextInstruction() {
+    public void executeNextOperation() {
         var operationCode = operationCode();
         operationFactories.stream()
             .map(operationFactory -> operationFactory.operation(operationCode))
