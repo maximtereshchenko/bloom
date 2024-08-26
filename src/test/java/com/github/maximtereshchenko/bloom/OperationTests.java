@@ -662,4 +662,18 @@ final class OperationTests {
             .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenSetDelayTimer_thenDelayTimerHasSetValue() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "0F"),
+                new SetDelayTimer('0'),
+                new ReadDelayTimer('1'),
+                new SetFontCharacter('1'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllOperations()
+            .thenOutputMatchesExpectation();
+    }
 }

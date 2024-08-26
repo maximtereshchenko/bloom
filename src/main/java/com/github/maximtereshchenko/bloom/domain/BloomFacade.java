@@ -16,6 +16,7 @@ public final class BloomFacade implements BloomModule {
         this.randomAccessMemory = RandomAccessMemory.withProgram(program);
         this.display = new Display();
         var stack = new Stack();
+        var delayTimer = new DelayTimer();
         this.operationFactories = Set.of(
             new SetFontCharacterOperationFactory(registers, randomAccessMemory),
             new DisplayOperationFactory(registers, randomAccessMemory, display),
@@ -45,7 +46,9 @@ public final class BloomFacade implements BloomModule {
             new StoreOperationFactory(registers, randomAccessMemory),
             new LoadOperationFactory(registers, randomAccessMemory),
             new AddToIndexOperationFactory(registers),
-            new GetKeyOperationFactory(registers, keypad)
+            new GetKeyOperationFactory(registers, keypad),
+            new SetDelayTimerOperationFactory(registers, delayTimer),
+            new ReadDelayTimerOperationFactory(registers, delayTimer)
         );
     }
 
