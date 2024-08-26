@@ -40,6 +40,7 @@ public final class BloomFacade implements BloomModule {
             new SkipIfSingleRegisterValueEqualOperationFactory(registers),
             new SkipIfSingleRegisterValueNotEqualOperationFactory(registers),
             new SkipIfKeyPressedOperationFactory(registers, keypad),
+            new SkipIfKeyNotPressedOperationFactory(registers, keypad),
             new ConvertToBinaryCodedDecimalOperationFactory(registers, randomAccessMemory),
             new StoreOperationFactory(registers, randomAccessMemory),
             new LoadOperationFactory(registers, randomAccessMemory),

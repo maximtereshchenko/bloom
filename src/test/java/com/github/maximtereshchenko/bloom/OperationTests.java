@@ -200,6 +200,48 @@ final class OperationTests {
     }
 
     @Test
+    void givenSkipIfKeyPressed_thenNextOperationNotSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new Set('1', "01"),
+                new SkipIfKeyPressed('1'),
+                new SetFontCharacter('1'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllOperations()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSkipIfKeyNotPressed_thenNextOperationSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new Set('1', "01"),
+                new SkipIfKeyNotPressed('1'),
+                new SetFontCharacter('1'),//should be skipped
+                new Display('2', '2', 5)
+            )
+            .whenExecuteOperations(4)
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenSkipIfKeyNotPressed_thenNextOperationNotSkipped() {
+        new Dsl()
+            .givenProgram(
+                new SetFontCharacter('0'),
+                new Set('1', "01"),
+                new SkipIfKeyNotPressed('0'),
+                new SetFontCharacter('1'),
+                new Display('2', '2', 5)
+            )
+            .whenExecuteAllOperations()
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
     void givenCopy_thenRegisterHasSameValue() {
         new Dsl()
             .givenProgram(
