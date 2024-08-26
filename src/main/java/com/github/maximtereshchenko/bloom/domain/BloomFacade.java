@@ -2,6 +2,7 @@ package com.github.maximtereshchenko.bloom.domain;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
 import com.github.maximtereshchenko.bloom.api.port.Keypad;
+import com.github.maximtereshchenko.bloom.api.port.Sound;
 import java.util.Set;
 
 public final class BloomFacade implements BloomModule {
@@ -9,12 +10,14 @@ public final class BloomFacade implements BloomModule {
     private final Registers registers;
     private final RandomAccessMemory randomAccessMemory;
     private final Display display;
+    private final SoundTimer soundTimer;
     private final Set<OperationFactory> operationFactories;
 
-    public BloomFacade(byte[] program, Keypad keypad) {
+    public BloomFacade(byte[] program, Keypad keypad, Sound sound) {
         this.registers = new Registers();
         this.randomAccessMemory = RandomAccessMemory.withProgram(program);
         this.display = new Display();
+        this.soundTimer = new SoundTimer(sound);
         var stack = new Stack();
         var delayTimer = new DelayTimer();
         this.operationFactories = Set.of(
@@ -48,7 +51,8 @@ public final class BloomFacade implements BloomModule {
             new AddToIndexOperationFactory(registers),
             new GetKeyOperationFactory(registers, keypad),
             new SetDelayTimerOperationFactory(registers, delayTimer),
-            new ReadDelayTimerOperationFactory(registers, delayTimer)
+            new ReadDelayTimerOperationFactory(registers, delayTimer),
+            new SetSoundTimerOperationFactory(registers, soundTimer)
         );
     }
 
@@ -66,6 +70,11 @@ public final class BloomFacade implements BloomModule {
     @Override
     public boolean[][] displayMask() {
         return display.mask();
+    }
+
+    @Override
+    public void decrementSoundTimer() {
+        soundTimer.decrement();
     }
 
     private OperationCode operationCode() {

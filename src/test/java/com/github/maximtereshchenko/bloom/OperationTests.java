@@ -676,4 +676,26 @@ final class OperationTests {
             .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
     }
+
+    @Test
+    void givenSetSoundTimer_thenSoundEnabled() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "FF"),
+                new SetSoundTimer('0')
+            )
+            .whenExecuteAllOperations()
+            .thenSoundEnabled();
+    }
+
+    @Test
+    void givenDecrementSoundTimer_thenSoundDisabled() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "01"),
+                new SetSoundTimer('0')
+            )
+            .whenDecrementSoundTimer()
+            .thenSoundEnabled(false);
+    }
 }
