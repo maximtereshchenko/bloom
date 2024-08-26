@@ -2,7 +2,7 @@ package com.github.maximtereshchenko.bloom.domain;
 
 final class GeneralPurposeRegister implements Register<UnsignedByte> {
 
-    private UnsignedByte value = new UnsignedByte();
+    private UnsignedByte value = UnsignedByte.ZERO;
 
     @Override
     public UnsignedByte get() {

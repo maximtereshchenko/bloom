@@ -9,12 +9,12 @@ final class SoundTimer {
 
     SoundTimer(Sound sound) {
         this.sound = sound;
-        this.value = new UnsignedByte();
+        this.value = UnsignedByte.ZERO;
     }
 
     synchronized void set(UnsignedByte value) {
         this.value = value;
-        if (this.value.compareTo(new UnsignedByte()) > 0) {
+        if (this.value.compareTo(UnsignedByte.ZERO) > 0) {
             sound.enable();
         }
     }

@@ -26,7 +26,7 @@ final class RandomAccessMemory {
     UnsignedByte get(MemoryAddress memoryAddress) {
         var value = bytes[memoryAddress.primitive()];
         if (value == null) {
-            return new UnsignedByte();
+            return UnsignedByte.ZERO;
         }
         return value;
     }

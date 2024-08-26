@@ -2,7 +2,7 @@ package com.github.maximtereshchenko.bloom.domain;
 
 final class DelayTimer {
 
-    private UnsignedByte value = new UnsignedByte();
+    private UnsignedByte value = UnsignedByte.ZERO;
 
     synchronized void set(UnsignedByte value) {
         this.value = value;

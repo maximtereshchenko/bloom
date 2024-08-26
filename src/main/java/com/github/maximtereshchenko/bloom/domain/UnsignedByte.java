@@ -8,15 +8,12 @@ final class UnsignedByte implements Comparable<UnsignedByte> {
 
     private static final int PRIMITIVE_MAX = 0xFF;
     static final UnsignedByte MAX = from(PRIMITIVE_MAX);
+    static final UnsignedByte ZERO = from(0);
 
     private final int value;
 
     private UnsignedByte(int value) {
         this.value = value;
-    }
-
-    UnsignedByte() {
-        this(0);
     }
 
     static UnsignedByte from(int value) {

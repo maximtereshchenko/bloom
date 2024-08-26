@@ -13,9 +13,8 @@ final class ClearDisplayOperation implements Operation {
 
     @Override
     public void execute() {
-        var zero = new UnsignedByte();
-        for (var row : zero.rangeTo(Display.HEIGHT)) {
-            for (var column : zero.rangeTo(Display.WIDTH)) {
+        for (var row : UnsignedByte.ZERO.rangeTo(Display.HEIGHT)) {
+            for (var column : UnsignedByte.ZERO.rangeTo(Display.WIDTH)) {
                 if (display.isPixelEnabled(row, column)) {
                     display.flipPixel(row, column);
                 }
