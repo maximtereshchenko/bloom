@@ -1,18 +1,14 @@
 package com.github.maximtereshchenko.bloom.domain;
 
-final class DelayTimer {
+final class DelayTimer extends Timer {
 
-    private UnsignedByte value = UnsignedByte.ZERO;
-
-    synchronized void set(UnsignedByte value) {
-        this.value = value;
+    @Override
+    void onCountDownStart(UnsignedByte start) {
+        //empty
     }
 
-    synchronized UnsignedByte get() {
-        return value;
-    }
-
-    synchronized void decrement() {
-        value = value.difference(UnsignedByte.from(1));
+    @Override
+    void onCountDownEnd() {
+        //empty
     }
 }

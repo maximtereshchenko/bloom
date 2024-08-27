@@ -1,6 +1,7 @@
 package com.github.maximtereshchenko.bloom;
 
 import com.github.maximtereshchenko.bloom.api.DecrementDelayTimerUseCase;
+import com.github.maximtereshchenko.bloom.api.DecrementSoundTimerUseCase;
 import com.github.maximtereshchenko.bloom.api.ExecuteNextOperationUseCase;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,11 @@ final class TimerTests {
                 new Set('0', "01"),
                 new SetSoundTimer('0')
             )
-            .whenDecrementSoundTimer()
+            .when(
+                ExecuteNextOperationUseCase::executeNextOperation,
+                ExecuteNextOperationUseCase::executeNextOperation,
+                DecrementSoundTimerUseCase::decrementSoundTimer
+            )
             .thenSoundEnabled(false);
     }
 
@@ -30,6 +35,23 @@ final class TimerTests {
             .when(
                 ExecuteNextOperationUseCase::executeNextOperation,
                 ExecuteNextOperationUseCase::executeNextOperation,
+                DecrementDelayTimerUseCase::decrementDelayTimer,
+                ExecuteNextOperationUseCase::executeNextOperation,
+                ExecuteNextOperationUseCase::executeNextOperation,
+                ExecuteNextOperationUseCase::executeNextOperation
+            )
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
+    void givenDecrementDelayTimer_thenDelayTimerNotOverflowed() {
+        new Dsl()
+            .givenProgram(
+                new ReadDelayTimer('0'),
+                new SetFontCharacter('0'),
+                new Display('1', '1', 5)
+            )
+            .when(
                 DecrementDelayTimerUseCase::decrementDelayTimer,
                 ExecuteNextOperationUseCase::executeNextOperation,
                 ExecuteNextOperationUseCase::executeNextOperation,

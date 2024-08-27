@@ -4,7 +4,6 @@ import static org.approvaltests.Approvals.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
-import com.github.maximtereshchenko.bloom.api.DecrementSoundTimerUseCase;
 import com.github.maximtereshchenko.bloom.api.ExecuteNextOperationUseCase;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
 import java.util.List;
@@ -48,10 +47,6 @@ final class Dsl {
             this.module = module;
             this.sound = sound;
             this.approximateOperationCount = approximateOperationCount;
-        }
-
-        Result whenDecrementSoundTimer() {
-            return when(DecrementSoundTimerUseCase::decrementSoundTimer);
         }
 
         Result whenExecuteAllOperations() {
