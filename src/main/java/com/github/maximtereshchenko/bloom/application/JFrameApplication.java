@@ -4,13 +4,13 @@ import com.github.maximtereshchenko.bloom.api.BloomModule;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.sound.sampled.LineListener;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
@@ -32,9 +32,14 @@ final class JFrameApplication extends JFrame implements AutoCloseable {
         addKeyListener(keypad);
     }
 
-    static JFrameApplication from(Path path) throws IOException {
+    static JFrameApplication from(Path path) throws Exception {
+        return from(path, event -> {
+        });
+    }
+
+    static JFrameApplication from(Path path, LineListener lineListener) throws Exception {
         var keypad = new KeyListenerKeypad();
-        var module = new BloomFacade(Files.readAllBytes(path), keypad, null); //TODO sound
+        var module = new BloomFacade(Files.readAllBytes(path), keypad, ClipSound.configured(lineListener));
         return new JFrameApplication(module, JPanelDisplay.from(module), keypad);
     }
 

@@ -9,6 +9,9 @@ abstract class Timer {
         if (this.value.compareTo(UnsignedByte.ZERO) > 0) {
             onCountDownStart(this.value);
         }
+        if (value.equals(UnsignedByte.ZERO)) {
+            onCountDownEnd();
+        }
     }
 
     synchronized UnsignedByte get() {

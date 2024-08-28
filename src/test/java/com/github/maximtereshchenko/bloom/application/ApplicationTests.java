@@ -1,13 +1,12 @@
 package com.github.maximtereshchenko.bloom.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.github.maximtereshchenko.bloom.ApprovalsOptions;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
@@ -15,8 +14,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import javax.sound.sampled.LineEvent.Type;
+import javax.sound.sampled.LineListener;
 import javax.swing.SwingUtilities;
 import org.approvaltests.Approvals;
 import org.approvaltests.writers.ComponentApprovalWriter;
@@ -147,23 +149,29 @@ import org.junit.jupiter.params.provider.MethodSource;
  *             </li>
  *         </ul>
  *     </li>
+ *     <li>
+ *         7-beep.ch8 - this test allows you to test if your buzzer is working. It will beep SOS in morse code and
+ *         flash a speaker icon on the display in the same pattern. If you press the CHIP-8 button B it will give
+ *         you manual control over the buzzer. Press B to beep.
+ *     </li>
  * </ul>
  */
 final class ApplicationTests {
 
     private static Stream<Arguments> programs() {
         return Stream.of(
-            arguments("1-chip8-logo.ch8", List.of()),
-            arguments("2-ibm-logo.ch8", List.of()),
-            arguments("3-opcodes.ch8", List.of()),
-            arguments("4-flags.ch8", List.of()),
+            arguments("1-chip8-logo.ch8", List.of(), false),
+            arguments("2-ibm-logo.ch8", List.of(), false),
+            arguments("3-opcodes.ch8", List.of(), false),
+            arguments("4-flags.ch8", List.of(), false),
             arguments(
                 "6-keypad.ch8",
                 List.of(
                     keyEvent(KeyEvent.KEY_PRESSED, '1'),
                     keyEvent(KeyEvent.KEY_RELEASED, '1'),
                     keyEvent(KeyEvent.KEY_PRESSED, '1')
-                )
+                ),
+                false
             ),
             arguments(
                 "6-keypad.ch8",
@@ -171,7 +179,8 @@ final class ApplicationTests {
                     keyEvent(KeyEvent.KEY_PRESSED, '2'),
                     keyEvent(KeyEvent.KEY_RELEASED, '2'),
                     keyEvent(KeyEvent.KEY_PRESSED, '1')
-                )
+                ),
+                false
             ),
             arguments(
                 "6-keypad.ch8",
@@ -180,7 +189,23 @@ final class ApplicationTests {
                     keyEvent(KeyEvent.KEY_RELEASED, '3'),
                     keyEvent(KeyEvent.KEY_PRESSED, '1'),
                     keyEvent(KeyEvent.KEY_RELEASED, '1')
-                )
+                ),
+                false
+            ),
+            arguments(
+                "7-beep.ch8",
+                List.of(
+                    keyEvent(KeyEvent.KEY_PRESSED, 'c')
+                ),
+                true
+            ),
+            arguments(
+                "7-beep.ch8",
+                List.of(
+                    keyEvent(KeyEvent.KEY_PRESSED, 'c'),
+                    keyEvent(KeyEvent.KEY_RELEASED, 'c')
+                ),
+                false
             )
         );
     }
@@ -201,18 +226,21 @@ final class ApplicationTests {
     void givenProgram_thenProgramExecutedSuccessfully(
         String program,
         List<Function<Component, KeyEvent>> keys,
+        boolean expectedSoundEnabled,
         ArgumentsAccessor argumentsAccessor
-    )
-        throws Exception {
-        try (var application = application(program)) {
+    ) throws Exception {
+        var isSoundEnabled = new AtomicBoolean(false);
+        try (var application = application(program, event -> isSoundEnabled.set(event.getType() == Type.START))) {
             application.start();
             pressKeys(application, keys);
-            await().atMost(Duration.ofSeconds(2)).untilAsserted(() ->
-                Approvals.verify(
-                    new ComponentApprovalWriter(application.getContentPane()),
-                    ApprovalsOptions.defaultConfiguration(
-                        program, String.valueOf(argumentsAccessor.getInvocationIndex()))
-                )
+            await().atMost(Duration.ofSeconds(2)).untilAsserted(() -> {
+                    Approvals.verify(
+                        new ComponentApprovalWriter(application.getContentPane()),
+                        ApprovalsOptions.defaultConfiguration(
+                            program, String.valueOf(argumentsAccessor.getInvocationIndex()))
+                    );
+                    assertThat(isSoundEnabled.get()).isEqualTo(expectedSoundEnabled);
+                }
             );
         }
     }
@@ -233,7 +261,7 @@ final class ApplicationTests {
         }
     }
 
-    private JFrameApplication application(String program) throws URISyntaxException, IOException {
+    private JFrameApplication application(String program, LineListener lineListener) throws Exception {
         return JFrameApplication.from(
             Path.of(
                 Objects.requireNonNull(
@@ -242,7 +270,8 @@ final class ApplicationTests {
                             .getResource(program)
                     )
                     .toURI()
-            )
+            ),
+            lineListener
         );
     }
 }
