@@ -9,7 +9,6 @@ import com.github.maximtereshchenko.bloom.domain.BloomFacade;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-import org.approvaltests.core.Options;
 import org.approvaltests.strings.Printable;
 
 final class Dsl {
@@ -90,10 +89,6 @@ final class Dsl {
             assertThat(sound.isEnabled()).isEqualTo(expected);
         }
 
-        void thenOutputMatchesExpectation() {
-            thenOutputMatchesExpectation(ApprovalsOptions.defaultConfiguration());
-        }
-
         void thenOutputMatchesExpectation(char parameter) {
             thenOutputMatchesExpectation(String.valueOf(parameter));
         }
@@ -102,12 +97,11 @@ final class Dsl {
             thenOutputMatchesExpectation(String.valueOf(parameter));
         }
 
-        private void thenOutputMatchesExpectation(String parameter) {
-            thenOutputMatchesExpectation(ApprovalsOptions.withParameter(parameter));
-        }
-
-        private void thenOutputMatchesExpectation(Options options) {
-            verify(new Printable<>(module.displayMask(), this::toString), options);
+        void thenOutputMatchesExpectation(String... parameters) {
+            verify(
+                new Printable<>(module.displayMask(), this::toString),
+                ApprovalsOptions.defaultConfiguration(parameters)
+            );
         }
 
         private String toString(boolean[][] displayMask) {

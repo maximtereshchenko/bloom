@@ -1,8 +1,7 @@
 package com.github.maximtereshchenko.bloom.application;
 
-import com.github.maximtereshchenko.bloom.api.ExecuteNextOperationUseCase;
+import com.github.maximtereshchenko.bloom.api.BloomModule;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
-import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
@@ -15,27 +14,28 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-final class SwingApplication extends JFrame implements AutoCloseable {
+final class JFrameApplication extends JFrame implements AutoCloseable {
 
-    private final ExecuteNextOperationUseCase useCase;
-    private final SwingDisplay display;
+    private final BloomModule module;
+    private final JPanelDisplay display;
     private final ScheduledExecutorService executorService;
 
-    private SwingApplication(ExecuteNextOperationUseCase useCase, SwingDisplay display) {
-        this.useCase = useCase;
+    private JFrameApplication(BloomModule module, JPanelDisplay display, KeyListenerKeypad keypad) {
+        this.module = module;
         this.display = display;
-        this.executorService = Executors.newScheduledThreadPool(2);
+        this.executorService = Executors.newScheduledThreadPool(4);
         setTitle("Bloom - CHIP-8 interpreter");
-        setExtendedState(Frame.MAXIMIZED_BOTH);
         getContentPane().add(display);
         pack();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new CleanUp(executorService));
+        addKeyListener(keypad);
     }
 
-    static SwingApplication from(Path path) throws IOException {
-        var module = new BloomFacade(Files.readAllBytes(path), null, null); //TODO keypad sound
-        return new SwingApplication(module, SwingDisplay.from(module));
+    static JFrameApplication from(Path path) throws IOException {
+        var keypad = new KeyListenerKeypad();
+        var module = new BloomFacade(Files.readAllBytes(path), keypad, null); //TODO sound
+        return new JFrameApplication(module, JPanelDisplay.from(module), keypad);
     }
 
     @Override
@@ -44,13 +44,15 @@ final class SwingApplication extends JFrame implements AutoCloseable {
     }
 
     void start() {
-        runAtFrequency(new ExecuteNextOperationTask(useCase), 700);
+        runAtFrequency(new FunctionalTask(module::executeNextOperation), 700);
+        runAtFrequency(new FunctionalTask(module::decrementDelayTimer), 60);
+        runAtFrequency(new FunctionalTask(module::decrementSoundTimer), 60);
         runAtFrequency(new RepaintTask(display), 60);
     }
 
-    private void runAtFrequency(Runnable runnable, int hertz) {
+    private void runAtFrequency(LoggingTask task, int hertz) {
         executorService.scheduleAtFixedRate(
-            runnable,
+            task,
             0,
             TimeUnit.SECONDS.toMicros(1) / hertz,
             TimeUnit.MICROSECONDS
@@ -69,7 +71,7 @@ final class SwingApplication extends JFrame implements AutoCloseable {
         public void windowClosing(WindowEvent e) {
             try {
                 executorService.shutdown();
-                if (!executorService.awaitTermination(10, TimeUnit.SECONDS)) {
+                if (!executorService.awaitTermination(1, TimeUnit.SECONDS)) {
                     executorService.shutdownNow();
                 }
             } catch (InterruptedException ex) {

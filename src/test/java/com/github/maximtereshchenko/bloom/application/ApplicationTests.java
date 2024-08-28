@@ -1,17 +1,29 @@
 package com.github.maximtereshchenko.bloom.application;
 
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import com.github.maximtereshchenko.bloom.ApprovalsOptions;
+import java.awt.Component;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.stream.Stream;
+import javax.swing.SwingUtilities;
 import org.approvaltests.Approvals;
 import org.approvaltests.writers.ComponentApprovalWriter;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * <ul>
@@ -120,26 +132,109 @@ import org.junit.jupiter.params.provider.ValueSource;
  *         The last row checks that the opcode Fx1E (i += vX) properly adds the value of register vX to the index
  *         register, first for a regular register and then when using vF as the vX input register.
  *     </li>
+ *     <li>
+ *         6-keypad.ch8 - this test allows you to test all three CHIP-8 key input opcodes.
+ *         <ul>
+ *             <li>Ex9E DOWN - in the test, when you press a key, the corresponding value lights up on the screen.</li>
+ *             <li>
+ *                 ExA1 UP - in the test, when you are not pressing a key, the corresponding value lights up
+ *                 on the screen.
+ *             </li>
+ *             <li>
+ *                 Fx0A GETKEY - the test asks you to press a key on the CHIP-8 keypad. When you do,
+ *                 it checks for two issues that are easy to accidentally introduce when implementing this opcode.
+ *                 If all is well, you should be seeing a checkmark and "all good" on the screen.
+ *             </li>
+ *         </ul>
+ *     </li>
  * </ul>
  */
 final class ApplicationTests {
 
+    private static Stream<Arguments> programs() {
+        return Stream.of(
+            arguments("1-chip8-logo.ch8", List.of()),
+            arguments("2-ibm-logo.ch8", List.of()),
+            arguments("3-opcodes.ch8", List.of()),
+            arguments("4-flags.ch8", List.of()),
+            arguments(
+                "6-keypad.ch8",
+                List.of(
+                    keyEvent(KeyEvent.KEY_PRESSED, '1'),
+                    keyEvent(KeyEvent.KEY_RELEASED, '1'),
+                    keyEvent(KeyEvent.KEY_PRESSED, '1')
+                )
+            ),
+            arguments(
+                "6-keypad.ch8",
+                List.of(
+                    keyEvent(KeyEvent.KEY_PRESSED, '2'),
+                    keyEvent(KeyEvent.KEY_RELEASED, '2'),
+                    keyEvent(KeyEvent.KEY_PRESSED, '1')
+                )
+            ),
+            arguments(
+                "6-keypad.ch8",
+                List.of(
+                    keyEvent(KeyEvent.KEY_PRESSED, '3'),
+                    keyEvent(KeyEvent.KEY_RELEASED, '3'),
+                    keyEvent(KeyEvent.KEY_PRESSED, '1'),
+                    keyEvent(KeyEvent.KEY_RELEASED, '1')
+                )
+            )
+        );
+    }
+
+    private static Function<Component, KeyEvent> keyEvent(int id, char keyChar) {
+        return source -> new KeyEvent(
+            source,
+            id,
+            Instant.now().getEpochSecond(),
+            0,
+            Character.toUpperCase(keyChar),
+            keyChar
+        );
+    }
+
     @ParameterizedTest
-    @ValueSource(strings = {"1-chip8-logo.ch8", "2-ibm-logo.ch8", "3-opcodes.ch8", "4-flags.ch8"})
-    void givenProgram_thenProgramExecutedSuccessfully(String program) throws Exception {
+    @MethodSource("programs")
+    void givenProgram_thenProgramExecutedSuccessfully(
+        String program,
+        List<Function<Component, KeyEvent>> keys,
+        ArgumentsAccessor argumentsAccessor
+    )
+        throws Exception {
         try (var application = application(program)) {
             application.start();
+            pressKeys(application, keys);
             await().atMost(Duration.ofSeconds(2)).untilAsserted(() ->
                 Approvals.verify(
                     new ComponentApprovalWriter(application.getContentPane()),
-                    ApprovalsOptions.withParameter(program)
+                    ApprovalsOptions.defaultConfiguration(
+                        program, String.valueOf(argumentsAccessor.getInvocationIndex()))
                 )
             );
         }
     }
 
-    private SwingApplication application(String program) throws URISyntaxException, IOException {
-        return SwingApplication.from(
+    private void pressKeys(JFrameApplication application, List<Function<Component, KeyEvent>> keys) {
+        if (!keys.isEmpty()) {
+            SwingUtilities.invokeLater(() -> application.setVisible(true));
+        }
+        try (var executorService = Executors.newScheduledThreadPool(1)) {
+            for (int i = 0; i < keys.size(); i++) {
+                var keyEvent = keys.get(i).apply(application);
+                executorService.schedule(
+                    () -> SwingUtilities.invokeLater(() -> application.dispatchEvent(keyEvent)),
+                    i,
+                    TimeUnit.SECONDS
+                );
+            }
+        }
+    }
+
+    private JFrameApplication application(String program) throws URISyntaxException, IOException {
+        return JFrameApplication.from(
             Path.of(
                 Objects.requireNonNull(
                         Thread.currentThread()

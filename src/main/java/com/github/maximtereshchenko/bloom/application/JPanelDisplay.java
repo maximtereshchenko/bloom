@@ -6,22 +6,22 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
-final class SwingDisplay extends JPanel {
+final class JPanelDisplay extends JPanel {
 
     private final DisplayMaskUseCase useCase;
 
-    private SwingDisplay(DisplayMaskUseCase useCase, Dimension preferredSize) {
+    private JPanelDisplay(DisplayMaskUseCase useCase, Dimension preferredSize) {
         this.useCase = useCase;
         setPreferredSize(preferredSize);
     }
 
-    static SwingDisplay from(DisplayMaskUseCase useCase) {
+    static JPanelDisplay from(DisplayMaskUseCase useCase) {
         var displayMask = useCase.displayMask();
-        return new SwingDisplay(
+        return new JPanelDisplay(
             useCase,
             new Dimension(
-                displayMask.length > 0 ? displayMask[0].length : 0,
-                displayMask.length
+                displayMask.length > 0 ? displayMask[0].length * 10 : 0,
+                displayMask.length * 10
             )
         );
     }

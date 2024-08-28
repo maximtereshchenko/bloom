@@ -30,7 +30,7 @@ final class ResourcesNamer implements ApprovalNamer {
     }
 
     @Override
-    public ApprovalNamer addAdditionalInformation(String info) {
+    public ResourcesNamer addAdditionalInformation(String info) {
         return new ResourcesNamer(delegate.addAdditionalInformation(info));
     }
 

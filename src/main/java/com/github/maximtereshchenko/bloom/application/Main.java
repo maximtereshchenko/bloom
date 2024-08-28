@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 final class Main {
 
     public static void main(String[] args) throws IOException {
-        var application = SwingApplication.from(Paths.get(args[0]));
+        var application = JFrameApplication.from(Paths.get(args[0]));
         application.start();
         SwingUtilities.invokeLater(() -> application.setVisible(true));
     }

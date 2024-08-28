@@ -6,16 +6,16 @@ import org.approvaltests.core.Options;
 
 public final class ApprovalsOptions {
 
-    public static Options defaultConfiguration() {
+    public static Options defaultConfiguration(String... parameters) {
         SimpleLogger.logToString();
         FileApprover.tracker.addAllowedDuplicates(file -> true);
+        var namer = new ResourcesNamer();
+        for (var parameter : parameters) {
+            namer = namer.addAdditionalInformation(parameter);
+        }
         return new Options()
             .withReporter(new AssertJReporter())
             .forFile()
-            .withNamer(new ResourcesNamer());
-    }
-
-    public static Options withParameter(String parameter) {
-        return defaultConfiguration().forFile().withAdditionalInformation(parameter);
+            .withNamer(namer);
     }
 }
