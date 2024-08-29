@@ -6,11 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.atomic.AtomicReference;
 
 final class JPanelDisplay extends JPanel implements Display {
 
     private final BlockingQueue<boolean[][]> queue = new SynchronousQueue<>();
-    private boolean[][] previousMask = new boolean[0][0];
+    private final AtomicReference<boolean[][]> maskReference =
+        new AtomicReference<>(new boolean[0][0]);
 
     JPanelDisplay() {
         setPreferredSize(new Dimension(640, 320));
@@ -27,16 +29,7 @@ final class JPanelDisplay extends JPanel implements Display {
 
     @Override
     protected void paintComponent(Graphics graphics) {
-        var mask = queue.poll();
-        if (mask == null) {
-            paint(graphics, previousMask);
-        } else {
-            paint(graphics, mask);
-            previousMask = mask;
-        }
-    }
-
-    private void paint(Graphics graphics, boolean[][] mask) {
+        var mask = maskReference.get();
         if (mask.length == 0) {
             return;
         }
@@ -53,5 +46,14 @@ final class JPanelDisplay extends JPanel implements Display {
                 );
             }
         }
+    }
+
+    void update() {
+        var mask = queue.poll();
+        if (mask == null) {
+            return;
+        }
+        maskReference.set(mask);
+        SwingUtilities.invokeLater(this::repaint);
     }
 }

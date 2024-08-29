@@ -14,7 +14,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -140,7 +139,41 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  *         vX input register.
  *     </li>
  *     <li>
- *         6-keypad.ch8 - this test allows you to test all three CHIP-8 key input opcodes.
+ *         5-quirks - The screen shows you if the following quirks are detected as active ("on",
+ *         "off" or an error) and if that matches your chosen target platform (a checkmark or a
+ *         cross).
+ *         <ul>
+ *             <li>
+ *                 vF reset - The AND, OR and XOR opcodes (8xy1, 8xy2 and 8xy3) reset the flags
+ *                 register to zero. Test will show ERR1 if the AND and OR tests don't behave the
+ *                 same and ERR2 if the AND and XOR tests don't behave the same.
+ *             </li>
+ *             <li>
+ *                 Memory - The save and load opcodes (Fx55 and Fx65) increment the index
+ *                 register. Test will show ERR1 if reading and writing don't behave the same.
+ *             </li>
+ *             <li>
+ *                 Display wait - Drawing sprites to the display waits for the vertical blank
+ *                 interrupt, limiting their speed to max 60 sprites per second.
+ *             </li>
+ *             <li>
+ *                 Clipping - Sprites drawn at the bottom edge of the screen get clipped instead
+ *                 of wrapping around to the top of the screen. This also tests that sprites
+ *                 drawn at coordinates of x > 63 and/or y > 31 wrap around to x % 64 and y % 32.
+ *             </li>
+ *             <li>
+ *                 Shifting - The shift opcodes (8xy6 and 8xyE) only operate on vX instead of
+ *                 storing the shifted version of vY in vX.
+ *             </li>
+ *             <li>
+ *                 Jumping - The "jump to some address plus v0" instruction (Bnnn) doesn't use
+ *                 v0, but vX instead where X is the highest nibble of nnn.
+ *             </li>
+ *         </ul>
+ *         Note that you need timer support for this test to run.
+ *     </li>
+ *     <li>
+ *         6-keypad- this test allows you to test all three CHIP-8 key input opcodes.
  *         <ul>
  *             <li>
  *                 Ex9E DOWN - in the test, when you press a key, the corresponding value lights
@@ -160,7 +193,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  *         </ul>
  *     </li>
  *     <li>
- *         7-beep.ch8 - this test allows you to test if your buzzer is working. It will beep SOS
+ *         7-beep - this test allows you to test if your buzzer is working. It will beep SOS
  *         in morse code and flash a speaker icon on the display in the same pattern. If you
  *         press the CHIP-8 button B it will give you manual control over the buzzer. Press B to
  *         beep.
@@ -175,6 +208,14 @@ final class ApplicationTests {
             arguments("2-ibm-logo.ch8", List.of(), false),
             arguments("3-opcodes.ch8", List.of(), false),
             arguments("4-flags.ch8", List.of(), false),
+            arguments(
+                "5-quirks.ch8",
+                List.of(
+                    keyEvent(KeyEvent.KEY_PRESSED, '1'),
+                    keyEvent(KeyEvent.KEY_RELEASED, '1')
+                ),
+                false
+            ),
             arguments(
                 "6-keypad.ch8",
                 List.of(
@@ -247,7 +288,7 @@ final class ApplicationTests {
         )) {
             application.start();
             pressKeys(application, keys);
-            await().atMost(Duration.ofSeconds(15)).untilAsserted(() -> {
+            await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
                     Approvals.verify(
                         new ComponentApprovalWriter(application.getContentPane()),
                         ApprovalsOptions.defaultConfiguration(

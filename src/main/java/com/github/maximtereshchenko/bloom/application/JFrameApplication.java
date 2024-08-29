@@ -61,7 +61,7 @@ final class JFrameApplication extends JFrame implements AutoCloseable {
         runAtFrequency(new FunctionalTask(module::executeNextOperation), 700);
         runAtFrequency(new FunctionalTask(module::decrementDelayTimer), 60);
         runAtFrequency(new FunctionalTask(module::decrementSoundTimer), 60);
-        runAtFrequency(new RepaintTask(display), 60);
+        runAtFrequency(new DisplayUpdateTask(display), 60);
     }
 
     private void runAtFrequency(LoggingTask task, int hertz) {
