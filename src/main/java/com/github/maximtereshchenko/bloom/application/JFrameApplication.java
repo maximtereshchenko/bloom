@@ -7,8 +7,13 @@ import javax.sound.sampled.LineListener;
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,16 +37,16 @@ final class JFrameApplication extends JFrame implements AutoCloseable {
         addKeyListener(keypad);
     }
 
-    static JFrameApplication from(Path path) throws Exception {
-        return from(path, event -> {});
+    static JFrameApplication from(String location) throws Exception {
+        return from(location, event -> {});
     }
 
-    static JFrameApplication from(Path path, LineListener lineListener) throws Exception {
+    static JFrameApplication from(String location, LineListener lineListener) throws Exception {
         var keypad = new KeyListenerKeypad();
         var display = new JPanelDisplay();
         return new JFrameApplication(
             new BloomFacade(
-                Files.readAllBytes(path),
+                program(location),
                 display,
                 keypad,
                 ClipSound.configured(lineListener),
@@ -50,6 +55,31 @@ final class JFrameApplication extends JFrame implements AutoCloseable {
             display,
             keypad
         );
+    }
+
+    private static byte[] program(String location) throws IOException, InterruptedException {
+        try {
+            return Files.readAllBytes(Paths.get(location));
+        } catch (IOException e) {
+            return program(URI.create(location));
+        }
+    }
+
+    private static byte[] program(URI uri) throws IOException, InterruptedException {
+        try (var httpClient = httpClient()) {
+            return httpClient.send(
+                    HttpRequest.newBuilder()
+                        .GET()
+                        .uri(uri)
+                        .build(),
+                    HttpResponse.BodyHandlers.ofByteArray()
+                )
+                .body();
+        }
+    }
+
+    private static HttpClient httpClient() {
+        return HttpClient.newBuilder().followRedirects(HttpClient.Redirect.ALWAYS).build();
     }
 
     @Override

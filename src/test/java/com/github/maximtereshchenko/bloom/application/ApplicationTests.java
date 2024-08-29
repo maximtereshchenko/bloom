@@ -1,6 +1,8 @@
 package com.github.maximtereshchenko.bloom.application;
 
 import com.github.maximtereshchenko.bloom.ApprovalsOptions;
+import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
+import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.approvaltests.Approvals;
 import org.approvaltests.writers.ComponentApprovalWriter;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,11 +11,14 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.sound.sampled.LineEvent.Type;
-import javax.sound.sampled.LineListener;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
@@ -21,8 +26,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -200,16 +207,17 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
  *     </li>
  * </ul>
  */
+@WireMockTest
 final class ApplicationTests {
 
     private static Stream<Arguments> programs() {
         return Stream.of(
-            arguments("1-chip8-logo.ch8", List.of(), false),
-            arguments("2-ibm-logo.ch8", List.of(), false),
-            arguments("3-opcodes.ch8", List.of(), false),
-            arguments("4-flags.ch8", List.of(), false),
+            arguments(file("1-chip8-logo.ch8"), List.of(), false),
+            arguments(file("2-ibm-logo.ch8"), List.of(), false),
+            arguments(file("3-opcodes.ch8"), List.of(), false),
+            arguments(file("4-flags.ch8"), List.of(), false),
             arguments(
-                "5-quirks.ch8",
+                file("5-quirks.ch8"),
                 List.of(
                     keyEvent(KeyEvent.KEY_PRESSED, '1'),
                     keyEvent(KeyEvent.KEY_RELEASED, '1')
@@ -217,7 +225,7 @@ final class ApplicationTests {
                 false
             ),
             arguments(
-                "6-keypad.ch8",
+                file("6-keypad.ch8"),
                 List.of(
                     keyEvent(KeyEvent.KEY_PRESSED, '1'),
                     keyEvent(KeyEvent.KEY_RELEASED, '1'),
@@ -226,7 +234,7 @@ final class ApplicationTests {
                 false
             ),
             arguments(
-                "6-keypad.ch8",
+                file("6-keypad.ch8"),
                 List.of(
                     keyEvent(KeyEvent.KEY_PRESSED, '2'),
                     keyEvent(KeyEvent.KEY_RELEASED, '2'),
@@ -235,7 +243,7 @@ final class ApplicationTests {
                 false
             ),
             arguments(
-                "6-keypad.ch8",
+                file("6-keypad.ch8"),
                 List.of(
                     keyEvent(KeyEvent.KEY_PRESSED, '3'),
                     keyEvent(KeyEvent.KEY_RELEASED, '3'),
@@ -245,21 +253,56 @@ final class ApplicationTests {
                 false
             ),
             arguments(
-                "7-beep.ch8",
+                file("7-beep.ch8"),
                 List.of(
                     keyEvent(KeyEvent.KEY_PRESSED, 'c')
                 ),
                 true
             ),
             arguments(
-                "7-beep.ch8",
+                file("7-beep.ch8"),
                 List.of(
                     keyEvent(KeyEvent.KEY_PRESSED, 'c'),
                     keyEvent(KeyEvent.KEY_RELEASED, 'c')
                 ),
                 false
-            )
+            ),
+            arguments(link("1-chip8-logo.ch8"), List.of(), false)
         );
+    }
+
+    private static UnaryOperator<String> file(String name) {
+        return baseUrl -> path(name);
+    }
+
+    private static String path(String name) {
+        try {
+            return Paths.get(
+                    Objects.requireNonNull(
+                            Thread.currentThread()
+                                .getContextClassLoader()
+                                .getResource(name)
+                        )
+                        .toURI()
+                )
+                .toString();
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private static UnaryOperator<String> link(String name) {
+        return baseUrl -> {
+            try {
+                stubFor(
+                    get("/" + name)
+                        .willReturn(ok().withBody(Files.readAllBytes(Paths.get(path(name)))))
+                );
+                return baseUrl + '/' + name;
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        };
     }
 
     private static Function<Component, KeyEvent> keyEvent(int id, char keyChar) {
@@ -276,23 +319,29 @@ final class ApplicationTests {
     @ParameterizedTest
     @MethodSource("programs")
     void givenProgram_thenProgramExecutedSuccessfully(
-        String program,
+        UnaryOperator<String> locationFunction,
         List<Function<Component, KeyEvent>> keys,
         boolean expectedSoundEnabled,
-        ArgumentsAccessor argumentsAccessor
+        ArgumentsAccessor argumentsAccessor,
+        WireMockRuntimeInfo wireMockRuntimeInfo
     ) throws Exception {
+        var location = locationFunction.apply(wireMockRuntimeInfo.getHttpBaseUrl());
         var isSoundEnabled = new AtomicBoolean(false);
-        try (var application = application(
-            program,
-            event -> isSoundEnabled.set(event.getType() == Type.START)
-        )) {
+        try (
+            var application = JFrameApplication.from(
+                location,
+                event -> isSoundEnabled.set(event.getType() == Type.START)
+            )
+        ) {
             application.start();
             pressKeys(application, keys);
             await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
                     Approvals.verify(
                         new ComponentApprovalWriter(application.getContentPane()),
                         ApprovalsOptions.defaultConfiguration(
-                            program, String.valueOf(argumentsAccessor.getInvocationIndex()))
+                            location.substring(location.lastIndexOf('/') + 1),
+                            String.valueOf(argumentsAccessor.getInvocationIndex())
+                        )
                     );
                     assertThat(isSoundEnabled.get()).isEqualTo(expectedSoundEnabled);
                 }
@@ -317,20 +366,5 @@ final class ApplicationTests {
                 );
             }
         }
-    }
-
-    private JFrameApplication application(String program, LineListener lineListener)
-        throws Exception {
-        return JFrameApplication.from(
-            Path.of(
-                Objects.requireNonNull(
-                        Thread.currentThread()
-                            .getContextClassLoader()
-                            .getResource(program)
-                    )
-                    .toURI()
-            ),
-            lineListener
-        );
     }
 }

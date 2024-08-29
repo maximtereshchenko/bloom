@@ -7,8 +7,6 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineListener;
 import java.io.BufferedInputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Objects;
 
 final class ClipSound implements Sound {
@@ -22,15 +20,10 @@ final class ClipSound implements Sound {
     static Sound configured(LineListener lineListener) throws Exception {
         var audioStream = AudioSystem.getAudioInputStream(
             new BufferedInputStream(
-                Files.newInputStream(
-                    Paths.get(
-                        Objects.requireNonNull(
-                                Thread.currentThread()
-                                    .getContextClassLoader()
-                                    .getResource("beep.wave")
-                            )
-                            .toURI()
-                    )
+                Objects.requireNonNull(
+                    Thread.currentThread()
+                        .getContextClassLoader()
+                        .getResourceAsStream("beep.wave")
                 )
             )
         );
