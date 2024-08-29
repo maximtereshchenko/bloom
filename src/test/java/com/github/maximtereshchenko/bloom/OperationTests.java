@@ -27,11 +27,11 @@ final class OperationTests {
     }
 
     static Stream<Object> binaryLogicalOperations() {
-        return Stream.of(
-            new BinaryAnd('0', '1'),
-            new BinaryOr('0', '1'),
-            new BinaryXor('0', '1')
-        );
+        return Stream.of(new BinaryAnd('0', '1'), new BinaryOr('0', '1'), new BinaryXor('0', '1'));
+    }
+
+    static Stream<Object> incrementingIndexOperations() {
+        return Stream.of(new Store('1'), new Load(('1')));
     }
 
     @ParameterizedTest
@@ -638,8 +638,9 @@ final class OperationTests {
                 new Set('0', "FF"),
                 new Set('1', "FF"),
                 new Set('2', "FF"),
-                new SetIndex(new MemoryAddress(6)),
+                new SetIndex(new MemoryAddress(7)),
                 new Store('1'),
+                new SetIndex(new MemoryAddress(7)),
                 new Display('3', '3', 3)
             )
             .whenExecuteAllOperations()
@@ -658,6 +659,21 @@ final class OperationTests {
                 "FF00"
             )
             .whenExecuteOperations(4)
+            .thenOutputMatchesExpectation();
+    }
+
+    @ParameterizedTest
+    @MethodSource("incrementingIndexOperations")
+    void givenIncrementingIndexOperation_thenIndexHasIncrementedValue(Object operation) {
+        new Dsl()
+            .givenProgram(
+                new SetIndex(new MemoryAddress(3)),
+                operation,
+                new Display('0', '0', 1),
+                "0000",
+                "FF00"
+            )
+            .whenExecuteOperations(3)
             .thenOutputMatchesExpectation();
     }
 
