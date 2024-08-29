@@ -5,18 +5,19 @@ import java.util.List;
 abstract class ShiftOperation implements Operation {
 
     private final Registers registers;
-    private final HexadecimalSymbol registerName;
+    private final HexadecimalSymbol fromRegisterName;
+    private final HexadecimalSymbol toRegisterName;
 
-    ShiftOperation(Registers registers, HexadecimalSymbol registerName) {
+    ShiftOperation(Registers registers, HexadecimalSymbol fromRegisterName, HexadecimalSymbol toRegisterName) {
         this.registers = registers;
-        this.registerName = registerName;
+        this.fromRegisterName = fromRegisterName;
+        this.toRegisterName = toRegisterName;
     }
 
     @Override
     public void execute() {
-        var register = registers.generalPurpose(registerName);
-        var value = register.get();
-        register.set(operation(value));
+        var value = registers.generalPurpose(fromRegisterName).get();
+        registers.generalPurpose(toRegisterName).set(operation(value));
         registers.flagRegister().set(Boolean.TRUE.equals(bit(value.bits())));
     }
 

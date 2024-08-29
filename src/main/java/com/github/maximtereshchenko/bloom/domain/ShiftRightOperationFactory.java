@@ -16,6 +16,6 @@ final class ShiftRightOperationFactory implements OperationFactory {
 
     @Override
     public Operation supportedOperation(OperationCode operationCode) {
-        return new ShiftRightOperation(registers, operationCode.middleLeftNibble());
+        return new ShiftRightOperation(registers, operationCode.middleRightNibble(), operationCode.middleLeftNibble());
     }
 }

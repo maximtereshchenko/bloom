@@ -2,14 +2,16 @@ package com.github.maximtereshchenko.bloom;
 
 final class ShiftLeft {
 
-    private final char registerName;
+    private final char from;
+    private final char to;
 
-    ShiftLeft(char registerName) {
-        this.registerName = registerName;
+    ShiftLeft(char from, char c) {
+        this.from = from;
+        to = c;
     }
 
     @Override
     public String toString() {
-        return "8%c0E".formatted(registerName);
+        return "8%c%cE".formatted(to, from);
     }
 }

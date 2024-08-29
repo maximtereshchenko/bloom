@@ -521,9 +521,9 @@ final class OperationTests {
         new Dsl()
             .givenProgram(
                 new Set('0', "02"),
-                new ShiftRight('0'),
-                new SetFontCharacter('0'),
-                new Display('1', '1', 5)
+                new ShiftRight('0', '1'),
+                new SetFontCharacter('1'),
+                new Display('2', '2', 5)
             )
             .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
@@ -534,7 +534,7 @@ final class OperationTests {
         new Dsl()
             .givenProgram(
                 new Set('0', "01"),
-                new ShiftRight('0'),
+                new ShiftRight('0', '0'),
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
             )
@@ -546,7 +546,7 @@ final class OperationTests {
     void givenShiftRight_thenFlagRegisterNotSet() {
         new Dsl()
             .givenProgram(
-                new ShiftRight('0'),
+                new ShiftRight('0', '0'),
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
             )
@@ -559,7 +559,7 @@ final class OperationTests {
         new Dsl()
             .givenProgram(
                 new Set('F', "01"),
-                new ShiftRight('F'),
+                new ShiftRight('F', 'F'),
                 new SetFontCharacter('F'),
                 new Display('0', '0', 5)
             )
@@ -572,9 +572,9 @@ final class OperationTests {
         new Dsl()
             .givenProgram(
                 new Set('0', "01"),
-                new ShiftLeft('0'),
-                new SetFontCharacter('0'),
-                new Display('1', '1', 5)
+                new ShiftLeft('0', '1'),
+                new SetFontCharacter('1'),
+                new Display('2', '2', 5)
             )
             .whenExecuteAllOperations()
             .thenOutputMatchesExpectation();
@@ -585,7 +585,7 @@ final class OperationTests {
         new Dsl()
             .givenProgram(
                 new Set('0', "80"),
-                new ShiftLeft('0'),
+                new ShiftLeft('0', '0'),
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
             )
@@ -597,7 +597,7 @@ final class OperationTests {
     void givenShiftLeft_thenFlagRegisterNotSet() {
         new Dsl()
             .givenProgram(
-                new ShiftLeft('0'),
+                new ShiftLeft('0', '0'),
                 new SetFontCharacter('F'),
                 new Display('1', '1', 5)
             )
@@ -610,7 +610,7 @@ final class OperationTests {
         new Dsl()
             .givenProgram(
                 new Set('F', "80"),
-                new ShiftLeft('F'),
+                new ShiftLeft('F', 'F'),
                 new SetFontCharacter('F'),
                 new Display('0', '0', 5)
             )
