@@ -16,6 +16,7 @@ abstract class BinaryOperation implements Operation {
     public void execute() {
         var register = registers.generalPurpose(firstRegisterName);
         register.set(operation(register.get(), registers.generalPurpose(secondRegisterName).get()));
+        registers.flagRegister().set(false);
     }
 
     abstract UnsignedByte operation(UnsignedByte first, UnsignedByte second);
