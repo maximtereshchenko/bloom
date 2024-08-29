@@ -39,7 +39,12 @@ final class JFrameApplication extends JFrame implements AutoCloseable {
 
     static JFrameApplication from(Path path, LineListener lineListener) throws Exception {
         var keypad = new KeyListenerKeypad();
-        var module = new BloomFacade(Files.readAllBytes(path), keypad, ClipSound.configured(lineListener));
+        var module = new BloomFacade(
+            Files.readAllBytes(path),
+            keypad,
+            ClipSound.configured(lineListener),
+            new TrueRandomness()
+        );
         return new JFrameApplication(module, JPanelDisplay.from(module), keypad);
     }
 

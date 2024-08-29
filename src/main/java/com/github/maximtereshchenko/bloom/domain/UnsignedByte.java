@@ -1,5 +1,6 @@
 package com.github.maximtereshchenko.bloom.domain;
 
+import com.github.maximtereshchenko.bloom.api.port.Randomness;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -22,6 +23,10 @@ final class UnsignedByte implements Comparable<UnsignedByte> {
 
     static UnsignedByte from(String bits) {
         return from(Integer.parseInt(bits, 2));
+    }
+
+    static UnsignedByte random(Randomness randomness) {
+        return from(randomness.randomNumber(0, PRIMITIVE_MAX));
     }
 
     @Override

@@ -16,7 +16,7 @@ final class Dsl {
     Execution givenProgram(Object... hexadecimalBytes) {
         var sound = new FakeSound();
         return new Execution(
-            new BloomFacade(bytes(hexadecimalBytes), new FakeKeypad(), sound),
+            new BloomFacade(bytes(hexadecimalBytes), new FakeKeypad(), sound, new FakeRandomness()),
             sound,
             hexadecimalBytes.length
         );

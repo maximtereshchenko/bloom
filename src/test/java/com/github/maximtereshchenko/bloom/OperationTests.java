@@ -703,4 +703,16 @@ final class OperationTests {
             .whenExecuteAllOperations()
             .thenSoundEnabled();
     }
+
+    @Test
+    void givenRandom_thenRegisterHasConjunctionValueWithRandom() {
+        new Dsl()
+            .givenProgram(
+                new Random('0', "01"),
+                new SetFontCharacter('0'),
+                new Display('1', '1', 5)
+            )
+            .whenExecuteAllOperations()
+            .thenOutputMatchesExpectation();
+    }
 }

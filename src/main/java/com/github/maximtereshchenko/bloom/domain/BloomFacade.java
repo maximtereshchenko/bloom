@@ -2,6 +2,7 @@ package com.github.maximtereshchenko.bloom.domain;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
 import com.github.maximtereshchenko.bloom.api.port.Keypad;
+import com.github.maximtereshchenko.bloom.api.port.Randomness;
 import com.github.maximtereshchenko.bloom.api.port.Sound;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ public final class BloomFacade implements BloomModule {
     private final SoundTimer soundTimer;
     private final Set<OperationFactory> operationFactories;
 
-    public BloomFacade(byte[] program, Keypad keypad, Sound sound) {
+    public BloomFacade(byte[] program, Keypad keypad, Sound sound, Randomness randomness) {
         this.registers = new Registers();
         this.randomAccessMemory = RandomAccessMemory.withProgram(program);
         this.display = new Display();
@@ -54,7 +55,8 @@ public final class BloomFacade implements BloomModule {
             new GetKeyOperationFactory(registers, keypad),
             new SetDelayTimerOperationFactory(registers, delayTimer),
             new ReadDelayTimerOperationFactory(registers, delayTimer),
-            new SetSoundTimerOperationFactory(registers, soundTimer)
+            new SetSoundTimerOperationFactory(registers, soundTimer),
+            new RandomOperationFactory(registers, randomness)
         );
     }
 
