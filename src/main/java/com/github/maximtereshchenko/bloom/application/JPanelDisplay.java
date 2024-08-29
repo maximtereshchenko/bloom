@@ -1,40 +1,56 @@
 package com.github.maximtereshchenko.bloom.application;
 
-import com.github.maximtereshchenko.bloom.api.DisplayMaskUseCase;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import javax.swing.JPanel;
+import com.github.maximtereshchenko.bloom.api.port.Display;
 
-final class JPanelDisplay extends JPanel {
+import javax.swing.*;
+import java.awt.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
-    private final DisplayMaskUseCase useCase;
+final class JPanelDisplay extends JPanel implements Display {
 
-    private JPanelDisplay(DisplayMaskUseCase useCase, Dimension preferredSize) {
-        this.useCase = useCase;
-        setPreferredSize(preferredSize);
-    }
+    private final BlockingQueue<boolean[][]> queue = new SynchronousQueue<>();
+    private boolean[][] previousMask = new boolean[0][0];
 
-    static JPanelDisplay from(DisplayMaskUseCase useCase) {
-        var displayMask = useCase.displayMask();
-        return new JPanelDisplay(
-            useCase,
-            new Dimension(
-                displayMask.length > 0 ? displayMask[0].length * 10 : 0,
-                displayMask.length * 10
-            )
-        );
+    JPanelDisplay() {
+        setPreferredSize(new Dimension(640, 320));
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        var displayMask = useCase.displayMask();
-        var pixelHeight = getHeight() / displayMask.length;
-        for (var row = 0; row < displayMask.length; row++) {
-            var pixelWidth = getWidth() / displayMask[row].length;
-            for (var column = 0; column < displayMask[row].length; column++) {
-                g.setColor(displayMask[row][column] ? Color.WHITE : Color.BLACK);
-                g.fillRect(column * pixelWidth, row * pixelHeight, pixelWidth, pixelHeight);
+    public void draw(boolean[][] mask) {
+        try {
+            queue.put(mask);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics graphics) {
+        var mask = queue.poll();
+        if (mask == null) {
+            paint(graphics, previousMask);
+        } else {
+            paint(graphics, mask);
+            previousMask = mask;
+        }
+    }
+
+    private void paint(Graphics graphics, boolean[][] mask) {
+        if (mask.length == 0) {
+            return;
+        }
+        var pixelHeight = getHeight() / mask.length;
+        for (var row = 0; row < mask.length; row++) {
+            var pixelWidth = getWidth() / mask[row].length;
+            for (var column = 0; column < mask[row].length; column++) {
+                graphics.setColor(mask[row][column] ? Color.WHITE : Color.BLACK);
+                graphics.fillRect(
+                    column * pixelWidth,
+                    row * pixelHeight,
+                    pixelWidth,
+                    pixelHeight
+                );
             }
         }
     }

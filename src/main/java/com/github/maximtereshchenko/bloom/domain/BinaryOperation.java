@@ -6,7 +6,11 @@ abstract class BinaryOperation implements Operation {
     private final HexadecimalSymbol firstRegisterName;
     private final HexadecimalSymbol secondRegisterName;
 
-    BinaryOperation(Registers registers, HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    BinaryOperation(
+        Registers registers,
+        HexadecimalSymbol firstRegisterName,
+        HexadecimalSymbol secondRegisterName
+    ) {
         this.registers = registers;
         this.firstRegisterName = firstRegisterName;
         this.secondRegisterName = secondRegisterName;

@@ -11,7 +11,7 @@ final class BinaryXorOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
-            operationCode.lastNibble() == HexadecimalSymbol.THREE;
+               operationCode.lastNibble() == HexadecimalSymbol.THREE;
     }
 
     @Override

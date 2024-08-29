@@ -13,12 +13,16 @@ final class SetFontCharacterOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.TWO
-            && operationCode.lastNibble() == HexadecimalSymbol.NINE;
+               operationCode.middleRightNibble() == HexadecimalSymbol.TWO
+               && operationCode.lastNibble() == HexadecimalSymbol.NINE;
     }
 
     @Override
     public Operation supportedOperation(OperationCode operationCode) {
-        return new SetFontCharacterOperation(registers, randomAccessMemory, operationCode.middleLeftNibble());
+        return new SetFontCharacterOperation(
+            registers,
+            randomAccessMemory,
+            operationCode.middleLeftNibble()
+        );
     }
 }

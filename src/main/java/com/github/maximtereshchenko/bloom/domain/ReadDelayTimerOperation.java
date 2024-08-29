@@ -9,7 +9,11 @@ final class ReadDelayTimerOperation implements Operation {
     private final DelayTimer delayTimer;
     private final HexadecimalSymbol registerName;
 
-    ReadDelayTimerOperation(Registers registers, DelayTimer delayTimer, HexadecimalSymbol registerName) {
+    ReadDelayTimerOperation(
+        Registers registers,
+        DelayTimer delayTimer,
+        HexadecimalSymbol registerName
+    ) {
         this.registers = registers;
         this.delayTimer = delayTimer;
         this.registerName = registerName;

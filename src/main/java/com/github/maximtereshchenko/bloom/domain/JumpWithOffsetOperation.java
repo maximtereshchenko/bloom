@@ -1,7 +1,8 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 /**
- * Bnnn - JP V0, addr. Jump to location nnn + V0. The program counter is set to nnn plus the value of V0.
+ * Bnnn - JP V0, addr. Jump to location nnn + V0. The program counter is set to nnn plus the
+ * value of V0.
  */
 final class JumpWithOffsetOperation extends BaseJumpOperation {
 

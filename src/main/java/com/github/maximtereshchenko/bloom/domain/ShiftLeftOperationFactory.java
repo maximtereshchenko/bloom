@@ -11,11 +11,15 @@ final class ShiftLeftOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
-            operationCode.lastNibble() == HexadecimalSymbol.E;
+               operationCode.lastNibble() == HexadecimalSymbol.E;
     }
 
     @Override
     public Operation supportedOperation(OperationCode operationCode) {
-        return new ShiftLeftOperation(registers, operationCode.middleRightNibble(), operationCode.middleLeftNibble());
+        return new ShiftLeftOperation(
+            registers,
+            operationCode.middleRightNibble(),
+            operationCode.middleLeftNibble()
+        );
     }
 }

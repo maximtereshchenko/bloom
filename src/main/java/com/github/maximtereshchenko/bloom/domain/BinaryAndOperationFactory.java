@@ -11,7 +11,7 @@ final class BinaryAndOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
-            operationCode.lastNibble() == HexadecimalSymbol.TWO;
+               operationCode.lastNibble() == HexadecimalSymbol.TWO;
     }
 
     @Override

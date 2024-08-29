@@ -11,11 +11,15 @@ final class BinaryOrOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
-            operationCode.lastNibble() == HexadecimalSymbol.ONE;
+               operationCode.lastNibble() == HexadecimalSymbol.ONE;
     }
 
     @Override
     public Operation supportedOperation(OperationCode operationCode) {
-        return new BinaryOrOperation(registers, operationCode.middleLeftNibble(), operationCode.middleRightNibble());
+        return new BinaryOrOperation(
+            registers,
+            operationCode.middleLeftNibble(),
+            operationCode.middleRightNibble()
+        );
     }
 }

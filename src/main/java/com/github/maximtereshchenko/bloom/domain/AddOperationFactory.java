@@ -18,7 +18,10 @@ final class AddOperationFactory implements OperationFactory {
         return new AddOperation(
             registers,
             operationCode.middleLeftNibble(),
-            new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
+            new Hexadecimal(
+                operationCode.middleRightNibble(),
+                operationCode.lastNibble()
+            ).unsignedByte()
         );
     }
 }

@@ -5,7 +5,10 @@ final class ConvertToBinaryCodedDecimalOperationFactory implements OperationFact
     private final Registers registers;
     private final RandomAccessMemory randomAccessMemory;
 
-    ConvertToBinaryCodedDecimalOperationFactory(Registers registers, RandomAccessMemory randomAccessMemory) {
+    ConvertToBinaryCodedDecimalOperationFactory(
+        Registers registers,
+        RandomAccessMemory randomAccessMemory
+    ) {
         this.registers = registers;
         this.randomAccessMemory = randomAccessMemory;
     }
@@ -13,8 +16,8 @@ final class ConvertToBinaryCodedDecimalOperationFactory implements OperationFact
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.THREE &&
-            operationCode.lastNibble() == HexadecimalSymbol.THREE;
+               operationCode.middleRightNibble() == HexadecimalSymbol.THREE &&
+               operationCode.lastNibble() == HexadecimalSymbol.THREE;
     }
 
     @Override

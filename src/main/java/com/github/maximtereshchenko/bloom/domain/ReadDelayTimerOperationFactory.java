@@ -13,8 +13,8 @@ final class ReadDelayTimerOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.ZERO &&
-            operationCode.lastNibble() == HexadecimalSymbol.SEVEN;
+               operationCode.middleRightNibble() == HexadecimalSymbol.ZERO &&
+               operationCode.lastNibble() == HexadecimalSymbol.SEVEN;
     }
 
     @Override

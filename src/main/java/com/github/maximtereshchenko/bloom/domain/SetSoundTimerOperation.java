@@ -9,7 +9,11 @@ final class SetSoundTimerOperation implements Operation {
     private final SoundTimer soundTimer;
     private final HexadecimalSymbol registerName;
 
-    SetSoundTimerOperation(Registers registers, SoundTimer soundTimer, HexadecimalSymbol registerName) {
+    SetSoundTimerOperation(
+        Registers registers,
+        SoundTimer soundTimer,
+        HexadecimalSymbol registerName
+    ) {
         this.registers = registers;
         this.soundTimer = soundTimer;
         this.registerName = registerName;

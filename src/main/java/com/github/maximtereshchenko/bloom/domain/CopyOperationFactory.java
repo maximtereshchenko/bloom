@@ -11,11 +11,15 @@ final class CopyOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
-            operationCode.lastNibble() == HexadecimalSymbol.ZERO;
+               operationCode.lastNibble() == HexadecimalSymbol.ZERO;
     }
 
     @Override
     public Operation supportedOperation(OperationCode operationCode) {
-        return new CopyOperation(registers, operationCode.middleRightNibble(), operationCode.middleLeftNibble());
+        return new CopyOperation(
+            registers,
+            operationCode.middleRightNibble(),
+            operationCode.middleLeftNibble()
+        );
     }
 }

@@ -5,20 +5,21 @@ package com.github.maximtereshchenko.bloom.domain;
  */
 final class ClearDisplayOperation implements Operation {
 
-    private final Display display;
+    private final StagingDisplay display;
 
-    ClearDisplayOperation(Display display) {
+    ClearDisplayOperation(StagingDisplay display) {
         this.display = display;
     }
 
     @Override
     public void execute() {
-        for (var row : UnsignedByte.ZERO.rangeTo(Display.HEIGHT)) {
-            for (var column : UnsignedByte.ZERO.rangeTo(Display.WIDTH)) {
+        for (var row : UnsignedByte.ZERO.rangeTo(StagingDisplay.HEIGHT)) {
+            for (var column : UnsignedByte.ZERO.rangeTo(StagingDisplay.WIDTH)) {
                 if (display.isPixelEnabled(row, column)) {
                     display.flipPixel(row, column);
                 }
             }
         }
+        display.draw();
     }
 }

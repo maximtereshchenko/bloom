@@ -4,9 +4,13 @@ final class DisplayOperationFactory implements OperationFactory {
 
     private final Registers registers;
     private final RandomAccessMemory randomAccessMemory;
-    private final Display display;
+    private final StagingDisplay display;
 
-    DisplayOperationFactory(Registers registers, RandomAccessMemory randomAccessMemory, Display display) {
+    DisplayOperationFactory(
+        Registers registers,
+        RandomAccessMemory randomAccessMemory,
+        StagingDisplay display
+    ) {
         this.registers = registers;
         this.randomAccessMemory = randomAccessMemory;
         this.display = display;

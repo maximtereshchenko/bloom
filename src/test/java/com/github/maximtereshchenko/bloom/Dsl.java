@@ -1,22 +1,30 @@
 package com.github.maximtereshchenko.bloom;
 
-import static org.approvaltests.Approvals.verify;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.github.maximtereshchenko.bloom.api.BloomModule;
 import com.github.maximtereshchenko.bloom.api.ExecuteNextOperationUseCase;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
+
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
-import org.approvaltests.strings.Printable;
+
+import static org.approvaltests.Approvals.verify;
+import static org.assertj.core.api.Assertions.assertThat;
 
 final class Dsl {
 
     Execution givenProgram(Object... hexadecimalBytes) {
+        var display = new FakeDisplay();
         var sound = new FakeSound();
         return new Execution(
-            new BloomFacade(bytes(hexadecimalBytes), new FakeKeypad(), sound, new FakeRandomness()),
+            new BloomFacade(
+                bytes(hexadecimalBytes),
+                display,
+                new FakeKeypad(),
+                sound,
+                new FakeRandomness()
+            ),
+            display,
             sound,
             hexadecimalBytes.length
         );
@@ -39,11 +47,18 @@ final class Dsl {
     static final class Execution {
 
         private final BloomModule module;
+        private final FakeDisplay display;
         private final FakeSound sound;
         private final int approximateOperationCount;
 
-        private Execution(BloomModule module, FakeSound sound, int approximateOperationCount) {
+        Execution(
+            BloomModule module,
+            FakeDisplay display,
+            FakeSound sound,
+            int approximateOperationCount
+        ) {
             this.module = module;
+            this.display = display;
             this.sound = sound;
             this.approximateOperationCount = approximateOperationCount;
         }
@@ -67,17 +82,17 @@ final class Dsl {
 
         private Result when(List<Consumer<BloomModule>> actions) {
             actions.forEach(action -> action.accept(module));
-            return new Result(module, sound);
+            return new Result(display, sound);
         }
     }
 
     static final class Result {
 
-        private final BloomModule module;
+        private final FakeDisplay display;
         private final FakeSound sound;
 
-        private Result(BloomModule module, FakeSound sound) {
-            this.module = module;
+        Result(FakeDisplay display, FakeSound sound) {
+            this.display = display;
             this.sound = sound;
         }
 
@@ -98,21 +113,7 @@ final class Dsl {
         }
 
         void thenOutputMatchesExpectation(String... parameters) {
-            verify(
-                new Printable<>(module.displayMask(), this::toString),
-                ApprovalsOptions.defaultConfiguration(parameters)
-            );
-        }
-
-        private String toString(boolean[][] displayMask) {
-            var builder = new StringBuilder();
-            for (var row : displayMask) {
-                for (var isPixelEnabled : row) {
-                    builder.append(isPixelEnabled ? '*' : ' ');
-                }
-                builder.append(System.lineSeparator());
-            }
-            return builder.toString();
+            verify(display, ApprovalsOptions.defaultConfiguration(parameters));
         }
     }
 }

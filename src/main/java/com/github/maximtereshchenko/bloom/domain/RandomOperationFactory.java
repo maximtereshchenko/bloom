@@ -23,7 +23,10 @@ final class RandomOperationFactory implements OperationFactory {
             registers,
             randomness,
             operationCode.middleLeftNibble(),
-            new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
+            new Hexadecimal(
+                operationCode.middleRightNibble(),
+                operationCode.lastNibble()
+            ).unsignedByte()
         );
     }
 }

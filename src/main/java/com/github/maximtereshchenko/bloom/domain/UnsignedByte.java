@@ -1,6 +1,7 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 import com.github.maximtereshchenko.bloom.api.port.Randomness;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
@@ -30,27 +31,27 @@ final class UnsignedByte implements Comparable<UnsignedByte> {
     }
 
     @Override
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        return object instanceof UnsignedByte other &&
-            value == other.value;
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(value);
     }
 
     @Override
-    public int compareTo(UnsignedByte other) {
-        return Integer.compare(value, other.value);
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        return object instanceof UnsignedByte other &&
+               value == other.value;
     }
 
     @Override
     public String toString() {
         return hexadecimal().toString();
+    }
+
+    @Override
+    public int compareTo(UnsignedByte other) {
+        return Integer.compare(value, other.value);
     }
 
     Hexadecimal hexadecimal() {

@@ -18,7 +18,10 @@ final class SkipIfSingleRegisterValueEqualOperationFactory implements OperationF
         return new SkipIfSingleRegisterValueEqualOperation(
             registers,
             operationCode.middleLeftNibble(),
-            new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
+            new Hexadecimal(
+                operationCode.middleRightNibble(),
+                operationCode.lastNibble()
+            ).unsignedByte()
         );
     }
 }

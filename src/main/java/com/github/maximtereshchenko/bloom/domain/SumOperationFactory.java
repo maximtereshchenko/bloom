@@ -11,11 +11,15 @@ final class SumOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
-            operationCode.lastNibble() == HexadecimalSymbol.FOUR;
+               operationCode.lastNibble() == HexadecimalSymbol.FOUR;
     }
 
     @Override
     public Operation supportedOperation(OperationCode operationCode) {
-        return new SumOperation(registers, operationCode.middleLeftNibble(), operationCode.middleRightNibble());
+        return new SumOperation(
+            registers,
+            operationCode.middleLeftNibble(),
+            operationCode.middleRightNibble()
+        );
     }
 }

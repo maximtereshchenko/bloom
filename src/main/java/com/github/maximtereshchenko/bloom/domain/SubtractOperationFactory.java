@@ -11,11 +11,15 @@ final class SubtractOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
-            operationCode.lastNibble() == HexadecimalSymbol.FIVE;
+               operationCode.lastNibble() == HexadecimalSymbol.FIVE;
     }
 
     @Override
     public Operation supportedOperation(OperationCode operationCode) {
-        return new SubtractOperation(registers, operationCode.middleLeftNibble(), operationCode.middleRightNibble());
+        return new SubtractOperation(
+            registers,
+            operationCode.middleLeftNibble(),
+            operationCode.middleRightNibble()
+        );
     }
 }

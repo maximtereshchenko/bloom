@@ -1,6 +1,7 @@
 package com.github.maximtereshchenko.bloom.application;
 
 import com.github.maximtereshchenko.bloom.api.port.Keypad;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;

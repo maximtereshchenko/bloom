@@ -1,10 +1,11 @@
 package com.github.maximtereshchenko.bloom;
 
-import java.io.File;
-import java.nio.file.Paths;
 import org.approvaltests.namer.ApprovalNamer;
 import org.approvaltests.namer.StackTraceNamer;
 import org.approvaltests.writers.Writer;
+
+import java.io.File;
+import java.nio.file.Paths;
 
 final class ResourcesNamer implements ApprovalNamer {
 
@@ -19,14 +20,19 @@ final class ResourcesNamer implements ApprovalNamer {
     }
 
     @Override
-    public File getReceivedFile(String extensionWithDot) {
-        return delegate.getReceivedFile(extensionWithDot);
+    public File getApprovedFile(String extensionWithDot) {
+        return Paths.get(
+                "src",
+                "test",
+                "resources",
+                getApprovalName() + Writer.approved + extensionWithDot
+            )
+            .toFile();
     }
 
     @Override
-    public File getApprovedFile(String extensionWithDot) {
-        return Paths.get("src", "test", "resources", getApprovalName() + Writer.approved + extensionWithDot)
-            .toFile();
+    public File getReceivedFile(String extensionWithDot) {
+        return delegate.getReceivedFile(extensionWithDot);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.github.maximtereshchenko.bloom.application;
 
+import javax.swing.*;
 import java.nio.file.Paths;
-import javax.swing.SwingUtilities;
 
 final class Main {
 

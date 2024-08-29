@@ -11,11 +11,13 @@ final class Registers {
     private final ProgramCounter programCounter = new ProgramCounter();
     private final Index index = new Index();
     private final FlagRegister flagRegister = new FlagRegister();
-    private final Map<HexadecimalSymbol, Register<UnsignedByte>> generalPurpose = Stream.of(HexadecimalSymbol.values())
+    private final Map<HexadecimalSymbol, Register<UnsignedByte>> generalPurpose = Stream.of(
+            HexadecimalSymbol.values())
         .collect(
             Collectors.toMap(
                 Function.identity(),
-                symbol -> symbol == HexadecimalSymbol.F ? flagRegister : new GeneralPurposeRegister(),
+                symbol -> symbol == HexadecimalSymbol.F ? flagRegister :
+                    new GeneralPurposeRegister(),
                 (a, b) -> a,
                 () -> new EnumMap<>(HexadecimalSymbol.class)
             )

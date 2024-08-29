@@ -1,11 +1,12 @@
 package com.github.maximtereshchenko.bloom;
 
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 final class OperationTests {
 
@@ -35,7 +36,10 @@ final class OperationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(chars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'})
+    @ValueSource(
+        chars = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
+            'E', 'F'}
+    )
     void givenDisplayFontCharacter_thenCharacterDisplayed(char character) {
         new Dsl()
             .givenProgram(

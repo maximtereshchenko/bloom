@@ -1,12 +1,16 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 /**
- * 8xy5 - SUB Vx, Vy. Set Vx = Vx - Vy, set VF = NOT borrow. If Vx > Vy, then VF is set to 1, otherwise 0. Then Vy is
- * subtracted from Vx, and the results stored in Vx.
+ * 8xy5 - SUB Vx, Vy. Set Vx = Vx - Vy, set VF = NOT borrow. If Vx > Vy, then VF is set to 1,
+ * otherwise 0. Then Vy is subtracted from Vx, and the results stored in Vx.
  */
 final class SubtractOperation extends ArithmeticOperation {
 
-    SubtractOperation(Registers registers, HexadecimalSymbol firstRegisterName, HexadecimalSymbol secondRegisterName) {
+    SubtractOperation(
+        Registers registers,
+        HexadecimalSymbol firstRegisterName,
+        HexadecimalSymbol secondRegisterName
+    ) {
         super(registers, firstRegisterName, secondRegisterName);
     }
 

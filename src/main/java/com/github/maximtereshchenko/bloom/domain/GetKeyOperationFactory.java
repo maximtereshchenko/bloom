@@ -15,8 +15,8 @@ final class GetKeyOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.ZERO &&
-            operationCode.lastNibble() == HexadecimalSymbol.A;
+               operationCode.middleRightNibble() == HexadecimalSymbol.ZERO &&
+               operationCode.lastNibble() == HexadecimalSymbol.A;
     }
 
     @Override

@@ -18,7 +18,10 @@ final class SkipIfSingleRegisterValueNotEqualOperationFactory implements Operati
         return new SkipIfSingleRegisterValueNotEqualOperation(
             registers,
             operationCode.middleLeftNibble(),
-            new Hexadecimal(operationCode.middleRightNibble(), operationCode.lastNibble()).unsignedByte()
+            new Hexadecimal(
+                operationCode.middleRightNibble(),
+                operationCode.lastNibble()
+            ).unsignedByte()
         );
     }
 }

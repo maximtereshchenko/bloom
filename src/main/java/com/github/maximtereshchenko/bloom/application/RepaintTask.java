@@ -1,8 +1,8 @@
 package com.github.maximtereshchenko.bloom.application;
 
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
-import javax.swing.SwingUtilities;
 
 final class RepaintTask extends LoggingTask {
 

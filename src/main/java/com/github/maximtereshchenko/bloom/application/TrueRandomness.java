@@ -1,6 +1,7 @@
 package com.github.maximtereshchenko.bloom.application;
 
 import com.github.maximtereshchenko.bloom.api.port.Randomness;
+
 import java.util.Random;
 
 final class TrueRandomness implements Randomness {

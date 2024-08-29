@@ -8,7 +8,11 @@ abstract class ShiftOperation implements Operation {
     private final HexadecimalSymbol fromRegisterName;
     private final HexadecimalSymbol toRegisterName;
 
-    ShiftOperation(Registers registers, HexadecimalSymbol fromRegisterName, HexadecimalSymbol toRegisterName) {
+    ShiftOperation(
+        Registers registers,
+        HexadecimalSymbol fromRegisterName,
+        HexadecimalSymbol toRegisterName
+    ) {
         this.registers = registers;
         this.fromRegisterName = fromRegisterName;
         this.toRegisterName = toRegisterName;

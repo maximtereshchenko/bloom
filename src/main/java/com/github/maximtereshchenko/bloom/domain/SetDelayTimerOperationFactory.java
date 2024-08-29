@@ -13,8 +13,8 @@ final class SetDelayTimerOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.ONE &&
-            operationCode.lastNibble() == HexadecimalSymbol.FIVE;
+               operationCode.middleRightNibble() == HexadecimalSymbol.ONE &&
+               operationCode.lastNibble() == HexadecimalSymbol.FIVE;
     }
 
     @Override

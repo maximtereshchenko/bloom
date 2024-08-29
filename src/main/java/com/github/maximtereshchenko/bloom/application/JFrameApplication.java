@@ -2,6 +2,9 @@ package com.github.maximtereshchenko.bloom.application;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
 import com.github.maximtereshchenko.bloom.domain.BloomFacade;
+
+import javax.sound.sampled.LineListener;
+import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.nio.file.Files;
@@ -10,9 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.sound.sampled.LineListener;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 
 final class JFrameApplication extends JFrame implements AutoCloseable {
 
@@ -33,19 +33,23 @@ final class JFrameApplication extends JFrame implements AutoCloseable {
     }
 
     static JFrameApplication from(Path path) throws Exception {
-        return from(path, event -> {
-        });
+        return from(path, event -> {});
     }
 
     static JFrameApplication from(Path path, LineListener lineListener) throws Exception {
         var keypad = new KeyListenerKeypad();
-        var module = new BloomFacade(
-            Files.readAllBytes(path),
-            keypad,
-            ClipSound.configured(lineListener),
-            new TrueRandomness()
+        var display = new JPanelDisplay();
+        return new JFrameApplication(
+            new BloomFacade(
+                Files.readAllBytes(path),
+                display,
+                keypad,
+                ClipSound.configured(lineListener),
+                new TrueRandomness()
+            ),
+            display,
+            keypad
         );
-        return new JFrameApplication(module, JPanelDisplay.from(module), keypad);
     }
 
     @Override

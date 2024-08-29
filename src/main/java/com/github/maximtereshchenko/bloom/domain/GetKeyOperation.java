@@ -3,8 +3,8 @@ package com.github.maximtereshchenko.bloom.domain;
 import com.github.maximtereshchenko.bloom.api.port.Keypad;
 
 /**
- * Fx0A - LD Vx, K. Wait for a key press, store the value of the key in Vx. All execution stops until a key is pressed,
- * then the value of that key is stored in Vx.
+ * Fx0A - LD Vx, K. Wait for a key press, store the value of the key in Vx. All execution stops
+ * until a key is pressed, then the value of that key is stored in Vx.
  */
 final class GetKeyOperation implements Operation {
 

@@ -15,12 +15,16 @@ final class SkipIfKeyNotPressedOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.E &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.A &&
-            operationCode.lastNibble() == HexadecimalSymbol.ONE;
+               operationCode.middleRightNibble() == HexadecimalSymbol.A &&
+               operationCode.lastNibble() == HexadecimalSymbol.ONE;
     }
 
     @Override
     public Operation supportedOperation(OperationCode operationCode) {
-        return new SkipIfKeyNotPressedOperation(registers, keypad, operationCode.middleLeftNibble());
+        return new SkipIfKeyNotPressedOperation(
+            registers,
+            keypad,
+            operationCode.middleLeftNibble()
+        );
     }
 }

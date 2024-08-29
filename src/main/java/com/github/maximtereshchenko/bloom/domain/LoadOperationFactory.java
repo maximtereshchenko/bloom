@@ -13,8 +13,8 @@ final class LoadOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.SIX &&
-            operationCode.lastNibble() == HexadecimalSymbol.FIVE;
+               operationCode.middleRightNibble() == HexadecimalSymbol.SIX &&
+               operationCode.lastNibble() == HexadecimalSymbol.FIVE;
     }
 
     @Override

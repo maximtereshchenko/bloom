@@ -15,8 +15,8 @@ final class SkipIfKeyPressedOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.E &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.NINE &&
-            operationCode.lastNibble() == HexadecimalSymbol.E;
+               operationCode.middleRightNibble() == HexadecimalSymbol.NINE &&
+               operationCode.lastNibble() == HexadecimalSymbol.E;
     }
 
     @Override

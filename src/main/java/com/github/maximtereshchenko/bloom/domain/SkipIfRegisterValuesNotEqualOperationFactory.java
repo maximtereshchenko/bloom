@@ -11,7 +11,7 @@ final class SkipIfRegisterValuesNotEqualOperationFactory implements OperationFac
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.NINE &&
-            operationCode.lastNibble() == HexadecimalSymbol.ZERO;
+               operationCode.lastNibble() == HexadecimalSymbol.ZERO;
     }
 
     @Override

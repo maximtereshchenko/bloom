@@ -1,31 +1,38 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 import com.github.maximtereshchenko.bloom.api.BloomModule;
+import com.github.maximtereshchenko.bloom.api.port.Display;
 import com.github.maximtereshchenko.bloom.api.port.Keypad;
 import com.github.maximtereshchenko.bloom.api.port.Randomness;
 import com.github.maximtereshchenko.bloom.api.port.Sound;
+
 import java.util.Set;
 
 public final class BloomFacade implements BloomModule {
 
     private final Registers registers;
     private final RandomAccessMemory randomAccessMemory;
-    private final Display display;
     private final DelayTimer delayTimer;
     private final SoundTimer soundTimer;
     private final Set<OperationFactory> operationFactories;
 
-    public BloomFacade(byte[] program, Keypad keypad, Sound sound, Randomness randomness) {
+    public BloomFacade(
+        byte[] program,
+        Display display,
+        Keypad keypad,
+        Sound sound,
+        Randomness randomness
+    ) {
         this.registers = new Registers();
         this.randomAccessMemory = RandomAccessMemory.withProgram(program);
-        this.display = new Display();
         this.delayTimer = new DelayTimer();
         this.soundTimer = new SoundTimer(sound);
         var stack = new Stack();
+        var stagingDisplay = new StagingDisplay(display);
         this.operationFactories = Set.of(
             new SetFontCharacterOperationFactory(registers, randomAccessMemory),
-            new DisplayOperationFactory(registers, randomAccessMemory, display),
-            new ClearDisplayOperationFactory(display),
+            new DisplayOperationFactory(registers, randomAccessMemory, stagingDisplay),
+            new ClearDisplayOperationFactory(stagingDisplay),
             new JumpOperationFactory(registers),
             new JumpWithOffsetOperationFactory(registers),
             new SetIndexOperationFactory(registers),
@@ -72,11 +79,6 @@ public final class BloomFacade implements BloomModule {
     }
 
     @Override
-    public boolean[][] displayMask() {
-        return display.mask();
-    }
-
-    @Override
     public void decrementSoundTimer() {
         soundTimer.decrement();
     }
@@ -89,7 +91,10 @@ public final class BloomFacade implements BloomModule {
     private OperationCode operationCode() {
         var first = registers.programCounter().get();
         var second = first.next();
-        var operationCode = new OperationCode(randomAccessMemory.get(first), randomAccessMemory.get(second));
+        var operationCode = new OperationCode(
+            randomAccessMemory.get(first),
+            randomAccessMemory.get(second)
+        );
         registers.programCounter().set(second.next());
         return operationCode;
     }

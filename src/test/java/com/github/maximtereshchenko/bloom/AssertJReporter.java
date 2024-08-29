@@ -1,10 +1,11 @@
 package com.github.maximtereshchenko.bloom;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.approvaltests.core.ApprovalFailureReporter;
 
 import java.io.UncheckedIOException;
 import java.nio.file.Paths;
-import org.approvaltests.core.ApprovalFailureReporter;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 final class AssertJReporter implements ApprovalFailureReporter {
 

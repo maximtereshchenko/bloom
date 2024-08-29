@@ -11,7 +11,7 @@ final class NegativeSubtractOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.EIGHT &&
-            operationCode.lastNibble() == HexadecimalSymbol.SEVEN;
+               operationCode.lastNibble() == HexadecimalSymbol.SEVEN;
     }
 
     @Override

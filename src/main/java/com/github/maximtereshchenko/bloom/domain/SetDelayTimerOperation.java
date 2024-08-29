@@ -9,7 +9,11 @@ final class SetDelayTimerOperation implements Operation {
     private final DelayTimer delayTimer;
     private final HexadecimalSymbol registerName;
 
-    SetDelayTimerOperation(Registers registers, DelayTimer delayTimer, HexadecimalSymbol registerName) {
+    SetDelayTimerOperation(
+        Registers registers,
+        DelayTimer delayTimer,
+        HexadecimalSymbol registerName
+    ) {
         this.registers = registers;
         this.delayTimer = delayTimer;
         this.registerName = registerName;

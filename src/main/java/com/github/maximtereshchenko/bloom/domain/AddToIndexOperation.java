@@ -1,7 +1,8 @@
 package com.github.maximtereshchenko.bloom.domain;
 
 /**
- * Fx1E - ADD I, Vx. Set I = I + Vx. The values of I and Vx are added, and the results are stored in I.
+ * Fx1E - ADD I, Vx. Set I = I + Vx. The values of I and Vx are added, and the results are stored
+ * in I.
  */
 final class AddToIndexOperation implements Operation {
 

@@ -13,9 +13,9 @@ final class ReturnFromSubroutineOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.ZERO &&
-            operationCode.middleLeftNibble() == HexadecimalSymbol.ZERO &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.E &&
-            operationCode.lastNibble() == HexadecimalSymbol.E;
+               operationCode.middleLeftNibble() == HexadecimalSymbol.ZERO &&
+               operationCode.middleRightNibble() == HexadecimalSymbol.E &&
+               operationCode.lastNibble() == HexadecimalSymbol.E;
     }
 
     @Override

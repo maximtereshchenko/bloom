@@ -13,8 +13,8 @@ final class SetSoundTimerOperationFactory implements OperationFactory {
     @Override
     public boolean supports(OperationCode operationCode) {
         return operationCode.firstNibble() == HexadecimalSymbol.F &&
-            operationCode.middleRightNibble() == HexadecimalSymbol.ONE &&
-            operationCode.lastNibble() == HexadecimalSymbol.EIGHT;
+               operationCode.middleRightNibble() == HexadecimalSymbol.ONE &&
+               operationCode.lastNibble() == HexadecimalSymbol.EIGHT;
     }
 
     @Override
