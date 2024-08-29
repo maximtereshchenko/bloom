@@ -117,6 +117,22 @@ final class OperationTests {
     }
 
     @Test
+    void givenJumpWithOffset_thenOperationsSkipped() {
+        new Dsl()
+            .givenProgram(
+                new Set('0', "02"),
+                new Set('1', "01"),
+                new SetFontCharacter('2'),
+                new JumpWithOffset(new MemoryAddress(5)),
+                new SetFontCharacter('1'),//should be skipped
+                new SetFontCharacter('1'),//should be skipped
+                new Display('2', '2', 5)
+            )
+            .whenExecuteOperations(5)
+            .thenOutputMatchesExpectation();
+    }
+
+    @Test
     void givenAdd_thenRegisterHasSum() {
         new Dsl()
             .givenProgram(

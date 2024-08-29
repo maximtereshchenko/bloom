@@ -26,6 +26,7 @@ public final class BloomFacade implements BloomModule {
             new DisplayOperationFactory(registers, randomAccessMemory, display),
             new ClearDisplayOperationFactory(display),
             new JumpOperationFactory(registers),
+            new JumpWithOffsetOperationFactory(registers),
             new SetIndexOperationFactory(registers),
             new CallSubroutineOperationFactory(registers, stack),
             new ReturnFromSubroutineOperationFactory(registers, stack),
