@@ -26,3 +26,9 @@ interested in learning about emulation.
     ```shell
    java -jar ./target/bloom-1.0-SNAPSHOT.jar <path or link to your program>
    ```
+
+## How to release
+
+```shell
+mvn -B -DtagNameFormat=@{project.version} release:prepare release:clean
+```
