@@ -1,10 +1,10 @@
-name: main
+name: release
 on:
   push:
-    branches:
-      - main
+    tags:
+      - "*.*"
 jobs:
-  build:
+  release:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
@@ -12,4 +12,7 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-      - run: mvn -B '-Dtest=!ApplicationTests' verify
+      - run: mvn -B '-Dtest=!ApplicationTests' package
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: target/bloom-*.jar
